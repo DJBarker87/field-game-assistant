@@ -17,7 +17,6 @@ const S = {
   vbStart: { x: 0, y: 0 }
 };
 
-
 // Scenarios loaded from external JSON file
 let SCENARIOS = {};
 
@@ -31,7 +30,6 @@ async function loadScenarios() {
     console.error('Failed to load scenarios:', e);
   }
 }
-
 
 // Local explanations for offline mode
 const EXPLANATIONS = {

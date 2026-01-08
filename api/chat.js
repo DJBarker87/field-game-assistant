@@ -39,13 +39,24 @@ export default async function handler(req, res) {
   };
 
   try {
-    const { message, threadId } = req.body;
+    const { message, threadId, requestDiagram } = req.body;
 
     if (!message) {
       return res.status(400).json({ error: 'Message is required' });
     }
 
+    // Check if user is asking for a diagram (either via button or in their message)
+    const wantsDiagram = requestDiagram || 
+      /diagram|visual|show me|illustrat/i.test(message);
+    
+    // If they want a diagram, append a reminder to the message
+    let finalMessage = message;
+    if (wantsDiagram) {
+      finalMessage = message + '\n\n[SYSTEM: The user has requested a visual diagram. You MUST include a <diagram> JSON block in your response following the format in your instructions. Do not skip this.]';
+    }
+
     console.log('Message received:', message.substring(0, 50) + '...');
+    console.log('Wants diagram:', wantsDiagram);
     console.log('Thread ID:', threadId || 'NEW');
 
     // Step 1: Get or create thread
@@ -78,7 +89,7 @@ export default async function handler(req, res) {
       headers,
       body: JSON.stringify({
         role: 'user',
-        content: message
+        content: finalMessage
       })
     });
 
@@ -96,7 +107,8 @@ export default async function handler(req, res) {
       method: 'POST',
       headers,
       body: JSON.stringify({
-        assistant_id: ASSISTANT_ID
+        assistant_id: ASSISTANT_ID,
+        temperature: 0.4
       })
     });
 

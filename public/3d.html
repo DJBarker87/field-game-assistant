@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Field Game 3D | Eton College</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    :root {
+      --eton: #96c8a2;
+      --eton-dark: #6ba377;
+      --pitch-dark: #1a472a;
+      --pitch-mid: #2d5a27;
+      --bg-deep: #0a1a0e;
+      --text-inv: #f8faf8;
+    }
+    
+    body {
+      font-family: 'IBM Plex Sans', -apple-system, sans-serif;
+      background: var(--bg-deep);
+      color: var(--text-inv);
+      overflow: hidden;
+      height: 100vh;
+    }
+    
+    #container {
+      width: 100%;
+      height: 100%;
+      position: relative;
+    }
+    
+    #canvas3d {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+    
+    /* UI Overlay */
+    .ui-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      pointer-events: none;
+      z-index: 10;
+    }
+    
+    .ui-overlay > * {
+      pointer-events: auto;
+    }
+    
+    /* Header */
+    .header {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      padding: 1rem 1.5rem;
+      background: linear-gradient(180deg, rgba(10,26,14,0.9) 0%, transparent 100%);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .header h1 {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1.5rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    
+    .header h1 span {
+      background: var(--eton);
+      color: var(--pitch-dark);
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.7rem;
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-weight: 600;
+    }
+    
+    .view-switch {
+      display: flex;
+      gap: 0.5rem;
+    }
+    
+    .view-switch a {
+      padding: 0.5rem 1rem;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 8px;
+      color: rgba(255,255,255,0.7);
+      text-decoration: none;
+      font-size: 0.85rem;
+      transition: all 0.2s;
+    }
+    
+    .view-switch a:hover {
+      background: rgba(255,255,255,0.15);
+      color: #fff;
+    }
+    
+    .view-switch a.active {
+      background: var(--eton);
+      border-color: var(--eton);
+      color: var(--pitch-dark);
+    }
+    
+    /* Scenario Panel */
+    .scenario-panel {
+      position: absolute;
+      left: 1.5rem;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(10,26,14,0.85);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(150,200,162,0.2);
+      border-radius: 12px;
+      padding: 1rem;
+      width: 220px;
+    }
+    
+    .scenario-panel h3 {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--eton);
+      margin-bottom: 0.75rem;
+    }
+    
+    .scenario-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+    
+    .scenario-btn {
+      padding: 0.6rem 0.75rem;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 8px;
+      color: rgba(255,255,255,0.7);
+      font-size: 0.85rem;
+      text-align: left;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    
+    .scenario-btn:hover {
+      background: rgba(255,255,255,0.1);
+      color: #fff;
+    }
+    
+    .scenario-btn.active {
+      background: var(--eton);
+      border-color: var(--eton);
+      color: var(--pitch-dark);
+    }
+    
+    /* Info Panel */
+    .info-panel {
+      position: absolute;
+      right: 1.5rem;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(10,26,14,0.85);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(150,200,162,0.2);
+      border-radius: 12px;
+      padding: 1.25rem;
+      width: 280px;
+    }
+    
+    .info-panel h2 {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1.25rem;
+      margin-bottom: 0.5rem;
+    }
+    
+    .info-panel p {
+      font-size: 0.85rem;
+      color: rgba(255,255,255,0.6);
+      line-height: 1.5;
+    }
+    
+    .step-info {
+      margin-top: 1rem;
+      padding-top: 1rem;
+      border-top: 1px solid rgba(255,255,255,0.1);
+    }
+    
+    .step-info .caption {
+      font-size: 0.9rem;
+      line-height: 1.6;
+    }
+    
+    /* Playback Controls */
+    .playback-controls {
+      position: absolute;
+      bottom: 1.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      background: rgba(10,26,14,0.85);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(150,200,162,0.2);
+      border-radius: 50px;
+      padding: 0.75rem 1.5rem;
+    }
+    
+    .playback-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: none;
+      background: rgba(255,255,255,0.1);
+      color: rgba(255,255,255,0.8);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s;
+    }
+    
+    .playback-btn:hover:not(:disabled) {
+      background: rgba(255,255,255,0.2);
+      color: #fff;
+    }
+    
+    .playback-btn:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+    }
+    
+    .playback-btn.primary {
+      width: 50px;
+      height: 50px;
+      background: var(--eton);
+      color: var(--pitch-dark);
+    }
+    
+    .playback-btn.primary:hover {
+      background: var(--eton-dark);
+    }
+    
+    .playback-btn svg {
+      width: 20px;
+      height: 20px;
+      fill: currentColor;
+    }
+    
+    .timeline {
+      width: 200px;
+      height: 4px;
+      background: rgba(255,255,255,0.2);
+      border-radius: 2px;
+      cursor: pointer;
+      position: relative;
+    }
+    
+    .timeline-progress {
+      height: 100%;
+      background: var(--eton);
+      border-radius: 2px;
+      width: 0%;
+      transition: width 0.3s;
+    }
+    
+    .step-indicator {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+      color: rgba(255,255,255,0.5);
+      min-width: 45px;
+      text-align: center;
+    }
+    
+    /* Camera Controls Hint */
+    .camera-hint {
+      position: absolute;
+      bottom: 6rem;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 0.75rem;
+      color: rgba(255,255,255,0.4);
+      text-align: center;
+    }
+    
+    /* Loading */
+    .loading {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+    }
+    
+    .loading-spinner {
+      width: 40px;
+      height: 40px;
+      border: 3px solid rgba(150,200,162,0.2);
+      border-top-color: var(--eton);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 1rem;
+    }
+    
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+  <div id="container">
+    <canvas id="canvas3d"></canvas>
+    
+    <div class="ui-overlay">
+      <!-- Header -->
+      <header class="header">
+        <h1>Field Game <span>3D</span></h1>
+        <div class="view-switch">
+          <a href="index.html">2D View</a>
+          <a href="3d.html" class="active">3D View</a>
+        </div>
+      </header>
+      
+      <!-- Scenario Selection -->
+      <div class="scenario-panel">
+        <h3>Scenarios</h3>
+        <div class="scenario-list" id="scenarioList">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+      
+      <!-- Info Panel -->
+      <div class="info-panel">
+        <h2 id="scenarioTitle">Select a Scenario</h2>
+        <p id="scenarioDesc">Choose a scenario from the left to see it visualized in 3D.</p>
+        <div class="step-info">
+          <p class="caption" id="stepCaption">-</p>
+        </div>
+      </div>
+      
+      <!-- Playback -->
+      <div class="playback-controls">
+        <button class="playback-btn" id="prevBtn" disabled>
+          <svg viewBox="0 0 24 24"><path d="M19 5v14l-10-7zM5 5h3v14H5z" transform="scale(-1,1) translate(-24,0)"/></svg>
+        </button>
+        <button class="playback-btn primary" id="playBtn" disabled>
+          <svg viewBox="0 0 24 24" id="playIcon"><path d="M8 5v14l11-7z"/></svg>
+          <svg viewBox="0 0 24 24" id="pauseIcon" style="display:none"><path d="M6 4h4v16H6zM14 4h4v16h-4z"/></svg>
+        </button>
+        <button class="playback-btn" id="nextBtn" disabled>
+          <svg viewBox="0 0 24 24"><path d="M5 5v14l10-7zM16 5h3v14h-3z"/></svg>
+        </button>
+        <div class="timeline" id="timeline">
+          <div class="timeline-progress" id="timelineProgress"></div>
+        </div>
+        <div class="step-indicator" id="stepIndicator">-</div>
+      </div>
+      
+      <div class="camera-hint">
+        Drag to rotate • Scroll to zoom • Right-drag to pan
+      </div>
+    </div>
+    
+    <div class="loading" id="loading">
+      <div class="loading-spinner"></div>
+      <p>Loading 3D Scene...</p>
+    </div>
+  </div>
+
+  <!-- Three.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  
+  <!-- Main 3D Application -->
+  <script type="module" src="js/3d-app.js"></script>
+</body>
+</html>

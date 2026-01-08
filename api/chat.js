@@ -31,9 +31,9 @@ export default async function handler(req, res) {
     });
 
     const runRes = await fetch(`https://api.openai.com/v1/threads/${currentThreadId}/runs`, {
-      method: 'POST', headers,
-      body: JSON.stringify({ assistant_id: ASSISTANT_ID })
-    });
+  method: 'POST', headers,
+  body: JSON.stringify({ assistant_id: ASSISTANT_ID, temperature: 0.4 })
+});
     const run = await runRes.json();
 
     let status = 'queued';

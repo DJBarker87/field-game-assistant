@@ -1,4 +1,4 @@
-import OpenAI from 'openai';
+const OpenAI = require('openai');
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
@@ -42,7 +42,7 @@ Player labels: B (Bully), F (Fly), L (Long), S (Short), G (Goals/Goalkeeper)
 For multi-step sequences, use camera zoom (1.5-2.5) for close-up action like on-the-line play.
 `;
 
-export default async function handler(req, res) {
+module.exports = async function handler(req, res) {
   // Handle CORS
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');

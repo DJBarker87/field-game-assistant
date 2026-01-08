@@ -448,7 +448,7 @@ async function sendMsg(){
       addMsg(getLocalExplanation(localMatch),'assistant',true);
       loadScenario(localMatch);setView('split');
     }else{
-      addMsg('I\\'m currently offline, but I can still show you visual scenarios! Try asking about **Sneaking**, **On-the-Line**, **Rouge**, **Conversion**, or **Kick-off**.','assistant');
+      addMsg('I am currently offline, but I can still show you visual scenarios! Try asking about Sneaking, On-the-Line, Rouge, Conversion, or Kick-off.','assistant');
     }
   }
   S.diag=false;document.getElementById('diagramBtn').classList.remove('active');
@@ -520,7 +520,7 @@ The diagram shows the Conversion path from tramline to goal.`,
 
 The diagram shows the full 11-a-side kick-off formation with all positions marked.`
   };
-  return explanations[key]||'Here\\'s a visual explanation:';
+  return explanations[key]||'Here is a visual explanation:';
 }
 function addMsg(txt,role,hasDiag=false){
   const c=document.getElementById('chatMessages'),id='m'+Date.now();

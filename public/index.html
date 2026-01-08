@@ -12,16 +12,14 @@
     :root{
       --eton:#96c8a2;--eton-dark:#6ba377;--eton-light:#c4e3cb;--eton-pale:#e8f4eb;
       --pitch-dark:#1a472a;--pitch-mid:#2d5a27;--pitch-light:#3d7a37;
-      --text:#0f1f13;--text-sec:#3a4d3e;--text-muted:#6b7d6f;--text-inv:#f8faf8;
+      --text:#0f1f13;--text-sec:#3a4d3e;--text-inv:#f8faf8;
       --bg:#f5f9f6;--bg-sec:#e8efe9;--bg-card:#fff;--bg-deep:#0a1a0e;
-      --border:rgba(150,200,162,0.2);
-      --shadow:0 4px 12px rgba(10,26,14,0.08);
+      --border:rgba(150,200,162,0.2);--shadow:0 4px 12px rgba(10,26,14,0.08);
       --attacking:#2980b9;--defending:#c0392b;--ball:#f1c40f;--warning:#e67e22;--success:#27ae60;
       --ease:cubic-bezier(0.16,1,0.3,1);
     }
     html{font-size:16px}
-    body{font-family:'IBM Plex Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow:hidden;-webkit-font-smoothing:antialiased}
-    
+    body{font-family:'IBM Plex Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow:hidden}
     .header{background:linear-gradient(135deg,var(--pitch-dark),var(--pitch-mid));padding:.875rem 1.5rem;display:flex;align-items:center;justify-content:space-between;box-shadow:var(--shadow);position:relative;z-index:100}
     .header::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--eton),transparent)}
     .header-left{display:flex;align-items:center;gap:1rem}
@@ -34,15 +32,13 @@
     .view-toggle button{background:0;border:0;color:rgba(255,255,255,.6);padding:.5rem 1rem;font-size:.8rem;font-weight:500;cursor:pointer;border-radius:8px;transition:all .2s}
     .view-toggle button.active{background:var(--eton);color:var(--pitch-dark)}
     .view-toggle button:hover:not(.active){color:#fff;background:rgba(255,255,255,.1)}
-    
     .main{display:flex;height:calc(100vh - 68px);overflow:hidden}
     .chat-panel{width:420px;min-width:380px;display:flex;flex-direction:column;background:var(--bg-card);border-right:1px solid var(--border);transition:all .4s var(--ease)}
     .chat-panel.collapsed{width:0;min-width:0;opacity:0;pointer-events:none}
     .chat-panel.expanded{width:100%;max-width:700px;margin:0 auto;border:0}
-    .diagram-panel{flex:1;display:flex;flex-direction:column;background:var(--bg-deep);position:relative;overflow:hidden;transition:all .4s var(--ease)}
+    .diagram-panel{flex:1;display:flex;flex-direction:column;background:var(--bg-deep);position:relative;overflow:hidden}
     .diagram-panel.collapsed{flex:0;opacity:0;pointer-events:none}
     .diagram-panel::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 30%,rgba(150,200,162,.08) 0%,transparent 60%);pointer-events:none}
-    
     .chat-messages{flex:1;overflow-y:auto;padding:1.5rem;display:flex;flex-direction:column;gap:1rem}
     .message{display:flex;gap:.75rem;max-width:88%;animation:msgIn .4s var(--ease)}
     @keyframes msgIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
@@ -57,7 +53,6 @@
     .message-content p:last-child{margin-bottom:0}
     .diagram-badge{display:inline-flex;align-items:center;gap:.4rem;margin-top:.75rem;padding:.4rem .75rem;background:rgba(150,200,162,.15);border:1px solid rgba(150,200,162,.3);border-radius:20px;font-size:.75rem;font-weight:500;color:var(--eton-dark);cursor:pointer;transition:all .15s}
     .diagram-badge:hover{background:rgba(150,200,162,.25)}
-    
     .chat-input-area{padding:1rem 1.25rem 1.25rem;background:var(--bg-card);border-top:1px solid var(--border)}
     .quick-chips{display:flex;gap:.4rem;margin-bottom:.75rem;flex-wrap:wrap}
     .quick-chip{padding:.35rem .7rem;background:var(--bg-sec);border:1px solid var(--border);border-radius:16px;font-size:.72rem;font-weight:500;color:var(--text-sec);cursor:pointer;transition:all .15s}
@@ -74,7 +69,6 @@
     .btn-secondary.active{background:var(--eton-pale);border-color:var(--eton);color:var(--eton-dark)}
     .btn:disabled{opacity:.5;cursor:not-allowed}
     .btn svg{width:16px;height:16px}
-    
     .welcome{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2rem;text-align:center;animation:fadeIn .6s var(--ease)}
     @keyframes fadeIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
     .welcome-avatar{width:72px;height:72px;border-radius:18px;margin-bottom:1.25rem;background:linear-gradient(135deg,var(--eton),var(--eton-dark));display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:2rem;font-weight:700;color:#fff;box-shadow:var(--shadow),0 0 40px rgba(150,200,162,.3);overflow:hidden}
@@ -85,19 +79,16 @@
     .suggestion-btn{padding:.75rem 1rem;background:var(--bg-sec);border:1px solid var(--border);border-radius:10px;text-align:left;cursor:pointer;font-size:.85rem;color:var(--text-sec);transition:all .15s;display:flex;align-items:center;gap:.6rem}
     .suggestion-btn:hover{background:var(--eton-pale);border-color:var(--eton);color:var(--eton-dark);transform:translateX(4px)}
     .suggestion-btn span{font-size:1.1rem}
-    
     .typing{display:flex;gap:4px;padding:.5rem 0}
     .typing span{width:8px;height:8px;border-radius:50%;background:var(--eton);animation:bounce 1.4s ease-in-out infinite}
     .typing span:nth-child(2){animation-delay:.15s}
     .typing span:nth-child(3){animation-delay:.3s}
     @keyframes bounce{0%,60%,100%{transform:translateY(0);opacity:.4}30%{transform:translateY(-8px);opacity:1}}
-    
     .scenario-bar{padding:.6rem 1rem;background:rgba(0,0,0,.3);backdrop-filter:blur(12px);border-bottom:1px solid rgba(150,200,162,.1);display:flex;gap:.4rem;overflow-x:auto;scrollbar-width:none}
     .scenario-bar::-webkit-scrollbar{display:none}
     .scenario-tab{padding:.45rem .9rem;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:8px;font-size:.72rem;font-weight:500;color:rgba(255,255,255,.6);cursor:pointer;white-space:nowrap;transition:all .15s}
     .scenario-tab:hover{background:rgba(255,255,255,.1);color:#fff}
     .scenario-tab.active{background:var(--eton);border-color:var(--eton);color:var(--pitch-dark)}
-    
     .diagram-header{padding:.875rem 1.25rem;background:rgba(0,0,0,.2);backdrop-filter:blur(12px);display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(150,200,162,.1)}
     .diagram-info{flex:1}
     .diagram-title{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:600;color:var(--text-inv);margin-bottom:.15rem}
@@ -107,850 +98,127 @@
     .tool-btn:hover{background:rgba(255,255,255,.1);color:#fff}
     .tool-btn.active{background:var(--eton);border-color:var(--eton);color:var(--pitch-dark)}
     .tool-btn svg{width:16px;height:16px}
-    
     .pitch-viewport{flex:1;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;cursor:grab}
     .pitch-viewport.dragging{cursor:grabbing}
-    .pitch-svg{display:block;filter:drop-shadow(0 20px 60px rgba(0,0,0,.4));border-radius:4px;transition:none;max-width:100%;max-height:100%}
-    
-    .pitch-base{fill:var(--pitch-mid)}
-    .grass-dark{fill:var(--pitch-dark);opacity:.3}
-    .grass-light{fill:var(--pitch-light);opacity:.15}
-    .pitch-line{stroke:rgba(255,255,255,.75);stroke-width:.4;fill:none}
-    .pitch-line-dash{stroke-dasharray:1.5,1.5;opacity:.6}
-    .goal-frame{fill:none;stroke:#fff;stroke-width:.8}
-    .goal-net{fill:rgba(255,255,255,.03);stroke:rgba(255,255,255,.15);stroke-width:.3}
-    
-    .player{cursor:pointer;transition:transform .8s var(--ease),opacity .3s}
-    .player-shadow{fill:rgba(0,0,0,.3);filter:blur(1px)}
-    .player-ring{fill:none;stroke-width:.5;opacity:0;transition:all .2s}
-    .player:hover .player-ring{opacity:.5}
-    .player.highlight .player-ring{opacity:1;stroke:var(--ball);stroke-width:.8;animation:pulse 2s ease-in-out infinite}
-    @keyframes pulse{0%,100%{r:4.5;opacity:.8}50%{r:5.5;opacity:.4}}
-    .player-body{transition:all .3s}
-    .player.attacking .player-body{fill:var(--attacking)}
-    .player.attacking .player-ring{stroke:#5da4d9}
-    .player.defending .player-body{fill:var(--defending)}
-    .player.defending .player-ring{stroke:#e74c3c}
-    .player.sneaking .player-body,.player.cornering .player-body{fill:var(--warning);animation:flash 1s ease-in-out infinite}
-    @keyframes flash{0%,100%{opacity:1}50%{opacity:.5}}
-    .player-label{fill:#fff;font-family:'JetBrains Mono',monospace;font-size:2.2px;font-weight:600;text-anchor:middle;dominant-baseline:central;pointer-events:none}
-    .player-role{fill:rgba(255,255,255,.9);font-size:1.6px;text-anchor:middle;pointer-events:none;opacity:0;transition:opacity .15s}
-    .player:hover .player-role{opacity:1}
-    .show-labels .player-role{opacity:.8}
-    
-    .ball{transition:transform .8s var(--ease)}
-    .ball-glow{fill:rgba(241,196,15,.6);filter:blur(2px);animation:glow 2s ease-in-out infinite}
-    @keyframes glow{0%,100%{opacity:.6}50%{opacity:.3}}
-    .ball-body{fill:var(--ball);stroke:#d4a017;stroke-width:.4}
-    .ball-highlight{fill:rgba(255,255,255,.4)}
-    .ball-shadow{fill:rgba(0,0,0,.25);filter:blur(.8px)}
-    
-    .zone{pointer-events:none;transition:opacity .4s}
-    .zone-fill{opacity:.2}
-    .zone-border{fill:none;stroke-width:.5;stroke-dasharray:2,2;opacity:.6}
-    .zone.sneaking .zone-fill{fill:var(--warning)}
-    .zone.sneaking .zone-border{stroke:var(--warning)}
-    .zone.onTheLine .zone-fill{fill:var(--eton)}
-    .zone.onTheLine .zone-border{stroke:var(--eton)}
-    .zone.rougeable .zone-fill{fill:var(--success)}
-    .zone.rougeable .zone-border{stroke:var(--success)}
-    .zone.bully .zone-fill{fill:#3498db}
-    .zone.bully .zone-border{stroke:#3498db}
-    
-    .arrow-path{fill:none;stroke-width:.6;stroke-linecap:round}
-    .arrow-path.animated{stroke-dasharray:200;stroke-dashoffset:200;animation:draw .8s var(--ease) forwards}
-    @keyframes draw{to{stroke-dashoffset:0}}
-    .arrow-label{font-size:1.8px;fill:#fff;text-anchor:middle;paint-order:stroke;stroke:var(--bg-deep);stroke-width:.5px}
-    
-    .annotation{pointer-events:none;animation:annIn .4s var(--ease)}
-    @keyframes annIn{from{opacity:0;transform:translateY(2px)}to{opacity:1;transform:translateY(0)}}
-    .annotation-bg{fill:rgba(0,0,0,.75);rx:1.5}
-    .annotation-text{font-size:1.8px;fill:#fff;text-anchor:middle;dominant-baseline:middle}
-    .annotation.warning .annotation-bg{fill:rgba(230,126,34,.9)}
-    .annotation.scoring .annotation-bg{fill:rgba(39,174,96,.9)}
-    .annotation.info .annotation-bg{fill:rgba(52,152,219,.85)}
-    
+    .pitch-svg{display:block;filter:drop-shadow(0 20px 60px rgba(0,0,0,.4));border-radius:4px;max-width:100%;max-height:100%}
+    .pitch-base{fill:var(--pitch-mid)}.grass-dark{fill:var(--pitch-dark);opacity:.3}.grass-light{fill:var(--pitch-light);opacity:.15}
+    .pitch-line{stroke:rgba(255,255,255,.75);stroke-width:.4;fill:none}.pitch-line-dash{stroke-dasharray:1.5,1.5;opacity:.6}
+    .goal-frame{fill:none;stroke:#fff;stroke-width:.8}.goal-net{fill:rgba(255,255,255,.03);stroke:rgba(255,255,255,.15);stroke-width:.3}
+    .player{cursor:pointer}.player-shadow{fill:rgba(0,0,0,.25)}.player-ring{fill:none;opacity:0;transition:opacity .2s}
+    .player:hover .player-ring{opacity:.5}.player.highlight .player-ring{opacity:1;stroke:var(--ball)}
+    .player.attacking .player-body{fill:var(--attacking)}.player.attacking .player-ring{stroke:#5da4d9}
+    .player.defending .player-body{fill:var(--defending)}.player.defending .player-ring{stroke:#e74c3c}
+    .player.sneaking .player-body,.player.cornering .player-body{fill:var(--warning)}
+    .player-label{fill:#fff;font-family:'JetBrains Mono',monospace;font-weight:600;text-anchor:middle;dominant-baseline:central;pointer-events:none}
+    .player-role{fill:rgba(255,255,255,.9);text-anchor:middle;pointer-events:none;opacity:0;transition:opacity .15s}
+    .player:hover .player-role{opacity:1}.show-labels .player-role{opacity:.8}
+    .ball-glow{fill:rgba(241,196,15,.5)}.ball-body{fill:var(--ball);stroke:#d4a017}.ball-highlight{fill:rgba(255,255,255,.4)}.ball-shadow{fill:rgba(0,0,0,.2)}
+    .zone{pointer-events:none}.zone-fill{opacity:.15}.zone-border{fill:none;stroke-dasharray:2,2;opacity:.5}
+    .zone.sneaking .zone-fill{fill:var(--warning)}.zone.sneaking .zone-border{stroke:var(--warning)}
+    .zone.onTheLine .zone-fill{fill:var(--eton)}.zone.onTheLine .zone-border{stroke:var(--eton)}
+    .zone.rougeable .zone-fill{fill:var(--success)}.zone.rougeable .zone-border{stroke:var(--success)}
+    .zone.bully .zone-fill{fill:#3498db}.zone.bully .zone-border{stroke:#3498db}
+    .arrow-path{fill:none;stroke-linecap:round}.arrow-label{fill:#fff;text-anchor:middle;paint-order:stroke;stroke:var(--bg-deep)}
+    .annotation{pointer-events:none}.annotation-bg{fill:rgba(0,0,0,.75)}.annotation-text{fill:#fff;text-anchor:middle;dominant-baseline:middle}
+    .annotation.warning .annotation-bg{fill:rgba(230,126,34,.9)}.annotation.scoring .annotation-bg{fill:rgba(39,174,96,.9)}.annotation.info .annotation-bg{fill:rgba(52,152,219,.85)}
     .zoom-controls{position:absolute;bottom:1rem;right:1rem;display:flex;flex-direction:column;gap:.25rem;z-index:10}
     .zoom-btn{width:36px;height:36px;border-radius:8px;border:1px solid rgba(255,255,255,.2);background:rgba(0,0,0,.5);backdrop-filter:blur(8px);cursor:pointer;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.8);font-size:1.2rem;font-weight:bold;transition:all .15s}
-    .zoom-btn:hover{background:rgba(0,0,0,.7);color:#fff}
-    .zoom-info{text-align:center;font-size:.65rem;color:rgba(255,255,255,.5);padding:.25rem 0}
-    
+    .zoom-btn:hover{background:rgba(0,0,0,.7);color:#fff}.zoom-info{text-align:center;font-size:.65rem;color:rgba(255,255,255,.5);padding:.25rem 0}
     .playback-bar{padding:.875rem 1.25rem;background:rgba(0,0,0,.4);backdrop-filter:blur(16px);border-top:1px solid rgba(150,200,162,.1);display:flex;align-items:center;gap:1rem}
     .playback-controls{display:flex;gap:.4rem;align-items:center}
     .playback-btn{width:38px;height:38px;border-radius:50%;border:0;background:rgba(255,255,255,.08);cursor:pointer;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.7);transition:all .15s}
-    .playback-btn:hover:not(:disabled){background:rgba(255,255,255,.15);color:#fff}
-    .playback-btn:disabled{opacity:.3;cursor:not-allowed}
-    .playback-btn.play-pause{width:44px;height:44px;background:var(--eton);color:var(--pitch-dark)}
-    .playback-btn.play-pause:hover{background:var(--eton-light)}
+    .playback-btn:hover:not(:disabled){background:rgba(255,255,255,.15);color:#fff}.playback-btn:disabled{opacity:.3;cursor:not-allowed}
+    .playback-btn.play-pause{width:44px;height:44px;background:var(--eton);color:var(--pitch-dark)}.playback-btn.play-pause:hover{background:var(--eton-light)}
     .playback-btn svg{width:18px;height:18px}
     .timeline{flex:1;display:flex;flex-direction:column;gap:.5rem}
     .timeline-track{height:4px;background:rgba(255,255,255,.1);border-radius:2px;cursor:pointer;position:relative;overflow:hidden}
-    .timeline-progress{height:100%;background:linear-gradient(90deg,var(--eton),var(--eton-light));border-radius:2px;transition:width .3s;position:relative}
+    .timeline-progress{height:100%;background:linear-gradient(90deg,var(--eton),var(--eton-light));border-radius:2px;transition:width .3s var(--ease)}
     .timeline-progress::after{content:'';position:absolute;right:0;top:50%;transform:translateY(-50%);width:12px;height:12px;background:#fff;border-radius:50%;box-shadow:var(--shadow)}
-    .timeline-caption{font-size:.8rem;color:rgba(255,255,255,.6);text-align:center;min-height:1.2em}
+    .timeline-caption{font-size:.8rem;color:rgba(255,255,255,.6);text-align:center;min-height:1.2em;transition:opacity .3s}
     .step-indicator{font-family:'JetBrains Mono',monospace;font-size:.75rem;color:rgba(255,255,255,.5);min-width:50px;text-align:right}
-    
     .legend-bar{padding:.5rem 1rem;background:rgba(0,0,0,.3);display:flex;justify-content:center;gap:1.25rem;flex-wrap:wrap}
     .legend-item{display:flex;align-items:center;gap:.4rem;font-size:.7rem;color:rgba(255,255,255,.5)}
     .legend-dot{width:10px;height:10px;border-radius:50%;box-shadow:0 0 8px currentColor}
-    .legend-dot.attacking{background:var(--attacking);color:var(--attacking)}
-    .legend-dot.defending{background:var(--defending);color:var(--defending)}
-    .legend-dot.ball{background:var(--ball);color:var(--ball)}
-    .legend-dot.sneaking{background:var(--warning);color:var(--warning)}
-    
-    @media(max-width:1024px){
-      .main{flex-direction:column}
-      .chat-panel{width:100%;min-width:0;height:45%;border-right:0;border-bottom:1px solid var(--border)}
-      .chat-panel.collapsed{height:0}
-      .chat-panel.expanded{height:100%}
-      .diagram-panel{height:55%}
-      .diagram-panel.collapsed{height:0}
-    }
-    @media(max-width:600px){
-      .header{padding:.75rem 1rem}
-      .header-title h1{font-size:1.15rem}
-      .quick-chips{display:none}
-    }
+    .legend-dot.attacking{background:var(--attacking);color:var(--attacking)}.legend-dot.defending{background:var(--defending);color:var(--defending)}
+    .legend-dot.ball{background:var(--ball);color:var(--ball)}.legend-dot.sneaking{background:var(--warning);color:var(--warning)}
+    @media(max-width:1024px){.main{flex-direction:column}.chat-panel{width:100%;min-width:0;height:45%;border-right:0;border-bottom:1px solid var(--border)}.chat-panel.collapsed{height:0}.chat-panel.expanded{height:100%}.diagram-panel{height:55%}.diagram-panel.collapsed{height:0}}
+    @media(max-width:600px){.header{padding:.75rem 1rem}.header-title h1{font-size:1.15rem}.quick-chips{display:none}}
   </style>
 </head>
 <body>
   <header class="header">
     <div class="header-left">
       <div class="logo"><img src="ralph.png" alt="R" onerror="this.style.display='none';this.parentElement.textContent='R';"></div>
-      <div class="header-title">
-        <h1>Field Game Assistant</h1>
-        <p>Interactive Laws Visualiser</p>
-      </div>
+      <div class="header-title"><h1>Field Game Assistant</h1><p>Interactive Laws Visualiser</p></div>
     </div>
     <div class="view-toggle">
-      <button id="vChat" onclick="setView('chat')">Chat</button>
-      <button id="vSplit" class="active" onclick="setView('split')">Split</button>
-      <button id="vDiagram" onclick="setView('diagram')">Pitch</button>
+      <button id="vChat" onclick="App.setView('chat')">Chat</button>
+      <button id="vSplit" class="active" onclick="App.setView('split')">Split</button>
+      <button id="vDiagram" onclick="App.setView('diagram')">Pitch</button>
     </div>
   </header>
-
   <main class="main">
     <section class="chat-panel" id="chatPanel">
       <div class="chat-messages" id="chatMessages">
         <div class="welcome" id="welcome">
           <div class="welcome-avatar"><img src="ralph.png" alt="R" onerror="this.style.display='none';this.parentElement.textContent='R';"></div>
           <h2>Welcome to the Field Game</h2>
-          <p>I am Ralph, your guide to the Laws of the Field Game as played at Eton College. Ask me anything, or explore the visual scenarios.</p>
+          <p>I am Ralph, your guide to the Laws of the Field Game as played at Eton College.</p>
           <div class="welcome-btns">
-            <button class="suggestion-btn" onclick="askQ('Explain what Sneaking is with a diagram')"><span>👁</span>Explain Sneaking with a diagram</button>
-            <button class="suggestion-btn" onclick="askQ('What is a Rouge and how is it scored?')"><span>🎯</span>How is a Rouge scored?</button>
-            <button class="suggestion-btn" onclick="askQ('Show me on-the-line play')"><span>📏</span>On-the-line rules</button>
+            <button class="suggestion-btn" onclick="App.askQ('Explain Sneaking with a diagram')"><span>👁</span>Explain Sneaking</button>
+            <button class="suggestion-btn" onclick="App.askQ('What is a Rouge?')"><span>🎯</span>What is a Rouge?</button>
+            <button class="suggestion-btn" onclick="App.askQ('Show me on-the-line play')"><span>📏</span>On-the-line rules</button>
           </div>
         </div>
       </div>
       <div class="chat-input-area">
-        <div class="quick-chips">
-          <button class="quick-chip" onclick="loadScenario('kickoff')">Kick-off</button>
-          <button class="quick-chip" onclick="loadScenario('sneaking')">Sneaking</button>
-          <button class="quick-chip" onclick="loadScenario('onTheLine')">On-the-Line</button>
-          <button class="quick-chip" onclick="loadScenario('rouge')">Rouge</button>
-          <button class="quick-chip" onclick="loadScenario('conversion')">Conversion</button>
-        </div>
+        <div class="quick-chips" id="quickChips"></div>
         <div class="input-row">
           <div class="input-wrap"><textarea class="chat-input" id="chatInput" placeholder="Ask about Field Game rules..." rows="1"></textarea></div>
           <div class="input-actions">
-            <button class="btn btn-secondary" id="diagramBtn" onclick="toggleDiag()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8" cy="8" r="2"/><circle cx="16" cy="16" r="2"/><path d="M8 8l8 8"/></svg></button>
-            <button class="btn btn-primary" onclick="sendMsg()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg></button>
+            <button class="btn btn-secondary" id="diagramBtn" onclick="App.toggleDiag()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8" cy="8" r="2"/><circle cx="16" cy="16" r="2"/><path d="M8 8l8 8"/></svg></button>
+            <button class="btn btn-primary" onclick="App.sendMsg()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg></button>
           </div>
         </div>
       </div>
     </section>
-
     <section class="diagram-panel" id="diagramPanel">
       <div class="scenario-bar" id="scenarioBar"></div>
       <div class="diagram-header">
-        <div class="diagram-info">
-          <div class="diagram-title" id="diagTitle">Select a Scenario</div>
-          <div class="diagram-desc" id="diagDesc">Choose from the scenarios above or ask for a visual explanation</div>
-        </div>
+        <div class="diagram-info"><div class="diagram-title" id="diagTitle">Select a Scenario</div><div class="diagram-desc" id="diagDesc">Choose from the tabs above</div></div>
         <div class="diagram-toolbar">
-          <button class="tool-btn" id="labelsBtn" onclick="toggleLabels()" title="Show labels"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7V4h16v3M9 20h6M12 4v16"/></svg></button>
-          <button class="tool-btn" onclick="resetCamera()" title="Reset view"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 109-9 9.75 9.75 0 00-6.74 2.74L3 8M3 3v5h5"/></svg></button>
+          <button class="tool-btn" id="labelsBtn" onclick="App.toggleLabels()" title="Labels"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7V4h16v3M9 20h6M12 4v16"/></svg></button>
+          <button class="tool-btn" onclick="App.resetCamera()" title="Reset"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 109-9 9.75 9.75 0 00-6.74 2.74L3 8M3 3v5h5"/></svg></button>
         </div>
       </div>
       <div class="pitch-viewport" id="viewport">
         <svg class="pitch-svg" id="pitch" viewBox="-5 -5 120 85" preserveAspectRatio="xMidYMid meet">
-          <defs>
-            <marker id="arrow" markerWidth="6" markerHeight="5" refX="5" refY="2.5" orient="auto"><polygon points="0 0,6 2.5,0 5" fill="currentColor"/></marker>
-          </defs>
+          <defs><marker id="arrow" markerWidth="4" markerHeight="3" refX="3.5" refY="1.5" orient="auto"><polygon points="0 0,4 1.5,0 3" fill="currentColor"/></marker></defs>
           <rect class="pitch-base" x="0" y="0" width="110" height="75" rx="1"/>
           <g class="stripes"><rect class="grass-dark" x="0" y="0" width="10" height="75"/><rect class="grass-light" x="10" y="0" width="10" height="75"/><rect class="grass-dark" x="20" y="0" width="10" height="75"/><rect class="grass-light" x="30" y="0" width="10" height="75"/><rect class="grass-dark" x="40" y="0" width="10" height="75"/><rect class="grass-light" x="50" y="0" width="10" height="75"/><rect class="grass-dark" x="60" y="0" width="10" height="75"/><rect class="grass-light" x="70" y="0" width="10" height="75"/><rect class="grass-dark" x="80" y="0" width="10" height="75"/><rect class="grass-light" x="90" y="0" width="10" height="75"/><rect class="grass-dark" x="100" y="0" width="10" height="75"/></g>
           <g class="lines"><rect class="pitch-line" x="0" y="0" width="110" height="75"/><line class="pitch-line" x1="55" y1="0" x2="55" y2="75"/><line class="pitch-line" x1="15" y1="0" x2="15" y2="75"/><line class="pitch-line" x1="95" y1="0" x2="95" y2="75"/><line class="pitch-line pitch-line-dash" x1="3" y1="0" x2="3" y2="75"/><line class="pitch-line pitch-line-dash" x1="107" y1="0" x2="107" y2="75"/><line class="pitch-line pitch-line-dash" x1="0" y1="18.75" x2="110" y2="18.75"/><line class="pitch-line pitch-line-dash" x1="0" y1="56.25" x2="110" y2="56.25"/></g>
           <g class="goals"><rect class="goal-net" x="-3" y="30" width="3" height="15"/><path class="goal-frame" d="M0 30L-3 30L-3 45L0 45"/><rect class="goal-net" x="110" y="30" width="3" height="15"/><path class="goal-frame" d="M110 30L113 30L113 45L110 45"/></g>
           <g id="zones"></g><g id="arrows"></g><g id="players"></g><g id="ball"></g><g id="annotations"></g>
         </svg>
-        <div class="zoom-controls">
-          <button class="zoom-btn" onclick="zoomIn()">+</button>
-          <div class="zoom-info" id="zoomInfo">100%</div>
-          <button class="zoom-btn" onclick="zoomOut()">−</button>
-        </div>
+        <div class="zoom-controls"><button class="zoom-btn" onclick="App.zoomIn()">+</button><div class="zoom-info" id="zoomInfo">100%</div><button class="zoom-btn" onclick="App.zoomOut()">−</button></div>
       </div>
       <div class="playback-bar">
         <div class="playback-controls">
-          <button class="playback-btn" id="prevBtn" onclick="prevStep()" disabled><svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 5v14l-10-7zM5 5h3v14H5z"/></svg></button>
-          <button class="playback-btn play-pause" id="playBtn" onclick="togglePlay()"><svg viewBox="0 0 24 24" fill="currentColor" id="playIco"><path d="M8 5v14l11-7z"/></svg><svg viewBox="0 0 24 24" fill="currentColor" id="pauseIco" style="display:none"><path d="M6 4h4v16H6zM14 4h4v16h-4z"/></svg></button>
-          <button class="playback-btn" id="nextBtn" onclick="nextStep()" disabled><svg viewBox="0 0 24 24" fill="currentColor"><path d="M5 5v14l10-7zM16 5h3v14h-3z"/></svg></button>
+          <button class="playback-btn" id="prevBtn" onclick="App.prevStep()" disabled><svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 5v14l-10-7zM5 5h3v14H5z"/></svg></button>
+          <button class="playback-btn play-pause" id="playBtn" onclick="App.togglePlay()"><svg viewBox="0 0 24 24" fill="currentColor" id="playIco"><path d="M8 5v14l11-7z"/></svg><svg viewBox="0 0 24 24" fill="currentColor" id="pauseIco" style="display:none"><path d="M6 4h4v16H6zM14 4h4v16h-4z"/></svg></button>
+          <button class="playback-btn" id="nextBtn" onclick="App.nextStep()" disabled><svg viewBox="0 0 24 24" fill="currentColor"><path d="M5 5v14l10-7zM16 5h3v14h-3z"/></svg></button>
         </div>
-        <div class="timeline">
-          <div class="timeline-track" onclick="seek(event)"><div class="timeline-progress" id="progress" style="width:0%"></div></div>
-          <div class="timeline-caption" id="caption">Select a scenario to begin</div>
-        </div>
+        <div class="timeline"><div class="timeline-track" onclick="App.seek(event)"><div class="timeline-progress" id="progress" style="width:0%"></div></div><div class="timeline-caption" id="caption">Select a scenario</div></div>
         <div class="step-indicator" id="stepInd">-</div>
       </div>
       <div class="legend-bar">
         <div class="legend-item"><div class="legend-dot attacking"></div>Attacking</div>
         <div class="legend-item"><div class="legend-dot defending"></div>Defending</div>
         <div class="legend-item"><div class="legend-dot ball"></div>Ball</div>
-        <div class="legend-item"><div class="legend-dot sneaking"></div>Sneaking</div>
+        <div class="legend-item"><div class="legend-dot sneaking"></div>Offence</div>
       </div>
     </section>
   </main>
-
-<script>
-// State
-const S = {
-  threadId: null,
-  scenario: null,
-  seq: [],
-  step: 0,
-  playing: false,
-  interval: null,
-  labels: false,
-  diag: false,
-  // Camera state - viewBox based
-  vb: { x: -5, y: -5, w: 120, h: 85 }, // Current viewBox
-  defaultVb: { x: -5, y: -5, w: 120, h: 85 }, // Default full view
-  // Pan state
-  isPanning: false,
-  panStart: { x: 0, y: 0 },
-  vbStart: { x: 0, y: 0 }
-};
-
-// Scenarios with viewBox-based camera (x, y, w, h)
-const SCENARIOS = {
-  kickoff: {
-    name: "Kick-off Formation",
-    desc: "Set-Piece Bully at centre. Team losing toss has 'Heads'.",
-    seq: [{
-      caption: "Both teams form for the Set-Piece Bully at centre.",
-      dur: 3000,
-      vb: { x: 35, y: 20, w: 40, h: 35 }, // Zoom to centre
-      ball: { x: 55, y: 37.5 },
-      atk: {
-        post: { x: 54, y: 37.5, l: 'B', r: 'Post' },
-        sp1: { x: 52.5, y: 35, l: 'B', r: 'Side Post' },
-        sp2: { x: 52.5, y: 40, l: 'B', r: 'Side Post' },
-        c1: { x: 51, y: 32.5, l: 'B', r: 'Corner' },
-        c2: { x: 51, y: 42.5, l: 'B', r: 'Corner' },
-        c3: { x: 49.5, y: 35, l: 'B', r: 'Corner' },
-        bup: { x: 52, y: 37.5, l: 'B', r: 'Bup' },
-        fly: { x: 44, y: 37.5, l: 'F', r: 'Fly' },
-        short: { x: 32, y: 37.5, l: 'S', r: 'Short' },
-        long1: { x: 18, y: 25, l: 'L', r: 'Long' },
-        long2: { x: 18, y: 50, l: 'L', r: 'Long' }
-      },
-      def: {
-        post: { x: 56, y: 37.5, l: 'B', r: 'Post' },
-        sp1: { x: 57.5, y: 35, l: 'B', r: 'Side Post' },
-        sp2: { x: 57.5, y: 40, l: 'B', r: 'Side Post' },
-        c1: { x: 59, y: 32.5, l: 'B', r: 'Corner' },
-        c2: { x: 59, y: 42.5, l: 'B', r: 'Corner' },
-        c3: { x: 60.5, y: 35, l: 'B', r: 'Corner' },
-        bup: { x: 58, y: 37.5, l: 'B', r: 'Bup' },
-        fly: { x: 66, y: 37.5, l: 'F', r: 'Fly' },
-        short: { x: 78, y: 37.5, l: 'S', r: 'Short' },
-        long1: { x: 92, y: 25, l: 'L', r: 'Long' },
-        long2: { x: 92, y: 50, l: 'L', r: 'Long' }
-      },
-      zones: [{ t: 'bully', x: 49, y: 30, w: 12, h: 15 }],
-      ann: [{ x: 55, y: 22, txt: "Ball inserted by Corner without Heads", t: 'info' }]
-    }]
-  },
-  sneaking: {
-    name: "Sneaking",
-    desc: "Being in front of teammate running with ball is Sneaking.",
-    seq: [
-      {
-        caption: "Short Behind receives the ball and begins making ground.",
-        dur: 2500,
-        vb: { x: 15, y: 20, w: 60, h: 45 },
-        ball: { x: 32, y: 42 },
-        atk: {
-          short: { x: 32, y: 42, l: 'S', r: 'Short', hl: true },
-          fly: { x: 38, y: 38, l: 'F', r: 'Fly' },
-          post: { x: 42, y: 40, l: 'B', r: 'Post' },
-          long1: { x: 22, y: 30, l: 'L', r: 'Long' },
-          long2: { x: 22, y: 54, l: 'L', r: 'Long' }
-        },
-        def: {
-          short: { x: 68, y: 40, l: 'S', r: 'Short' },
-          fly: { x: 58, y: 42, l: 'F', r: 'Fly' },
-          post: { x: 52, y: 40, l: 'B', r: 'Post' }
-        },
-        ann: [{ x: 32, y: 50, txt: "Behind making ground with ball", t: 'info' }]
-      },
-      {
-        caption: "Fly moves ahead of ball carrier - now SNEAKING!",
-        dur: 3000,
-        vb: { x: 25, y: 22, w: 50, h: 40 },
-        ball: { x: 38, y: 42 },
-        atk: {
-          short: { x: 38, y: 42, l: 'S', r: 'Short', hl: true },
-          fly: { x: 48, y: 38, l: 'F', r: 'Fly', sn: true },
-          post: { x: 46, y: 42, l: 'B', r: 'Post' },
-          long1: { x: 22, y: 30, l: 'L', r: 'Long' },
-          long2: { x: 22, y: 54, l: 'L', r: 'Long' }
-        },
-        def: {
-          short: { x: 64, y: 40, l: 'S', r: 'Short' },
-          fly: { x: 56, y: 40, l: 'F', r: 'Fly' },
-          post: { x: 52, y: 40, l: 'B', r: 'Post' }
-        },
-        zones: [{ t: 'sneaking', x: 39, y: 0, w: 71, h: 75 }],
-        arrs: [{ from: { x: 32, y: 42 }, to: { x: 38, y: 42 }, c: '#3498db', anim: true }],
-        ann: [
-          { x: 48, y: 30, txt: "FLY IS SNEAKING!", t: 'warning' },
-          { x: 38, y: 50, txt: "Ball carrier advancing", t: 'info' }
-        ]
-      },
-      {
-        caption: "Penalty: FREE KICK to defending team.",
-        dur: 3000,
-        vb: { x: 25, y: 22, w: 50, h: 40 },
-        ball: { x: 38, y: 42 },
-        atk: {
-          short: { x: 38, y: 42, l: 'S', r: 'Short' },
-          fly: { x: 48, y: 38, l: 'F', r: 'Fly', sn: true },
-          post: { x: 46, y: 42, l: 'B', r: 'Post' },
-          long1: { x: 22, y: 30, l: 'L', r: 'Long' },
-          long2: { x: 22, y: 54, l: 'L', r: 'Long' }
-        },
-        def: {
-          short: { x: 64, y: 40, l: 'S', r: 'Short' },
-          fly: { x: 56, y: 40, l: 'F', r: 'Fly' },
-          post: { x: 52, y: 40, l: 'B', r: 'Post' }
-        },
-        zones: [{ t: 'sneaking', x: 39, y: 0, w: 71, h: 75 }],
-        ann: [
-          { x: 48, y: 30, txt: "PENALTY: Free Kick", t: 'warning' },
-          { x: 48, y: 48, txt: "Fly must retreat behind ball carrier", t: 'info' }
-        ]
-      }
-    ]
-  },
-  onTheLine: {
-    name: "On-the-Line",
-    desc: "Ball between goal-line and 3-yard line under attacker control.",
-    seq: [
-      {
-        caption: "Attacker controls ball within the 3-yard zone.",
-        dur: 2500,
-        vb: { x: -8, y: 20, w: 35, h: 40 }, // Zoomed to left goal area
-        ball: { x: 2, y: 40 },
-        atk: {
-          short: { x: 2, y: 40, l: 'S', r: 'Short', hl: true },
-          fly: { x: 8, y: 38, l: 'F', r: 'Fly' },
-          post: { x: 12, y: 42, l: 'B', r: 'Post' }
-        },
-        def: {
-          short: { x: 3, y: 43, l: 'S', r: 'Short' },
-          fly: { x: 5, y: 35, l: 'F', r: 'Fly' },
-          goals: { x: 0.5, y: 37.5, l: 'G', r: 'Goals' }
-        },
-        zones: [{ t: 'onTheLine', x: 0, y: 0, w: 3, h: 75 }],
-        ann: [{ x: 12, y: 52, txt: "Ball is ON-THE-LINE", t: 'info' }]
-      },
-      {
-        caption: "Attacker must keep ball moving. Defender must engage!",
-        dur: 3000,
-        vb: { x: -8, y: 20, w: 35, h: 40 },
-        ball: { x: 2, y: 42 },
-        atk: {
-          short: { x: 2, y: 42, l: 'S', r: 'Short', hl: true },
-          fly: { x: 8, y: 40, l: 'F', r: 'Fly' },
-          post: { x: 12, y: 44, l: 'B', r: 'Post' }
-        },
-        def: {
-          short: { x: 2.5, y: 44, l: 'S', r: 'Short', hl: true },
-          fly: { x: 5, y: 38, l: 'F', r: 'Fly' },
-          goals: { x: 0.5, y: 37.5, l: 'G', r: 'Goals' }
-        },
-        zones: [{ t: 'onTheLine', x: 0, y: 0, w: 3, h: 75 }],
-        arrs: [{ from: { x: 2, y: 40 }, to: { x: 2, y: 42 }, c: '#27ae60', anim: true }],
-        ann: [
-          { x: 12, y: 30, txt: "Attacker: keep ball moving!", t: 'info' },
-          { x: 12, y: 52, txt: "Defender: must engage constantly", t: 'warning' }
-        ]
-      },
-      {
-        caption: "Defender fails to engage = PENALTY POINT + Free Kick!",
-        dur: 3000,
-        vb: { x: -8, y: 20, w: 35, h: 40 },
-        ball: { x: 2, y: 44 },
-        atk: {
-          short: { x: 2, y: 44, l: 'S', r: 'Short', hl: true },
-          fly: { x: 8, y: 42, l: 'F', r: 'Fly' },
-          post: { x: 12, y: 46, l: 'B', r: 'Post' }
-        },
-        def: {
-          short: { x: 7, y: 44, l: 'S', r: 'Short', cn: true },
-          fly: { x: 10, y: 38, l: 'F', r: 'Fly' },
-          goals: { x: 0.5, y: 37.5, l: 'G', r: 'Goals' }
-        },
-        zones: [{ t: 'onTheLine', x: 0, y: 0, w: 3, h: 75 }],
-        ann: [{ x: 12, y: 52, txt: "NOT ENGAGING = 1 Point + Free Kick!", t: 'warning' }]
-      }
-    ]
-  },
-  rouge: {
-    name: "Rougeable Ball",
-    desc: "Ball crosses goal-line off defender.",
-    seq: [
-      {
-        caption: "Defender plays ball towards goal-line.",
-        dur: 2500,
-        vb: { x: -8, y: 22, w: 35, h: 35 },
-        ball: { x: 6, y: 42 },
-        atk: { short: { x: 4, y: 40, l: 'S', r: 'Short' }, fly: { x: 10, y: 38, l: 'F', r: 'Fly' } },
-        def: { short: { x: 6, y: 44, l: 'S', r: 'Short', hl: true }, goals: { x: 0.5, y: 37.5, l: 'G', r: 'Goals' } },
-        arrs: [{ from: { x: 6, y: 44 }, to: { x: 6, y: 42 }, c: '#e74c3c', anim: true }],
-        ann: [{ x: 12, y: 52, txt: "Defender touches ball", t: 'info' }]
-      },
-      {
-        caption: "Ball crosses goal-line - ROUGEABLE!",
-        dur: 3000,
-        vb: { x: -12, y: 22, w: 35, h: 35 },
-        ball: { x: -2, y: 42 },
-        atk: { short: { x: 1, y: 40, l: 'S', r: 'Short', hl: true }, fly: { x: 6, y: 38, l: 'F', r: 'Fly' } },
-        def: { short: { x: 1, y: 44, l: 'S', r: 'Short' }, goals: { x: 0.5, y: 37.5, l: 'G', r: 'Goals' } },
-        zones: [{ t: 'rougeable', x: -15, y: 0, w: 15, h: 75 }],
-        arrs: [{ from: { x: 6, y: 42 }, to: { x: -2, y: 42 }, c: '#e74c3c', anim: true, lbl: 'Ball path' }],
-        ann: [{ x: -2, y: 35, txt: "ROUGEABLE!", t: 'scoring' }]
-      },
-      {
-        caption: "Attacker touch = ROUGE (5pts). Defender = 3pts or Free Kick.",
-        dur: 3500,
-        vb: { x: -12, y: 22, w: 35, h: 35 },
-        ball: { x: -2, y: 42 },
-        atk: { short: { x: -1, y: 41, l: 'S', r: 'Short', hl: true } },
-        def: { short: { x: 0, y: 44, l: 'S', r: 'Short' }, goals: { x: 0.5, y: 37.5, l: 'G', r: 'Goals' } },
-        zones: [{ t: 'rougeable', x: -15, y: 0, w: 15, h: 75 }],
-        ann: [
-          { x: -2, y: 35, txt: "Attacker = ROUGE (5pts + Conversion)", t: 'scoring' },
-          { x: -2, y: 50, txt: "Defender = 3pts OR Free Kick", t: 'info' }
-        ]
-      }
-    ]
-  },
-  conversion: {
-    name: "Conversion",
-    desc: "After Rouge, attacker goes along 3-yard line.",
-    seq: [
-      {
-        caption: "Ball at tramline/3-yard intersection. Defenders 3 yards back.",
-        dur: 3000,
-        vb: { x: -8, y: 5, w: 35, h: 40 },
-        ball: { x: 3, y: 18.75 },
-        atk: { short: { x: 3, y: 18.75, l: 'S', r: 'Short', hl: true }, fly: { x: 10, y: 22, l: 'F', r: 'Fly' } },
-        def: { short: { x: 6, y: 20, l: 'S', r: 'Short' }, fly: { x: 8, y: 26, l: 'F', r: 'Fly' }, goals: { x: 0.5, y: 37.5, l: 'G', r: 'Goals' } },
-        zones: [{ t: 'onTheLine', x: 0, y: 0, w: 3, h: 75 }],
-        ann: [{ x: 12, y: 12, txt: "Start at tramline intersection", t: 'info' }, { x: 12, y: 28, txt: "Defenders 3 yards away", t: 'warning' }]
-      },
-      {
-        caption: "Attacker goes along line towards goal.",
-        dur: 3000,
-        vb: { x: -8, y: 15, w: 35, h: 40 },
-        ball: { x: 2.5, y: 32 },
-        atk: { short: { x: 2.5, y: 32, l: 'S', r: 'Short', hl: true }, fly: { x: 10, y: 30, l: 'F', r: 'Fly' } },
-        def: { short: { x: 4, y: 34, l: 'S', r: 'Short' }, fly: { x: 6, y: 28, l: 'F', r: 'Fly' }, goals: { x: 0.5, y: 37.5, l: 'G', r: 'Goals' } },
-        zones: [{ t: 'onTheLine', x: 0, y: 0, w: 3, h: 75 }],
-        arrs: [{ from: { x: 3, y: 18.75 }, to: { x: 2.5, y: 32 }, c: '#27ae60', anim: true, lbl: 'Going along line' }],
-        ann: [{ x: 12, y: 40, txt: "Keep the ball moving!", t: 'info' }]
-      },
-      {
-        caption: "Forces Rougeable - CONVERSION! (2 points)",
-        dur: 3000,
-        vb: { x: -12, y: 22, w: 35, h: 35 },
-        ball: { x: -1, y: 42 },
-        atk: { short: { x: 0.5, y: 42, l: 'S', r: 'Short', hl: true }, fly: { x: 8, y: 40, l: 'F', r: 'Fly' } },
-        def: { short: { x: 2, y: 44, l: 'S', r: 'Short' }, fly: { x: 5, y: 38, l: 'F', r: 'Fly' }, goals: { x: 0.5, y: 37.5, l: 'G', r: 'Goals' } },
-        zones: [{ t: 'rougeable', x: -15, y: 0, w: 15, h: 75 }],
-        ann: [{ x: 0, y: 35, txt: "CONVERSION! (2 points)", t: 'scoring' }]
-      }
-    ]
-  }
-};
-
-// Local explanations for offline mode
-const EXPLANATIONS = {
-  sneaking: `**Sneaking** is one of the most important infringements in Field Game.
-
-A player is **Sneaking** if they have both feet fully in front of the ball when:
-1. A **Behind on their side is "making ground running-with-the-ball"** - any teammate ahead of the ball carrier is Sneaking
-2. Any **Bully-player or Fly touches the ball** (unless in a Tightly-Formed Bully)
-3. After a **Behind kicks**, if they are in front of both the ball AND all opposition Bully-players
-
-**Penalty:** Free Kick to the non-offending team.
-
-Watch the diagram - it shows how a Fly becomes Sneaking when they move ahead of the Short Behind who is running with the ball.`,
-  onTheLine: `**On-the-Line** rules apply when the ball is between the goal-line and the 3-yard line, under an attacker's control.
-
-**Key Rules:**
-- The **attacker must keep the ball moving** - if stopped by a defender, they have moments to restart
-- **Defenders must constantly engage** - they must be in playing distance and genuinely attempt to play the ball
-- Special **Sneaking-on-the-Line** rules apply for positioning
-
-**Penalties:**
-- Defender infringement = **1 Point + Free Kick on 3-yard line**
-- Attacker infringement = Goal-kick for defenders`,
-  rouge: `A **Rouge** is Field Game's unique scoring mechanism worth **5 points** (plus a Conversion attempt).
-
-The ball becomes **Rougeable** if it crosses the goal-line (extended infinitely) off a defender.
-
-**Scoring:**
-- First **attacker hand touch** = ROUGE (5 pts + Conversion)
-- First **defender hand touch** = Attackers choose: 3 pts OR Free Kick on 3-yard line`,
-  conversion: `After scoring a **Rouge**, the attacking team attempts a **Conversion** (worth 2 points).
-
-**Setup:**
-- Ball placed at the **tramline/3-yard line intersection**
-- Defenders must start **at least 3 yards from the ball**
-
-**Rules:**
-- Attacker must keep ball moving along the 3-yard line
-- If attacker forces another Rougeable = **Conversion scored!**`,
-  kickoff: `The game starts with a **Set-Piece Bully** at the centre of the pitch.
-
-**Formation (11-a-side):**
-- **7 Bully players:** Post, 2 Side-Posts, 3 Corners, Bup
-- **1 Fly** (behind the Bully)
-- **3 Behinds:** Short + 2 Longs
-
-**Procedure:**
-1. Team that **lost the toss has "Heads"** (crouches)
-2. Ball inserted along the tunnel by a **Corner without Heads**`
-};
-
-// Initialize
-document.addEventListener('DOMContentLoaded', () => {
-  buildBar();
-  setupInput();
-  setupPanZoom();
-  applyViewBox(S.defaultVb, false);
-});
-
-function buildBar() {
-  document.getElementById('scenarioBar').innerHTML = Object.entries(SCENARIOS)
-    .map(([k, s]) => `<button class="scenario-tab" data-k="${k}" onclick="loadScenario('${k}')">${s.name}</button>`)
-    .join('');
-}
-
-function setupInput() {
-  const i = document.getElementById('chatInput');
-  i.addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMsg(); } });
-  i.addEventListener('input', () => { i.style.height = 'auto'; i.style.height = Math.min(i.scrollHeight, 120) + 'px'; });
-}
-
-// =============== CAMERA (ViewBox based) ===============
-function applyViewBox(vb, animate = true) {
-  const svg = document.getElementById('pitch');
-  S.vb = { ...vb };
-  if (animate) {
-    svg.style.transition = 'all 0.8s cubic-bezier(0.16, 1, 0.3, 1)';
-  } else {
-    svg.style.transition = 'none';
-  }
-  svg.setAttribute('viewBox', `${vb.x} ${vb.y} ${vb.w} ${vb.h}`);
-  updateZoomInfo();
-}
-
-function updateZoomInfo() {
-  const zoom = Math.round((S.defaultVb.w / S.vb.w) * 100);
-  document.getElementById('zoomInfo').textContent = zoom + '%';
-}
-
-function zoomIn() {
-  const cx = S.vb.x + S.vb.w / 2;
-  const cy = S.vb.y + S.vb.h / 2;
-  const nw = Math.max(S.vb.w * 0.7, 20);
-  const nh = Math.max(S.vb.h * 0.7, 15);
-  applyViewBox({ x: cx - nw / 2, y: cy - nh / 2, w: nw, h: nh });
-}
-
-function zoomOut() {
-  const cx = S.vb.x + S.vb.w / 2;
-  const cy = S.vb.y + S.vb.h / 2;
-  const nw = Math.min(S.vb.w * 1.4, 140);
-  const nh = Math.min(S.vb.h * 1.4, 100);
-  applyViewBox({ x: cx - nw / 2, y: cy - nh / 2, w: nw, h: nh });
-}
-
-function resetCamera() {
-  applyViewBox(S.defaultVb);
-  if (S.scenario && SCENARIOS[S.scenario]) {
-    loadScenario(S.scenario);
-  }
-}
-
-// =============== PAN & ZOOM GESTURES ===============
-function setupPanZoom() {
-  const vp = document.getElementById('viewport');
-  const svg = document.getElementById('pitch');
-
-  // Mouse pan
-  vp.addEventListener('mousedown', e => {
-    if (e.target.closest('.zoom-btn')) return;
-    S.isPanning = true;
-    S.panStart = { x: e.clientX, y: e.clientY };
-    S.vbStart = { x: S.vb.x, y: S.vb.y };
-    vp.classList.add('dragging');
-  });
-
-  window.addEventListener('mousemove', e => {
-    if (!S.isPanning) return;
-    const svg = document.getElementById('pitch');
-    const rect = svg.getBoundingClientRect();
-    const scale = S.vb.w / rect.width;
-    const dx = (e.clientX - S.panStart.x) * scale;
-    const dy = (e.clientY - S.panStart.y) * scale;
-    S.vb.x = S.vbStart.x - dx;
-    S.vb.y = S.vbStart.y - dy;
-    svg.style.transition = 'none';
-    svg.setAttribute('viewBox', `${S.vb.x} ${S.vb.y} ${S.vb.w} ${S.vb.h}`);
-  });
-
-  window.addEventListener('mouseup', () => {
-    S.isPanning = false;
-    vp.classList.remove('dragging');
-  });
-
-  // Mouse wheel zoom
-  vp.addEventListener('wheel', e => {
-    e.preventDefault();
-    const svg = document.getElementById('pitch');
-    const rect = svg.getBoundingClientRect();
-    
-    // Get mouse position in SVG coordinates
-    const mx = ((e.clientX - rect.left) / rect.width) * S.vb.w + S.vb.x;
-    const my = ((e.clientY - rect.top) / rect.height) * S.vb.h + S.vb.y;
-    
-    const factor = e.deltaY > 0 ? 1.15 : 0.85;
-    const nw = Math.max(20, Math.min(140, S.vb.w * factor));
-    const nh = Math.max(15, Math.min(100, S.vb.h * factor));
-    
-    // Zoom towards mouse position
-    const nx = mx - (mx - S.vb.x) * (nw / S.vb.w);
-    const ny = my - (my - S.vb.y) * (nh / S.vb.h);
-    
-    S.vb = { x: nx, y: ny, w: nw, h: nh };
-    svg.style.transition = 'none';
-    svg.setAttribute('viewBox', `${S.vb.x} ${S.vb.y} ${S.vb.w} ${S.vb.h}`);
-    updateZoomInfo();
-  }, { passive: false });
-}
-
-// =============== VIEW MANAGEMENT ===============
-function setView(v) {
-  const c = document.getElementById('chatPanel'), d = document.getElementById('diagramPanel');
-  document.querySelectorAll('.view-toggle button').forEach(b => b.classList.remove('active'));
-  c.classList.remove('collapsed', 'expanded'); d.classList.remove('collapsed');
-  if (v === 'chat') { document.getElementById('vChat').classList.add('active'); c.classList.add('expanded'); d.classList.add('collapsed'); }
-  else if (v === 'diagram') { document.getElementById('vDiagram').classList.add('active'); c.classList.add('collapsed'); }
-  else { document.getElementById('vSplit').classList.add('active'); }
-}
-
-// =============== CHAT ===============
-function askQ(q) { document.getElementById('chatInput').value = q; sendMsg(); }
-function toggleDiag() { S.diag = !S.diag; document.getElementById('diagramBtn').classList.toggle('active', S.diag); }
-
-async function sendMsg() {
-  const i = document.getElementById('chatInput'), txt = i.value.trim(); if (!txt) return;
-  const w = document.getElementById('welcome'); if (w) w.style.display = 'none';
-  addMsg(txt, 'user'); i.value = ''; i.style.height = 'auto';
-  const lid = addLoading();
-
-  // Check for local scenario match
-  const lower = txt.toLowerCase();
-  let match = null;
-  if (lower.includes('sneak')) match = 'sneaking';
-  else if (lower.includes('on-the-line') || lower.includes('on the line')) match = 'onTheLine';
-  else if (lower.includes('rouge') || lower.includes('rougeable')) match = 'rouge';
-  else if (lower.includes('conversion')) match = 'conversion';
-  else if (lower.includes('kick-off') || lower.includes('kickoff') || lower.includes('formation')) match = 'kickoff';
-
-  try {
-    const res = await fetch('/api/chat', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ message: txt, threadId: S.threadId, requestDiagram: S.diag })
-    });
-    const d = await res.json();
-    rmMsg(lid);
-    if (d.error) {
-      if (match) { addMsg(EXPLANATIONS[match] || 'Here is a visual explanation:', 'assistant', true); loadScenario(match); setView('split'); }
-      else { addMsg('Sorry, something went wrong. Try asking about Sneaking, On-the-Line, Rouge, Conversion, or Kick-off.', 'assistant'); }
-      return;
-    }
-    S.threadId = d.threadId;
-    addMsg(d.response, 'assistant', !!d.diagram);
-    if (d.diagram) { loadAI(d.diagram); setView('split'); }
-  } catch (e) {
-    rmMsg(lid);
-    if (match) { addMsg(EXPLANATIONS[match] || 'Here is a visual explanation:', 'assistant', true); loadScenario(match); setView('split'); }
-    else { addMsg('I am currently offline, but I can show you visual scenarios! Try asking about Sneaking, On-the-Line, Rouge, Conversion, or Kick-off.', 'assistant'); }
-  }
-  S.diag = false; document.getElementById('diagramBtn').classList.remove('active');
-}
-
-function addMsg(txt, role, hasDiag = false) {
-  const c = document.getElementById('chatMessages'), id = 'm' + Date.now();
-  const av = role === 'user' ? 'U' : `<img src="ralph.png" alt="R" onerror="this.style.display='none';this.parentElement.textContent='R';">`;
-  const badge = hasDiag ? `<div class="diagram-badge" onclick="setView('split')">View Diagram</div>` : '';
-  c.insertAdjacentHTML('beforeend', `<div class="message ${role}" id="${id}"><div class="message-avatar">${av}</div><div class="message-content">${fmt(txt)}${badge}</div></div>`);
-  c.scrollTop = c.scrollHeight; return id;
-}
-function addLoading() {
-  const c = document.getElementById('chatMessages'), id = 'l' + Date.now();
-  c.insertAdjacentHTML('beforeend', `<div class="message assistant" id="${id}"><div class="message-avatar"><img src="ralph.png" alt="R" onerror="this.style.display='none';this.parentElement.textContent='R';"></div><div class="message-content"><div class="typing"><span></span><span></span><span></span></div></div></div>`);
-  c.scrollTop = c.scrollHeight; return id;
-}
-function rmMsg(id) { document.getElementById(id)?.remove(); }
-function fmt(t) { return t.split('\n\n').map(p => `<p>${p.replace(/\n/g, '<br>').replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')}</p>`).join(''); }
-
-// =============== SCENARIOS ===============
-function loadScenario(k) {
-  const sc = SCENARIOS[k]; if (!sc) return; stop();
-  S.scenario = k; S.seq = sc.seq; S.step = 0;
-  document.querySelectorAll('.scenario-tab').forEach(t => t.classList.toggle('active', t.dataset.k === k));
-  document.getElementById('diagTitle').textContent = sc.name;
-  document.getElementById('diagDesc').textContent = sc.desc;
-  render(0, true); updateCtrl(); setView('split');
-}
-
-function loadAI(diag) {
-  stop(); S.scenario = 'ai'; S.seq = diag.sequence || [diag]; S.step = 0;
-  document.querySelectorAll('.scenario-tab').forEach(t => t.classList.remove('active'));
-  document.getElementById('diagTitle').textContent = diag.title || 'Visual Explanation';
-  document.getElementById('diagDesc').textContent = diag.description || '';
-  render(0, true); updateCtrl();
-}
-
-function render(idx, anim = true) {
-  if (!S.seq[idx]) return;
-  const st = S.seq[idx]; S.step = idx;
-  
-  // Apply camera (viewBox)
-  if (st.vb) applyViewBox(st.vb, anim);
-  
-  // Render layers
-  rZones(st.zones || []);
-  rArrows(st.arrs || [], anim);
-  rPlayers(st.atk || {}, 'attacking');
-  rPlayers(st.def || {}, 'defending');
-  rBall(st.ball);
-  rAnn(st.ann || []);
-  
-  document.getElementById('caption').textContent = st.caption || '';
-  updateCtrl();
-}
-
-function rZones(zones) {
-  document.getElementById('zones').innerHTML = zones.map(z =>
-    `<g class="zone ${z.t}"><rect class="zone-fill" x="${z.x}" y="${z.y}" width="${z.w}" height="${z.h}"/><rect class="zone-border" x="${z.x}" y="${z.y}" width="${z.w}" height="${z.h}"/></g>`
-  ).join('');
-}
-
-function rArrows(arrs, anim) {
-  document.getElementById('arrows').innerHTML = arrs.map(a => {
-    const ac = anim && a.anim ? 'animated' : '';
-    const mid = { x: (a.from.x + a.to.x) / 2, y: (a.from.y + a.to.y) / 2 - 2 };
-    return `<g><line class="arrow-path ${ac}" x1="${a.from.x}" y1="${a.from.y}" x2="${a.to.x}" y2="${a.to.y}" stroke="${a.c || '#3498db'}" marker-end="url(#arrow)" style="color:${a.c || '#3498db'}"/>${a.lbl ? `<text class="arrow-label" x="${mid.x}" y="${mid.y}">${a.lbl}</text>` : ''}</g>`;
-  }).join('');
-}
-
-function rPlayers(players, team) {
-  const layer = document.getElementById('players');
-  layer.querySelectorAll(`.player.${team}`).forEach(el => el.remove());
-  Object.entries(players).forEach(([k, p]) => {
-    const cls = ['player', team, p.hl ? 'highlight' : '', p.sn ? 'sneaking' : '', p.cn ? 'cornering' : ''].filter(Boolean).join(' ');
-    layer.insertAdjacentHTML('beforeend',
-      `<g class="${cls}" data-k="${k}" transform="translate(${p.x},${p.y})">
-        <ellipse class="player-shadow" cx="0" cy="1.5" rx="2.8" ry="1"/>
-        <circle class="player-ring" r="4.5"/>
-        <circle class="player-body" r="3"/>
-        <text class="player-label">${p.l || ''}</text>
-        <text class="player-role" y="6">${p.r || ''}</text>
-      </g>`
-    );
-  });
-}
-
-function rBall(ball) {
-  const layer = document.getElementById('ball');
-  if (!ball) { layer.innerHTML = ''; return; }
-  layer.innerHTML = `<g class="ball" transform="translate(${ball.x},${ball.y})">
-    <ellipse class="ball-shadow" cx="0" cy="1.2" rx="2" ry=".8"/>
-    <circle class="ball-glow" r="3"/>
-    <circle class="ball-body" r="2"/>
-    <circle class="ball-highlight" cx="-.5" cy="-.5" r=".6"/>
-  </g>`;
-}
-
-function rAnn(anns) {
-  document.getElementById('annotations').innerHTML = anns.map(a => {
-    const w = Math.max(a.txt.length * 1.2, 20);
-    return `<g class="annotation ${a.t || ''}" transform="translate(${a.x},${a.y})">
-      <rect class="annotation-bg" x="${-w / 2}" y="-3.5" width="${w}" height="7"/>
-      <text class="annotation-text">${a.txt}</text>
-    </g>`;
-  }).join('');
-}
-
-// =============== PLAYBACK ===============
-function updateCtrl() {
-  const tot = S.seq.length, cur = S.step + 1;
-  document.getElementById('stepInd').textContent = tot > 0 ? `${cur}/${tot}` : '-';
-  document.getElementById('progress').style.width = tot > 0 ? `${(cur / tot) * 100}%` : '0%';
-  document.getElementById('prevBtn').disabled = S.step <= 0;
-  document.getElementById('nextBtn').disabled = S.step >= tot - 1;
-  document.getElementById('playBtn').disabled = tot <= 1;
-}
-function prevStep() { if (S.step > 0) render(S.step - 1); }
-function nextStep() { if (S.step < S.seq.length - 1) render(S.step + 1); }
-function togglePlay() { S.playing ? stop() : start(); }
-function start() {
-  S.playing = true;
-  document.getElementById('playIco').style.display = 'none';
-  document.getElementById('pauseIco').style.display = 'block';
-  const adv = () => {
-    if (S.step < S.seq.length - 1) { render(S.step + 1); S.interval = setTimeout(adv, S.seq[S.step]?.dur || 2500); }
-    else stop();
-  };
-  S.interval = setTimeout(adv, S.seq[S.step]?.dur || 2500);
-}
-function stop() {
-  S.playing = false;
-  document.getElementById('playIco').style.display = 'block';
-  document.getElementById('pauseIco').style.display = 'none';
-  clearTimeout(S.interval);
-}
-function seek(e) {
-  const r = e.currentTarget.getBoundingClientRect();
-  const p = (e.clientX - r.left) / r.width;
-  const st = Math.floor(p * S.seq.length);
-  render(Math.max(0, Math.min(st, S.seq.length - 1)));
-}
-
-function toggleLabels() {
-  S.labels = !S.labels;
-  document.getElementById('pitch').classList.toggle('show-labels', S.labels);
-  document.getElementById('labelsBtn').classList.toggle('active', S.labels);
-}
-</script>
+  <script src="app.js"></script>
 </body>
 </html>

@@ -152,9 +152,9 @@
       <div class="header-title"><h1>Field Game Assistant</h1><p>Interactive Laws Visualiser</p></div>
     </div>
     <div class="view-toggle">
-      <button id="vChat" onclick="App.setView('chat')">Chat</button>
-      <button id="vSplit" class="active" onclick="App.setView('split')">Split</button>
-      <button id="vDiagram" onclick="App.setView('diagram')">Pitch</button>
+      <button id="vChat" onclick="setView('chat')">Chat</button>
+      <button id="vSplit" class="active" onclick="setView('split')">Split</button>
+      <button id="vDiagram" onclick="setView('diagram')">Pitch</button>
     </div>
   </header>
   <main class="main">
@@ -165,19 +165,27 @@
           <h2>Welcome to the Field Game</h2>
           <p>I am Ralph, your guide to the Laws of the Field Game as played at Eton College.</p>
           <div class="welcome-btns">
-            <button class="suggestion-btn" onclick="App.askQ('Explain Sneaking with a diagram')"><span>👁</span>Explain Sneaking</button>
-            <button class="suggestion-btn" onclick="App.askQ('What is a Rouge?')"><span>🎯</span>What is a Rouge?</button>
-            <button class="suggestion-btn" onclick="App.askQ('Show me on-the-line play')"><span>📏</span>On-the-line rules</button>
+            <button class="suggestion-btn" onclick="askQ('Explain Sneaking with a diagram')"><span>👁</span>Explain Sneaking</button>
+            <button class="suggestion-btn" onclick="askQ('What is a Rouge?')"><span>🎯</span>What is a Rouge?</button>
+            <button class="suggestion-btn" onclick="askQ('Show me on-the-line play')"><span>📏</span>On-the-line rules</button>
           </div>
         </div>
       </div>
       <div class="chat-input-area">
-        <div class="quick-chips" id="quickChips"></div>
+        <div class="quick-chips">
+          <button class="quick-chip" onclick="loadScenario('kickoff')">Kick-off</button>
+          <button class="quick-chip" onclick="loadScenario('sneaking')">Sneaking</button>
+          <button class="quick-chip" onclick="loadScenario('onTheLine')">On-the-Line</button>
+          <button class="quick-chip" onclick="loadScenario('rouge')">Rouge</button>
+          <button class="quick-chip" onclick="loadScenario('furking')">Furking</button>
+          <button class="quick-chip" onclick="loadScenario('cornering')">Cornering</button>
+          <button class="quick-chip" onclick="loadScenario('conversion')">Conversion</button>
+        </div>
         <div class="input-row">
           <div class="input-wrap"><textarea class="chat-input" id="chatInput" placeholder="Ask about Field Game rules..." rows="1"></textarea></div>
           <div class="input-actions">
-            <button class="btn btn-secondary" id="diagramBtn" onclick="App.toggleDiag()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8" cy="8" r="2"/><circle cx="16" cy="16" r="2"/><path d="M8 8l8 8"/></svg></button>
-            <button class="btn btn-primary" onclick="App.sendMsg()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg></button>
+            <button class="btn btn-secondary" id="diagramBtn" onclick="toggleDiag()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8" cy="8" r="2"/><circle cx="16" cy="16" r="2"/><path d="M8 8l8 8"/></svg></button>
+            <button class="btn btn-primary" onclick="sendMsg()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg></button>
           </div>
         </div>
       </div>
@@ -185,10 +193,10 @@
     <section class="diagram-panel" id="diagramPanel">
       <div class="scenario-bar" id="scenarioBar"></div>
       <div class="diagram-header">
-        <div class="diagram-info"><div class="diagram-title" id="diagTitle">Select a Scenario</div><div class="diagram-desc" id="diagDesc">Choose from the tabs above</div></div>
+        <div class="diagram-info"><div class="diagram-title" id="diagTitle">Select a Scenario</div><div class="diagram-desc" id="diagDesc">Choose from the tabs above or ask a question</div></div>
         <div class="diagram-toolbar">
-          <button class="tool-btn" id="labelsBtn" onclick="App.toggleLabels()" title="Labels"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7V4h16v3M9 20h6M12 4v16"/></svg></button>
-          <button class="tool-btn" onclick="App.resetCamera()" title="Reset"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 109-9 9.75 9.75 0 00-6.74 2.74L3 8M3 3v5h5"/></svg></button>
+          <button class="tool-btn" id="labelsBtn" onclick="toggleLabels()" title="Toggle Labels"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7V4h16v3M9 20h6M12 4v16"/></svg></button>
+          <button class="tool-btn" onclick="resetCamera()" title="Reset View"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 109-9 9.75 9.75 0 00-6.74 2.74L3 8M3 3v5h5"/></svg></button>
         </div>
       </div>
       <div class="pitch-viewport" id="viewport">
@@ -200,15 +208,15 @@
           <g class="goals"><rect class="goal-net" x="-3" y="30" width="3" height="15"/><path class="goal-frame" d="M0 30L-3 30L-3 45L0 45"/><rect class="goal-net" x="110" y="30" width="3" height="15"/><path class="goal-frame" d="M110 30L113 30L113 45L110 45"/></g>
           <g id="zones"></g><g id="arrows"></g><g id="players"></g><g id="ball"></g><g id="annotations"></g>
         </svg>
-        <div class="zoom-controls"><button class="zoom-btn" onclick="App.zoomIn()">+</button><div class="zoom-info" id="zoomInfo">100%</div><button class="zoom-btn" onclick="App.zoomOut()">−</button></div>
+        <div class="zoom-controls"><button class="zoom-btn" onclick="zoomIn()">+</button><div class="zoom-info" id="zoomInfo">100%</div><button class="zoom-btn" onclick="zoomOut()">−</button></div>
       </div>
       <div class="playback-bar">
         <div class="playback-controls">
-          <button class="playback-btn" id="prevBtn" onclick="App.prevStep()" disabled><svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 5v14l-10-7zM5 5h3v14H5z"/></svg></button>
-          <button class="playback-btn play-pause" id="playBtn" onclick="App.togglePlay()"><svg viewBox="0 0 24 24" fill="currentColor" id="playIco"><path d="M8 5v14l11-7z"/></svg><svg viewBox="0 0 24 24" fill="currentColor" id="pauseIco" style="display:none"><path d="M6 4h4v16H6zM14 4h4v16h-4z"/></svg></button>
-          <button class="playback-btn" id="nextBtn" onclick="App.nextStep()" disabled><svg viewBox="0 0 24 24" fill="currentColor"><path d="M5 5v14l10-7zM16 5h3v14h-3z"/></svg></button>
+          <button class="playback-btn" id="prevBtn" onclick="prevStep()" disabled><svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 5v14l-10-7zM5 5h3v14H5z"/></svg></button>
+          <button class="playback-btn play-pause" id="playBtn" onclick="togglePlay()"><svg viewBox="0 0 24 24" fill="currentColor" id="playIco"><path d="M8 5v14l11-7z"/></svg><svg viewBox="0 0 24 24" fill="currentColor" id="pauseIco" style="display:none"><path d="M6 4h4v16H6zM14 4h4v16h-4z"/></svg></button>
+          <button class="playback-btn" id="nextBtn" onclick="nextStep()" disabled><svg viewBox="0 0 24 24" fill="currentColor"><path d="M5 5v14l10-7zM16 5h3v14h-3z"/></svg></button>
         </div>
-        <div class="timeline"><div class="timeline-track" onclick="App.seek(event)"><div class="timeline-progress" id="progress" style="width:0%"></div></div><div class="timeline-caption" id="caption">Select a scenario</div></div>
+        <div class="timeline"><div class="timeline-track" onclick="seek(event)"><div class="timeline-progress" id="progress" style="width:0%"></div></div><div class="timeline-caption" id="caption">Select a scenario to begin</div></div>
         <div class="step-indicator" id="stepInd">-</div>
       </div>
       <div class="legend-bar">

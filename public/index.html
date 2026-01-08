@@ -414,14 +414,113 @@ async function sendMsg(){
   const w=document.getElementById('welcome');if(w)w.style.display='none';
   addMsg(txt,'user');i.value='';i.style.height='auto';
   const lid=addLoading();
+  
+  // Check for local scenario matches first (works offline)
+  const lower=txt.toLowerCase();
+  let localMatch=null;
+  if(lower.includes('sneak'))localMatch='sneaking';
+  else if(lower.includes('on-the-line')||lower.includes('on the line'))localMatch='onTheLine';
+  else if(lower.includes('rouge')||lower.includes('rougeable'))localMatch='rouge';
+  else if(lower.includes('conversion'))localMatch='conversion';
+  else if(lower.includes('kick-off')||lower.includes('kickoff')||lower.includes('formation'))localMatch='kickoff';
+  
   try{
     const res=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:txt,threadId:S.threadId,requestDiagram:S.diag})});
     const d=await res.json();rmMsg(lid);
-    if(d.error){addMsg('Sorry, something went wrong.','assistant');return;}
+    if(d.error){
+      // API error - use local fallback if available
+      if(localMatch){
+        const sc=SCENARIOS[localMatch];
+        addMsg(getLocalExplanation(localMatch),'assistant',true);
+        loadScenario(localMatch);setView('split');
+      }else{
+        addMsg('Sorry, something went wrong. Try asking about Sneaking, On-the-Line, Rouge, Conversion, or Kick-off for visual explanations.','assistant');
+      }
+      return;
+    }
     S.threadId=d.threadId;addMsg(d.response,'assistant',!!d.diagram);
     if(d.diagram){loadAI(d.diagram);setView('split');}
-  }catch(e){rmMsg(lid);addMsg('Could not connect to server.','assistant');}
+  }catch(e){
+    rmMsg(lid);
+    // Network error - use local fallback
+    if(localMatch){
+      const sc=SCENARIOS[localMatch];
+      addMsg(getLocalExplanation(localMatch),'assistant',true);
+      loadScenario(localMatch);setView('split');
+    }else{
+      addMsg('I\\'m currently offline, but I can still show you visual scenarios! Try asking about **Sneaking**, **On-the-Line**, **Rouge**, **Conversion**, or **Kick-off**.','assistant');
+    }
+  }
   S.diag=false;document.getElementById('diagramBtn').classList.remove('active');
+}
+
+function getLocalExplanation(key){
+  const explanations={
+    sneaking:`**Sneaking** is one of the most important infringements in Field Game.
+
+A player is **Sneaking** if they have both feet fully in front of the ball when:
+1. A **Behind on their side is "making ground running-with-the-ball"** — any teammate ahead of the ball carrier is Sneaking
+2. Any **Bully-player or Fly touches the ball** (unless in a Tightly-Formed Bully)
+3. After a **Behind kicks**, if they're in front of both the ball AND all opposition Bully-players
+
+**Penalty:** Free Kick to the non-offending team (or Set-Piece Bully if unavoidable).
+
+Watch the diagram — it shows how a Fly becomes Sneaking when they move ahead of the Short Behind who is running with the ball.`,
+    onTheLine:`**On-the-Line** rules apply when the ball is between the goal-line and the 3-yard line, under an attacker's control.
+
+**Key Rules:**
+• The **attacker must keep the ball moving** — if stopped by a defender, they have moments to restart
+• **Defenders must constantly engage** — they must be in playing distance and genuinely attempt to play the ball (contact every ~3 seconds)
+• Special **Sneaking-on-the-Line** rules apply for positioning
+
+**Penalties:**
+• Defender infringement = **1 Point + Free Kick on 3-yard line**
+• Attacker infringement = Goal-kick for defenders
+
+The diagram shows close-up on-the-line action with proper engagement.`,
+    rouge:`A **Rouge** is Field Game's unique scoring mechanism worth **5 points** (plus a Conversion attempt).
+
+The ball becomes **Rougeable** if it crosses the goal-line (extended infinitely) in these ways:
+1. **Directly off a defender**
+2. **Rebounding off an attacker** after being played by a defender
+3. While in a **Tightly-Formed Bully** (Bully-Rouge)
+4. **Kicked directly from a Tightly-Formed Bully** (Contact-Rouge)
+
+**Scoring:**
+• First **attacker hand touch** = ROUGE (5 pts + Conversion)
+• First **defender hand touch** = Attackers choose: 3 pts OR Free Kick on 3-yard line
+
+The diagram shows a ball becoming Rougeable after crossing behind the goal-line.`,
+    conversion:`After scoring a **Rouge**, the attacking team attempts a **Conversion** (worth 2 points, or 3 if they score a Goal).
+
+**Setup:**
+• Ball placed at the **tramline/3-yard line intersection**
+• Attacking team chooses which side of the goal
+• Defenders must start **at least 3 yards from the ball**
+
+**Rules:**
+• On-the-Line and Sneaking-on-the-Line rules apply strictly
+• Attacker must keep ball moving along the 3-yard line
+• If attacker forces another Rougeable = **Conversion scored!**
+• Defender infringement = **Penalty-Conversion** (2 pts)
+
+The diagram shows the Conversion path from tramline to goal.`,
+    kickoff:`The game starts with a **Set-Piece Bully** at the centre of the pitch.
+
+**Formation (11-a-side):**
+• **7 Bully players:** Post, 2 Side-Posts, 3 Corners, Bup
+• **1 Fly** (behind the Bully)
+• **3 Behinds:** Short + 2 Longs
+
+**Procedure:**
+1. Team that **lost the toss has "Heads"** (crouches)
+2. Umpire calls: **"CROUCH; BIND; SET"**
+3. Ball inserted along the tunnel by a **Corner without Heads**
+4. Ball must reach either Post's feet
+
+The diagram shows the full 11-a-side kick-off formation with all positions marked.`
+  };
+  return explanations[key]||'Here\\'s a visual explanation:';
 }
 function addMsg(txt,role,hasDiag=false){
   const c=document.getElementById('chatMessages'),id='m'+Date.now();

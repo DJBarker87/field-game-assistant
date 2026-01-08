@@ -1,999 +1,1279 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Field Game Assistant</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --eton: #96c8a2;
-            --eton-dark: #7eb88c;
-            --eton-deep: #5a9a6d;
-            --eton-pale: #e8f5ec;
-            --eton-glow: rgba(150, 200, 162, 0.4);
-            --pitch: #4a7c59;
-            --pitch-light: #5a8c69;
-            --pitch-line: rgba(255,255,255,0.9);
-            --white: #fff;
-            --gray-50: #fafafa;
-            --gray-100: #f5f5f7;
-            --gray-200: #e8e8ed;
-            --gray-400: #86868b;
-            --gray-500: #6e6e73;
-            --gray-600: #1d1d1f;
-            --black: #000;
-            --attack: #3b82f6;
-            --defence: #ef4444;
-            --ball: #fbbf24;
-            --shadow-soft: 0 2px 40px rgba(0,0,0,0.04);
-            --shadow-medium: 0 8px 60px rgba(0,0,0,0.08);
-            --shadow-strong: 0 20px 80px rgba(0,0,0,0.12);
-            --shadow-eton: 0 8px 40px rgba(150,200,162,0.35);
-        }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: 'Inter', -apple-system, sans-serif;
-            background: linear-gradient(180deg, var(--eton-pale) 0%, var(--white) 50%, var(--gray-50) 100%);
-            color: var(--gray-600);
-            min-height: 100vh;
-            line-height: 1.5;
-            -webkit-font-smoothing: antialiased;
-        }
-        .ambient {
-            position: fixed;
-            top: -50%; left: -50%;
-            width: 200%; height: 200%;
-            pointer-events: none;
-            z-index: 0;
-            background: radial-gradient(ellipse at 25% 15%, rgba(150,200,162,0.3) 0%, transparent 50%),
-                        radial-gradient(ellipse at 75% 70%, rgba(150,200,162,0.2) 0%, transparent 50%);
-            animation: drift 25s ease-in-out infinite;
-        }
-        @keyframes drift { 0%,100%{transform:translate(0,0)} 50%{transform:translate(2%,1%)} }
-        
-        .app {
-            position: relative;
-            z-index: 1;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 32px 24px;
-        }
-        header {
-            text-align: center;
-            margin-bottom: 32px;
-            animation: fadeUp 1s cubic-bezier(0.16,1,0.3,1) 0.2s both;
-        }
-        @keyframes fadeUp { from{opacity:0;transform:translateY(30px)} to{opacity:1;transform:translateY(0)} }
-        
-        .logomark {
-            width: 64px; height: 64px;
-            margin: 0 auto 20px;
-            background: linear-gradient(145deg, var(--eton) 0%, var(--eton-deep) 100%);
-            border-radius: 18px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: var(--shadow-eton);
-            position: relative;
-        }
-        .logomark::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0;
-            height: 50%;
-            background: linear-gradient(180deg, rgba(255,255,255,0.35) 0%, transparent 100%);
-            border-radius: 18px 18px 0 0;
-        }
-        .logomark span {
-            font-family: Georgia, serif;
-            font-size: 28px;
-            font-weight: 600;
-            color: var(--white);
-            position: relative;
-            z-index: 1;
-        }
-        header h1 { font-size: 2.25rem; font-weight: 600; color: var(--black); letter-spacing: -0.035em; margin-bottom: 8px; }
-        header p { font-size: 1.0625rem; color: var(--gray-500); }
-
-        .main-container {
-            width: 100%;
-            max-width: 1200px;
-            display: grid;
-            grid-template-columns: 1fr 400px;
-            gap: 24px;
-            animation: scaleUp 0.8s cubic-bezier(0.16,1,0.3,1) 0.4s both;
-        }
-        @keyframes scaleUp { from{opacity:0;transform:scale(0.96) translateY(20px)} to{opacity:1;transform:scale(1) translateY(0)} }
-
-        @media (max-width: 1000px) {
-            .main-container { grid-template-columns: 1fr; }
-            .pitch-panel { order: -1; }
-        }
-
-        /* Chat Panel */
-        .chat-panel {
-            background: rgba(255,255,255,0.85);
-            backdrop-filter: blur(40px);
-            border-radius: 28px;
-            border: 1px solid rgba(255,255,255,0.9);
-            box-shadow: var(--shadow-strong);
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-            min-height: 600px;
-        }
-        .status-bar {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            padding: 14px;
-            font-size: 0.8125rem;
-            font-weight: 500;
-            color: var(--gray-500);
-            background: linear-gradient(180deg, rgba(150,200,162,0.12) 0%, rgba(150,200,162,0.06) 100%);
-            border-bottom: 1px solid rgba(150,200,162,0.2);
-        }
-        .status-dot {
-            width: 8px; height: 8px;
-            border-radius: 50%;
-            background: var(--eton);
-            box-shadow: 0 0 12px var(--eton-glow);
-        }
-        .status-bar.connecting .status-dot { background: #f59e0b; animation: pulse 1.5s ease-in-out infinite; }
-        .status-bar.error .status-dot { background: #ef4444; }
-        @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
-
-        .messages {
-            flex: 1;
-            overflow-y: auto;
-            padding: 28px;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-        .welcome {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-            text-align: center;
-        }
-        .welcome-avatar {
-            width: 80px; height: 80px;
-            border-radius: 50%;
-            object-fit: cover;
-            margin-bottom: 24px;
-            box-shadow: var(--shadow-medium);
-            border: 3px solid var(--white);
-            outline: 2px solid var(--eton);
-            outline-offset: 2px;
-        }
-        .welcome h2 { font-size: 1.5rem; font-weight: 600; color: var(--black); margin-bottom: 10px; }
-        .welcome p { font-size: 0.9375rem; color: var(--gray-500); max-width: 320px; margin-bottom: 28px; }
-        
-        .suggestions { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
-        .suggestion-btn {
-            padding: 10px 18px;
-            background: var(--white);
-            border: 2px solid var(--gray-200);
-            border-radius: 100px;
-            font-family: inherit;
-            font-size: 0.875rem;
-            font-weight: 500;
-            color: var(--gray-600);
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.16,1,0.3,1);
-        }
-        .suggestion-btn:hover {
-            border-color: var(--eton);
-            background: var(--eton);
-            color: var(--white);
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-eton);
-        }
-
-        .message { display: flex; gap: 14px; max-width: 90%; animation: messageIn 0.4s ease forwards; }
-        @keyframes messageIn { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
-        .message.user { align-self: flex-end; flex-direction: row-reverse; }
-        .message.assistant { align-self: flex-start; }
-        
-        .avatar {
-            width: 40px; height: 40px;
-            border-radius: 50%;
-            flex-shrink: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 600;
-            font-size: 0.75rem;
-            overflow: hidden;
-        }
-        .message.user .avatar {
-            background: linear-gradient(145deg, var(--eton) 0%, var(--eton-deep) 100%);
-            color: var(--white);
-            box-shadow: var(--shadow-eton);
-        }
-        .message.assistant .avatar { border: 2px solid var(--eton); background: var(--white); }
-        .message.assistant .avatar img { width: 100%; height: 100%; object-fit: cover; }
-        
-        .bubble { padding: 14px 18px; border-radius: 20px; line-height: 1.6; font-size: 0.9rem; }
-        .message.user .bubble {
-            background: linear-gradient(145deg, var(--eton) 0%, var(--eton-deep) 100%);
-            color: var(--white);
-            border-bottom-right-radius: 4px;
-            box-shadow: var(--shadow-eton);
-        }
-        .message.assistant .bubble {
-            background: var(--white);
-            color: var(--gray-600);
-            border-bottom-left-radius: 4px;
-            border: 1px solid var(--gray-200);
-            box-shadow: var(--shadow-soft);
-        }
-        .bubble p { margin-bottom: 0.7em; }
-        .bubble p:last-of-type { margin-bottom: 0; }
-        
-        .signature {
-            display: block;
-            margin-top: 14px;
-            padding-top: 12px;
-            border-top: 1px solid var(--gray-200);
-            font-family: Georgia, serif;
-            font-style: italic;
-            color: var(--eton-deep);
-            font-size: 0.875rem;
-        }
-        
-        .typing-dots { display: flex; gap: 6px; padding: 8px 0; }
-        .typing-dots span {
-            width: 10px; height: 10px;
-            background: linear-gradient(145deg, var(--eton) 0%, var(--eton-deep) 100%);
-            border-radius: 50%;
-            animation: bounce 1.4s ease-in-out infinite;
-        }
-        .typing-dots span:nth-child(2) { animation-delay: 0.16s; }
-        .typing-dots span:nth-child(3) { animation-delay: 0.32s; }
-        @keyframes bounce { 0%,60%,100%{transform:translateY(0);opacity:0.35} 30%{transform:translateY(-10px);opacity:1} }
-        
-        .cursor { display: inline; animation: blink 0.75s ease-in-out infinite; color: var(--eton); }
-        @keyframes blink { 0%,45%{opacity:1} 50%,100%{opacity:0} }
-
-        .input-area {
-            padding: 20px 24px 24px;
-            background: linear-gradient(180deg, transparent 0%, rgba(150,200,162,0.06) 100%);
-            border-top: 1px solid var(--gray-200);
-        }
-        .input-row { display: flex; gap: 12px; align-items: flex-end; }
-        .input-field { flex: 1; }
-        .input-field textarea {
-            width: 100%;
-            padding: 14px 18px;
-            border: 2px solid var(--gray-200);
-            border-radius: 18px;
-            font-family: inherit;
-            font-size: 0.9rem;
-            resize: none;
-            outline: none;
-            transition: all 0.3s;
-            background: var(--white);
-            color: var(--gray-600);
-        }
-        .input-field textarea::placeholder { color: var(--gray-400); }
-        .input-field textarea:focus { border-color: var(--eton); box-shadow: 0 0 0 4px var(--eton-glow); }
-        
-        .btn-row { display: flex; gap: 8px; }
-        .send-btn, .diagram-btn {
-            height: 52px;
-            border: none;
-            border-radius: 16px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s cubic-bezier(0.16,1,0.3,1);
-            font-family: inherit;
-            font-weight: 500;
-        }
-        .send-btn {
-            width: 52px;
-            background: linear-gradient(145deg, var(--eton) 0%, var(--eton-deep) 100%);
-            box-shadow: var(--shadow-eton);
-        }
-        .send-btn:hover:not(:disabled) { transform: translateY(-2px) scale(1.02); box-shadow: 0 12px 40px rgba(150,200,162,0.5); }
-        .send-btn:disabled { opacity: 0.5; cursor: not-allowed; }
-        .send-btn svg { width: 22px; height: 22px; fill: var(--white); transform: translateX(1px); }
-        
-        .diagram-btn {
-            padding: 0 16px;
-            background: var(--white);
-            border: 2px solid var(--gray-200);
-            color: var(--gray-600);
-            font-size: 0.8rem;
-            gap: 6px;
-        }
-        .diagram-btn:hover { border-color: var(--eton); background: var(--eton-pale); }
-        .diagram-btn.active { border-color: var(--eton); background: var(--eton); color: var(--white); }
-        .diagram-btn svg { width: 18px; height: 18px; }
-
-        /* Pitch Panel */
-        .pitch-panel {
-            background: rgba(255,255,255,0.85);
-            backdrop-filter: blur(40px);
-            border-radius: 28px;
-            border: 1px solid rgba(255,255,255,0.9);
-            box-shadow: var(--shadow-strong);
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-        }
-        .pitch-header {
-            padding: 16px 20px;
-            background: linear-gradient(180deg, rgba(150,200,162,0.12) 0%, rgba(150,200,162,0.06) 100%);
-            border-bottom: 1px solid rgba(150,200,162,0.2);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-        .pitch-header h3 { font-size: 0.9375rem; font-weight: 600; color: var(--gray-600); }
-        .pitch-controls { display: flex; gap: 8px; }
-        .pitch-btn {
-            width: 36px; height: 36px;
-            border: none;
-            border-radius: 10px;
-            background: var(--white);
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.2s;
-            border: 1px solid var(--gray-200);
-        }
-        .pitch-btn:hover { background: var(--eton-pale); border-color: var(--eton); }
-        .pitch-btn.active { background: var(--eton); border-color: var(--eton); }
-        .pitch-btn.active svg { stroke: var(--white); }
-        .pitch-btn svg { width: 18px; height: 18px; stroke: var(--gray-600); fill: none; stroke-width: 2; }
-
-        .pitch-container {
-            flex: 1;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }
-        .pitch-wrapper {
-            width: 100%;
-            max-width: 360px;
-            aspect-ratio: 0.7;
-            position: relative;
-        }
-        .pitch-svg {
-            width: 100%;
-            height: 100%;
-            border-radius: 12px;
-            box-shadow: var(--shadow-medium);
-        }
-        
-        .pitch-info {
-            padding: 16px 20px;
-            border-top: 1px solid var(--gray-200);
-            background: var(--gray-50);
-        }
-        .pitch-title { font-size: 0.875rem; font-weight: 600; color: var(--gray-600); margin-bottom: 4px; }
-        .pitch-description { font-size: 0.8125rem; color: var(--gray-500); line-height: 1.5; }
-        
-        .sequence-controls {
-            padding: 12px 20px;
-            border-top: 1px solid var(--gray-200);
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-        .seq-btn {
-            width: 32px; height: 32px;
-            border: none;
-            border-radius: 8px;
-            background: var(--eton);
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.2s;
-        }
-        .seq-btn:hover { background: var(--eton-deep); transform: scale(1.05); }
-        .seq-btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
-        .seq-btn svg { width: 16px; height: 16px; fill: var(--white); }
-        .seq-progress {
-            flex: 1;
-            height: 4px;
-            background: var(--gray-200);
-            border-radius: 2px;
-            overflow: hidden;
-        }
-        .seq-progress-bar {
-            height: 100%;
-            background: var(--eton);
-            border-radius: 2px;
-            transition: width 0.3s ease;
-        }
-        .seq-label { font-size: 0.75rem; color: var(--gray-500); min-width: 60px; text-align: right; }
-
-        /* Legend */
-        .pitch-legend {
-            padding: 12px 20px;
-            border-top: 1px solid var(--gray-200);
-            display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-        }
-        .legend-item { display: flex; align-items: center; gap: 6px; font-size: 0.75rem; color: var(--gray-500); }
-        .legend-dot { width: 12px; height: 12px; border-radius: 50%; }
-        .legend-dot.attack { background: var(--attack); }
-        .legend-dot.defence { background: var(--defence); }
-        .legend-dot.ball { background: var(--ball); }
-
-        /* Footer */
-        footer {
-            margin-top: 24px;
-            text-align: center;
-        }
-        footer p { font-size: 0.8125rem; color: var(--gray-400); }
-        footer em { font-family: Georgia, serif; color: var(--eton-deep); }
-
-        /* Responsive */
-        @media (max-width: 640px) {
-            .app { padding: 20px 16px; }
-            header h1 { font-size: 1.75rem; }
-            .chat-panel, .pitch-panel { border-radius: 20px; }
-            .messages { padding: 20px; }
-            .pitch-wrapper { max-width: 280px; }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Field Game Assistant | Eton College</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,500;0,600;1,400&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --eton-blue: #96c8a2;
+      --eton-blue-dark: #7ab389;
+      --eton-blue-light: #b8dcc1;
+      --eton-blue-pale: #e8f4eb;
+      --pitch-green: #2d5a27;
+      --pitch-green-light: #3d7a37;
+      --pitch-lines: rgba(255, 255, 255, 0.9);
+      --text-primary: #1a1a1a;
+      --text-secondary: #4a4a4a;
+      --text-muted: #6a6a6a;
+      --bg-primary: #fafbfa;
+      --bg-secondary: #f0f3f0;
+      --bg-card: #ffffff;
+      --border-color: #d4ddd6;
+      --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
+      --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.1);
+      --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
+      --warning-color: #e67e22;
+      --error-color: #c0392b;
+      --success-color: #27ae60;
+      --info-color: #2980b9;
+      --attacking-color: #3498db;
+      --defending-color: #e74c3c;
+      --ball-color: #f1c40f;
+      --radius-sm: 6px;
+      --radius-md: 10px;
+      --radius-lg: 16px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Source Sans 3', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+    .header {
+      background: linear-gradient(135deg, var(--eton-blue) 0%, var(--eton-blue-dark) 100%);
+      padding: 1rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: var(--shadow-md);
+      position: relative;
+      z-index: 100;
+    }
+    .header-left { display: flex; align-items: center; gap: 1rem; }
+    .logo-container {
+      width: 48px; height: 48px;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      background: var(--bg-card);
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 600; color: var(--eton-blue-dark);
+    }
+    .logo-container img { width: 100%; height: 100%; object-fit: cover; }
+    .header-title { color: white; }
+    .header-title h1 {
+      font-family: 'Crimson Pro', Georgia, serif;
+      font-size: 1.5rem;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    }
+    .header-title p { font-size: 0.85rem; opacity: 0.9; font-weight: 400; }
+    .header-actions { display: flex; gap: 0.75rem; }
+    .view-toggle {
+      display: flex;
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: var(--radius-md);
+      padding: 4px;
+    }
+    .view-toggle button {
+      background: transparent;
+      border: none;
+      color: rgba(255, 255, 255, 0.7);
+      padding: 0.5rem 1rem;
+      font-size: 0.85rem;
+      cursor: pointer;
+      border-radius: var(--radius-sm);
+      transition: all 0.2s ease;
+      font-weight: 500;
+    }
+    .view-toggle button.active { background: white; color: var(--eton-blue-dark); }
+    .view-toggle button:hover:not(.active) { color: white; background: rgba(255, 255, 255, 0.1); }
+    .main-container { display: flex; height: calc(100vh - 76px); overflow: hidden; }
+    .chat-panel {
+      flex: 1;
+      min-width: 380px;
+      display: flex;
+      flex-direction: column;
+      background: var(--bg-card);
+      border-right: 1px solid var(--border-color);
+      transition: flex 0.3s ease;
+    }
+    .diagram-panel {
+      flex: 1.2;
+      display: flex;
+      flex-direction: column;
+      background: var(--bg-secondary);
+      transition: all 0.3s ease;
+    }
+    .diagram-panel.hidden { flex: 0; min-width: 0; overflow: hidden; opacity: 0; }
+    .chat-panel.full-width { flex: 1; max-width: 800px; margin: 0 auto; border-right: none; }
+    .chat-messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+    .message {
+      display: flex;
+      gap: 0.75rem;
+      max-width: 90%;
+      animation: messageIn 0.3s ease;
+    }
+    @keyframes messageIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .message.user { align-self: flex-end; flex-direction: row-reverse; }
+    .message-avatar {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      font-size: 0.9rem;
+      overflow: hidden;
+    }
+    .message.assistant .message-avatar { background: var(--eton-blue); color: white; }
+    .message.assistant .message-avatar img { width: 100%; height: 100%; object-fit: cover; }
+    .message.user .message-avatar { background: var(--attacking-color); color: white; }
+    .message-content {
+      background: var(--bg-secondary);
+      padding: 0.875rem 1rem;
+      border-radius: var(--radius-md);
+      font-size: 0.95rem;
+      line-height: 1.65;
+    }
+    .message.user .message-content { background: var(--eton-blue); color: white; }
+    .message-content p { margin-bottom: 0.75rem; }
+    .message-content p:last-child { margin-bottom: 0; }
+    .message-content strong { font-weight: 600; color: var(--eton-blue-dark); }
+    .message.user .message-content strong { color: white; }
+    .diagram-indicator {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-top: 0.75rem;
+      padding: 0.5rem 0.75rem;
+      background: var(--eton-blue-pale);
+      border-radius: var(--radius-sm);
+      font-size: 0.85rem;
+      color: var(--eton-blue-dark);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .diagram-indicator:hover { background: var(--eton-blue-light); }
+    .chat-input-container {
+      padding: 1rem 1.5rem;
+      background: var(--bg-card);
+      border-top: 1px solid var(--border-color);
+    }
+    .chat-input-wrapper { display: flex; gap: 0.75rem; align-items: flex-end; }
+    .input-group { flex: 1; position: relative; }
+    .chat-input {
+      width: 100%;
+      padding: 0.875rem 1rem;
+      border: 2px solid var(--border-color);
+      border-radius: var(--radius-md);
+      font-size: 0.95rem;
+      font-family: inherit;
+      resize: none;
+      min-height: 48px;
+      max-height: 150px;
+      transition: border-color 0.2s ease;
+    }
+    .chat-input:focus { outline: none; border-color: var(--eton-blue); }
+    .chat-input::placeholder { color: var(--text-muted); }
+    .input-actions { display: flex; gap: 0.5rem; }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1.25rem;
+      border-radius: var(--radius-md);
+      font-size: 0.9rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border: none;
+      font-family: inherit;
+    }
+    .btn-primary { background: var(--eton-blue); color: white; }
+    .btn-primary:hover:not(:disabled) { background: var(--eton-blue-dark); }
+    .btn-secondary {
+      background: var(--bg-secondary);
+      color: var(--text-primary);
+      border: 2px solid var(--border-color);
+    }
+    .btn-secondary:hover:not(:disabled) { border-color: var(--eton-blue); color: var(--eton-blue-dark); }
+    .btn-secondary.active { background: var(--eton-blue-pale); border-color: var(--eton-blue); color: var(--eton-blue-dark); }
+    .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+    .btn svg { width: 18px; height: 18px; }
+    .quick-actions { display: flex; gap: 0.5rem; margin-bottom: 0.75rem; flex-wrap: wrap; }
+    .quick-action {
+      padding: 0.5rem 0.875rem;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      color: var(--text-secondary);
+    }
+    .quick-action:hover { background: var(--eton-blue-pale); border-color: var(--eton-blue); color: var(--eton-blue-dark); }
+    .diagram-header {
+      padding: 1rem 1.5rem;
+      background: var(--bg-card);
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .diagram-title { font-family: 'Crimson Pro', Georgia, serif; font-size: 1.1rem; font-weight: 600; color: var(--text-primary); }
+    .diagram-description { font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.25rem; }
+    .diagram-toolbar { display: flex; gap: 0.5rem; }
+    .toolbar-btn {
+      width: 36px; height: 36px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-color);
+      background: var(--bg-card);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+      color: var(--text-secondary);
+    }
+    .toolbar-btn:hover { border-color: var(--eton-blue); color: var(--eton-blue-dark); }
+    .toolbar-btn.active { background: var(--eton-blue); border-color: var(--eton-blue); color: white; }
+    .toolbar-btn svg { width: 18px; height: 18px; }
+    .pitch-container {
+      flex: 1;
+      padding: 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    .pitch-wrapper { width: 100%; max-width: 900px; aspect-ratio: 110 / 75; position: relative; }
+    .pitch-svg {
+      width: 100%;
+      height: 100%;
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-lg);
+      cursor: default;
+    }
+    .pitch-svg.edit-mode { cursor: crosshair; }
+    .pitch-grass { fill: var(--pitch-green); }
+    .pitch-stripe { fill: var(--pitch-green-light); }
+    .pitch-line { stroke: var(--pitch-lines); stroke-width: 0.5; fill: none; }
+    .pitch-line-dashed { stroke-dasharray: 2, 2; }
+    .pitch-goal { fill: none; stroke: white; stroke-width: 1; }
+    .player { cursor: pointer; transition: transform 0.15s ease; }
+    .player:hover { transform: scale(1.1); }
+    .player.dragging { cursor: grabbing; }
+    .player-circle { stroke-width: 0.8; stroke: white; transition: all 0.2s ease; }
+    .player.attacking .player-circle { fill: var(--attacking-color); }
+    .player.defending .player-circle { fill: var(--defending-color); }
+    .player.highlight .player-circle { stroke-width: 1.5; stroke: var(--ball-color); filter: drop-shadow(0 0 3px var(--ball-color)); }
+    .player.sneaking .player-circle { fill: var(--warning-color); animation: pulseSneaking 1s ease-in-out infinite; }
+    .player.cornering .player-circle { fill: var(--error-color); animation: pulseSneaking 1s ease-in-out infinite; }
+    @keyframes pulseSneaking { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
+    .player-number { fill: white; font-size: 2.5px; font-weight: 600; text-anchor: middle; dominant-baseline: central; pointer-events: none; }
+    .player-label { fill: var(--text-primary); font-size: 2px; text-anchor: middle; pointer-events: none; opacity: 0; transition: opacity 0.2s ease; }
+    .player:hover .player-label { opacity: 1; }
+    .show-labels .player-label { opacity: 1; }
+    .ball { cursor: pointer; transition: transform 0.15s ease; }
+    .ball:hover { transform: scale(1.15); }
+    .ball-circle { fill: var(--ball-color); stroke: #c9a20a; stroke-width: 0.5; filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.3)); }
+    .zone { opacity: 0.25; pointer-events: none; }
+    .zone.sneaking { fill: var(--warning-color); }
+    .zone.cornering { fill: var(--error-color); }
+    .zone.onTheLine { fill: var(--eton-blue); }
+    .zone.bully { fill: var(--info-color); }
+    .zone.rougeable { fill: var(--success-color); }
+    .zone.exclusion { fill: var(--text-muted); stroke: var(--text-muted); stroke-dasharray: 1, 1; }
+    .zone.goalKick { fill: var(--info-color); }
+    .arrow-line { stroke-width: 0.6; fill: none; marker-end: url(#arrowhead); }
+    .arrow-line.dashed { stroke-dasharray: 2, 1; }
+    .arrow-label { font-size: 1.8px; fill: var(--text-primary); pointer-events: none; }
+    .annotation { pointer-events: none; }
+    .annotation-bg { fill: white; opacity: 0.9; rx: 1; }
+    .annotation-text { font-size: 2px; fill: var(--text-primary); }
+    .annotation.warning .annotation-bg { fill: #fef3e2; }
+    .annotation.warning .annotation-text { fill: var(--warning-color); }
+    .annotation.scoring .annotation-bg { fill: #e8f8ee; }
+    .annotation.scoring .annotation-text { fill: var(--success-color); }
+    .playback-controls {
+      padding: 1rem 1.5rem;
+      background: var(--bg-card);
+      border-top: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .playback-buttons { display: flex; gap: 0.5rem; }
+    .playback-btn {
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      border: 2px solid var(--border-color);
+      background: var(--bg-card);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+      color: var(--text-secondary);
+    }
+    .playback-btn:hover:not(:disabled) { border-color: var(--eton-blue); color: var(--eton-blue-dark); }
+    .playback-btn.play { background: var(--eton-blue); border-color: var(--eton-blue); color: white; }
+    .playback-btn.play:hover { background: var(--eton-blue-dark); border-color: var(--eton-blue-dark); }
+    .playback-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+    .playback-btn svg { width: 18px; height: 18px; }
+    .playback-progress { flex: 1; display: flex; flex-direction: column; gap: 0.5rem; }
+    .progress-bar { height: 6px; background: var(--bg-secondary); border-radius: 3px; overflow: hidden; cursor: pointer; }
+    .progress-fill { height: 100%; background: var(--eton-blue); border-radius: 3px; transition: width 0.3s ease; }
+    .step-caption { font-size: 0.85rem; color: var(--text-secondary); text-align: center; }
+    .step-counter { font-size: 0.85rem; color: var(--text-muted); min-width: 60px; text-align: right; }
+    .scenario-selector {
+      padding: 0.75rem 1.5rem;
+      background: var(--bg-secondary);
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      gap: 0.5rem;
+      overflow-x: auto;
+    }
+    .scenario-chip {
+      padding: 0.5rem 1rem;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      font-size: 0.8rem;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s ease;
+    }
+    .scenario-chip:hover { border-color: var(--eton-blue); color: var(--eton-blue-dark); }
+    .scenario-chip.active { background: var(--eton-blue); border-color: var(--eton-blue); color: white; }
+    .legend {
+      padding: 0.75rem 1.5rem;
+      background: var(--bg-card);
+      border-top: 1px solid var(--border-color);
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+    }
+    .legend-item { display: flex; align-items: center; gap: 0.5rem; font-size: 0.8rem; color: var(--text-secondary); }
+    .legend-dot { width: 12px; height: 12px; border-radius: 50%; border: 2px solid white; box-shadow: var(--shadow-sm); }
+    .legend-dot.attacking { background: var(--attacking-color); }
+    .legend-dot.defending { background: var(--defending-color); }
+    .legend-dot.ball { background: var(--ball-color); }
+    .legend-dot.sneaking { background: var(--warning-color); }
+    .legend-dot.cornering { background: var(--error-color); }
+    .welcome-message { text-align: center; padding: 3rem 2rem; max-width: 500px; margin: 0 auto; }
+    .welcome-avatar {
+      width: 80px; height: 80px;
+      border-radius: 50%;
+      margin: 0 auto 1.5rem;
+      background: var(--eton-blue);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      box-shadow: var(--shadow-md);
+      font-size: 2rem;
+      color: white;
+      font-weight: 600;
+    }
+    .welcome-avatar img { width: 100%; height: 100%; object-fit: cover; }
+    .welcome-message h2 { font-family: 'Crimson Pro', Georgia, serif; font-size: 1.5rem; margin-bottom: 0.75rem; color: var(--text-primary); }
+    .welcome-message p { color: var(--text-secondary); margin-bottom: 1.5rem; line-height: 1.7; }
+    .welcome-suggestions { display: flex; flex-direction: column; gap: 0.75rem; }
+    .suggestion-btn {
+      padding: 0.875rem 1.25rem;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      text-align: left;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+    }
+    .suggestion-btn:hover { background: var(--eton-blue-pale); border-color: var(--eton-blue); color: var(--eton-blue-dark); }
+    .loading-dots { display: inline-flex; gap: 4px; padding: 0.5rem 0; }
+    .loading-dots span { width: 8px; height: 8px; border-radius: 50%; background: var(--eton-blue); animation: loadingDot 1.4s ease-in-out infinite; }
+    .loading-dots span:nth-child(2) { animation-delay: 0.2s; }
+    .loading-dots span:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes loadingDot { 0%, 80%, 100% { transform: scale(0.6); opacity: 0.5; } 40% { transform: scale(1); opacity: 1; } }
+    @media (max-width: 900px) {
+      .main-container { flex-direction: column; }
+      .chat-panel { min-width: 0; height: 50%; border-right: none; border-bottom: 1px solid var(--border-color); }
+      .diagram-panel { height: 50%; }
+      .diagram-panel.hidden { height: 0; }
+      .chat-panel.full-width { height: 100%; max-width: none; }
+      .header { flex-wrap: wrap; gap: 0.75rem; }
+      .header-actions { width: 100%; justify-content: flex-end; }
+    }
+    @media (max-width: 600px) {
+      .header-title h1 { font-size: 1.2rem; }
+      .quick-actions { display: none; }
+      .legend { gap: 1rem; }
+    }
+  </style>
 </head>
 <body>
-    <div class="ambient"></div>
-    <div class="app">
-        <header>
-            <div class="logomark"><span>E</span></div>
-            <h1>Field Game Assistant</h1>
-            <p>Understanding the Laws with visual diagrams</p>
-        </header>
-
-        <div class="main-container">
-            <div class="chat-panel">
-                <div class="status-bar" id="status">
-                    <span class="status-dot"></span>
-                    <span class="status-text">Ready</span>
-                </div>
-                <div class="messages" id="messages">
-                    <div class="welcome" id="welcome">
-                        <img src="/ralph.png" alt="RDO-C" class="welcome-avatar" onerror="this.style.display='none'">
-                        <h2>Good day</h2>
-                        <p>Ask about the Laws and I'll explain with visual diagrams when helpful.</p>
-                        <div class="suggestions">
-                            <button class="suggestion-btn" onclick="askQuestion('Show me how a Rouge works')">How does a Rouge work?</button>
-                            <button class="suggestion-btn" onclick="askQuestion('Explain Sneaking with a diagram')">Explain Sneaking</button>
-                            <button class="suggestion-btn" onclick="askQuestion('What is Cornering?')">What is Cornering?</button>
-                        </div>
-                    </div>
-                </div>
-                <div class="input-area">
-                    <div class="input-row">
-                        <div class="input-field">
-                            <textarea id="input" rows="2" placeholder="Ask about the Laws..." onkeydown="handleKeydown(event)"></textarea>
-                        </div>
-                        <div class="btn-row">
-                            <button class="diagram-btn" id="diagramBtn" onclick="toggleDiagram()" title="Include visual diagram">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <rect x="3" y="3" width="18" height="18" rx="2"/>
-                                    <circle cx="8" cy="8" r="2"/>
-                                    <circle cx="16" cy="16" r="2"/>
-                                    <path d="M8 16h8M8 8v8"/>
-                                </svg>
-                                Diagram
-                            </button>
-                            <button class="send-btn" id="sendBtn" onclick="sendMessage()">
-                                <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="pitch-panel">
-                <div class="pitch-header">
-                    <h3>Pitch View</h3>
-                    <div class="pitch-controls">
-                        <button class="pitch-btn" id="editBtn" onclick="toggleEdit()" title="Edit positions">
-                            <svg viewBox="0 0 24 24"><path d="M17 3a2.85 2.85 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg>
-                        </button>
-                        <button class="pitch-btn" onclick="resetPitch()" title="Reset">
-                            <svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
-                        </button>
-                    </div>
-                </div>
-                <div class="pitch-container">
-                    <div class="pitch-wrapper">
-                        <svg class="pitch-svg" id="pitch" viewBox="0 0 100 140"></svg>
-                    </div>
-                </div>
-                <div class="pitch-info">
-                    <div class="pitch-title" id="pitchTitle">Scenario View</div>
-                    <div class="pitch-description" id="pitchDesc">Ask a question with the Diagram button enabled to see an illustrated explanation.</div>
-                </div>
-                <div class="sequence-controls" id="seqControls" style="display:none;">
-                    <button class="seq-btn" id="playBtn" onclick="togglePlay()">
-                        <svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg>
-                    </button>
-                    <button class="seq-btn" onclick="prevStep()">
-                        <svg viewBox="0 0 24 24"><polyline points="15,18 9,12 15,6"/></svg>
-                    </button>
-                    <button class="seq-btn" onclick="nextStep()">
-                        <svg viewBox="0 0 24 24"><polyline points="9,18 15,12 9,6"/></svg>
-                    </button>
-                    <div class="seq-progress"><div class="seq-progress-bar" id="seqProgress"></div></div>
-                    <span class="seq-label" id="seqLabel">Step 1/1</span>
-                </div>
-                <div class="pitch-legend">
-                    <div class="legend-item"><span class="legend-dot attack"></span>Attackers</div>
-                    <div class="legend-item"><span class="legend-dot defence"></span>Defenders</div>
-                    <div class="legend-item"><span class="legend-dot ball"></span>Ball</div>
-                </div>
-            </div>
-        </div>
-
-        <footer><p><em>Floreat Etona</em></p></footer>
+  <header class="header">
+    <div class="header-left">
+      <div class="logo-container">
+        <img src="ralph.png" alt="Ralph" onerror="this.innerHTML='R'">
+      </div>
+      <div class="header-title">
+        <h1>Field Game Assistant</h1>
+        <p>Visual explanations of the Laws</p>
+      </div>
     </div>
+    <div class="header-actions">
+      <div class="view-toggle">
+        <button id="chatOnlyBtn" onclick="setView('chat')">Chat</button>
+        <button id="splitViewBtn" class="active" onclick="setView('split')">Split</button>
+        <button id="diagramOnlyBtn" onclick="setView('diagram')">Diagram</button>
+      </div>
+    </div>
+  </header>
 
-    <script>
-        // State
-        let threadId = null;
-        let isLoading = false;
-        let requestDiagram = false;
-        let currentDiagram = null;
-        let currentStep = 0;
-        let isPlaying = false;
-        let playInterval = null;
-        let editMode = false;
-        let draggedElement = null;
+  <main class="main-container">
+    <section class="chat-panel" id="chatPanel">
+      <div class="chat-messages" id="chatMessages">
+        <div class="welcome-message" id="welcomeMessage">
+          <div class="welcome-avatar">
+            <img src="ralph.png" alt="Ralph" onerror="this.parentElement.innerHTML='R'">
+          </div>
+          <h2>Welcome to the Field Game Assistant</h2>
+          <p>I'm Ralph, your guide to understanding the Laws of the Field Game as played at Eton College. Ask me anything about rules, tactics, or scenarios—I can provide visual diagrams to help explain.</p>
+          <div class="welcome-suggestions">
+            <button class="suggestion-btn" onclick="askQuestion('Explain what Sneaking is and show me a diagram')">📐 Explain Sneaking with a diagram</button>
+            <button class="suggestion-btn" onclick="askQuestion('What is a Rouge and how is it scored?')">🎯 How is a Rouge scored?</button>
+            <button class="suggestion-btn" onclick="askQuestion('Show me the standard kick-off formation')">⚽ Show kick-off formation</button>
+            <button class="suggestion-btn" onclick="askQuestion('What are the rules for on-the-line play?')">📏 On-the-line rules</button>
+          </div>
+        </div>
+      </div>
+      <div class="chat-input-container">
+        <div class="quick-actions">
+          <button class="quick-action" onclick="loadScenario('kickoff')">Kick-off</button>
+          <button class="quick-action" onclick="loadScenario('sneakingBehind')">Sneaking</button>
+          <button class="quick-action" onclick="loadScenario('onTheLine')">On-the-Line</button>
+          <button class="quick-action" onclick="loadScenario('rougeableBall')">Rouge</button>
+          <button class="quick-action" onclick="loadScenario('conversion')">Conversion</button>
+        </div>
+        <div class="chat-input-wrapper">
+          <div class="input-group">
+            <textarea class="chat-input" id="chatInput" placeholder="Ask about Field Game rules..." rows="1" onkeydown="handleKeyDown(event)"></textarea>
+          </div>
+          <div class="input-actions">
+            <button class="btn btn-secondary" id="diagramBtn" onclick="toggleDiagramMode()" title="Request diagram">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><circle cx="15.5" cy="15.5" r="1.5"/><line x1="8.5" y1="8.5" x2="15.5" y2="15.5"/></svg>
+              Diagram
+            </button>
+            <button class="btn btn-primary" id="sendBtn" onclick="sendMessage()">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
 
-        // Default pitch state
-        const defaultDiagram = {
-            title: "Scenario View",
-            ball: { x: 50, y: 50 },
-            players: [
-                { id: 1, team: 'attack', role: 'Fly', x: 50, y: 60 },
-                { id: 2, team: 'attack', role: 'Bully', x: 40, y: 55 },
-                { id: 3, team: 'attack', role: 'Bully', x: 60, y: 55 },
-                { id: 4, team: 'defence', role: 'Behind', x: 50, y: 40 },
-                { id: 5, team: 'defence', role: 'Bully', x: 45, y: 50 },
-                { id: 6, team: 'defence', role: 'Bully', x: 55, y: 50 }
+    <section class="diagram-panel" id="diagramPanel">
+      <div class="scenario-selector" id="scenarioSelector"></div>
+      <div class="diagram-header">
+        <div>
+          <div class="diagram-title" id="diagramTitle">Select a scenario</div>
+          <div class="diagram-description" id="diagramDescription">Choose a scenario above or ask for a visual explanation</div>
+        </div>
+        <div class="diagram-toolbar">
+          <button class="toolbar-btn" id="toggleLabelsBtn" onclick="toggleLabels()" title="Toggle labels">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7V4h16v3M9 20h6M12 4v16"/></svg>
+          </button>
+          <button class="toolbar-btn" id="editModeBtn" onclick="toggleEditMode()" title="Edit mode">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+          </button>
+          <button class="toolbar-btn" id="resetBtn" onclick="resetDiagram()" title="Reset">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 109-9 9.75 9.75 0 00-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+          </button>
+        </div>
+      </div>
+      <div class="pitch-container" id="pitchContainer">
+        <div class="pitch-wrapper">
+          <svg class="pitch-svg" id="pitchSvg" viewBox="-10 -5 130 85" preserveAspectRatio="xMidYMid meet">
+            <defs>
+              <marker id="arrowhead" markerWidth="4" markerHeight="3" refX="3.5" refY="1.5" orient="auto">
+                <polygon points="0 0, 4 1.5, 0 3" fill="currentColor"/>
+              </marker>
+              <pattern id="grassStripes" patternUnits="userSpaceOnUse" width="5" height="75">
+                <rect x="0" y="0" width="2.5" height="75" fill="#2d5a27"/>
+                <rect x="2.5" y="0" width="2.5" height="75" fill="#3d7a37"/>
+              </pattern>
+            </defs>
+            <rect class="pitch-grass" x="0" y="0" width="110" height="75" fill="url(#grassStripes)"/>
+            <rect class="pitch-line" x="0" y="0" width="110" height="75"/>
+            <line class="pitch-line" x1="55" y1="0" x2="55" y2="75"/>
+            <line class="pitch-line" x1="15" y1="0" x2="15" y2="75"/>
+            <line class="pitch-line" x1="95" y1="0" x2="95" y2="75"/>
+            <line class="pitch-line pitch-line-dashed" x1="3" y1="0" x2="3" y2="75"/>
+            <line class="pitch-line pitch-line-dashed" x1="107" y1="0" x2="107" y2="75"/>
+            <line class="pitch-line pitch-line-dashed" x1="0" y1="18.75" x2="110" y2="18.75"/>
+            <line class="pitch-line pitch-line-dashed" x1="0" y1="56.25" x2="110" y2="56.25"/>
+            <rect class="pitch-goal" x="-2" y="31.5" width="2" height="12"/>
+            <rect class="pitch-goal" x="110" y="31.5" width="2" height="12"/>
+            <g id="zonesLayer"></g>
+            <g id="arrowsLayer"></g>
+            <g id="playersLayer"></g>
+            <g id="ballLayer"></g>
+            <g id="annotationsLayer"></g>
+          </svg>
+        </div>
+      </div>
+      <div class="playback-controls" id="playbackControls">
+        <div class="playback-buttons">
+          <button class="playback-btn" id="prevStepBtn" onclick="prevStep()" disabled title="Previous step">
+            <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="19 20 9 12 19 4 19 20"/><line x1="5" y1="19" x2="5" y2="5" stroke="currentColor" stroke-width="2"/></svg>
+          </button>
+          <button class="playback-btn play" id="playPauseBtn" onclick="togglePlayback()" title="Play/Pause">
+            <svg viewBox="0 0 24 24" fill="currentColor" id="playIcon"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor" id="pauseIcon" style="display:none"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+          </button>
+          <button class="playback-btn" id="nextStepBtn" onclick="nextStep()" disabled title="Next step">
+            <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="5 4 15 12 5 20 5 4"/><line x1="19" y1="5" x2="19" y2="19" stroke="currentColor" stroke-width="2"/></svg>
+          </button>
+        </div>
+        <div class="playback-progress">
+          <div class="progress-bar" onclick="seekProgress(event)">
+            <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+          </div>
+          <div class="step-caption" id="stepCaption">Select a scenario to begin</div>
+        </div>
+        <div class="step-counter" id="stepCounter">-/-</div>
+      </div>
+      <div class="legend">
+        <div class="legend-item"><div class="legend-dot attacking"></div><span>Attacking</span></div>
+        <div class="legend-item"><div class="legend-dot defending"></div><span>Defending</span></div>
+        <div class="legend-item"><div class="legend-dot ball"></div><span>Ball</span></div>
+        <div class="legend-item"><div class="legend-dot sneaking"></div><span>Sneaking</span></div>
+        <div class="legend-item"><div class="legend-dot cornering"></div><span>Cornering</span></div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    // ==================== State ====================
+    const state = {
+      threadId: null,
+      currentScenario: null,
+      currentSequence: [],
+      currentStep: 0,
+      isPlaying: false,
+      playbackInterval: null,
+      editMode: false,
+      showLabels: false,
+      requestDiagram: false,
+      draggedElement: null
+    };
+
+    // ==================== Scenarios ====================
+    const SCENARIOS = {
+      kickoff: {
+        name: "Kick-off Formation",
+        description: "Standard Set-Piece Bully at centre. Team losing toss has 'Heads'.",
+        sequence: [{
+          step: 1,
+          caption: "Teams form for Set-Piece Bully at centre. Ball inserted by Corner without Heads.",
+          ball: { x: 55, y: 37.5 },
+          attacking: {
+            post: { x: 54, y: 37.5, role: 'Post', number: 1 },
+            sidePostL: { x: 52.5, y: 35.5, role: 'Side Post', number: 2 },
+            sidePostR: { x: 52.5, y: 39.5, role: 'Side Post', number: 3 },
+            cornerL: { x: 51, y: 33, role: 'Corner', number: 4 },
+            cornerR: { x: 51, y: 42, role: 'Corner', number: 5 },
+            cornerFar: { x: 49.5, y: 31, role: 'Corner', number: 6 },
+            bup: { x: 52, y: 37.5, role: 'Bup', number: 7 },
+            fly: { x: 45, y: 37.5, role: 'Fly', number: 8 },
+            short: { x: 35, y: 37.5, role: 'Short', number: 9 },
+            longL: { x: 20, y: 25, role: 'Long', number: 10 },
+            longR: { x: 20, y: 50, role: 'Long', number: 11 }
+          },
+          defending: {
+            post: { x: 56, y: 37.5, role: 'Post', number: 1 },
+            sidePostL: { x: 57.5, y: 35.5, role: 'Side Post', number: 2 },
+            sidePostR: { x: 57.5, y: 39.5, role: 'Side Post', number: 3 },
+            cornerL: { x: 59, y: 33, role: 'Corner', number: 4 },
+            cornerR: { x: 59, y: 42, role: 'Corner', number: 5 },
+            cornerFar: { x: 60.5, y: 31, role: 'Corner', number: 6 },
+            bup: { x: 58, y: 37.5, role: 'Bup', number: 7 },
+            fly: { x: 65, y: 37.5, role: 'Fly', number: 8 },
+            short: { x: 75, y: 37.5, role: 'Short', number: 9 },
+            longL: { x: 90, y: 25, role: 'Long', number: 10 },
+            longR: { x: 90, y: 50, role: 'Long', number: 11 }
+          },
+          zones: [{ type: 'bully', x: 49, y: 30, width: 12, height: 15 }],
+          annotations: [{ x: 55, y: 22, text: "Ball inserted by Corner without Heads" }]
+        }]
+      },
+      sneakingBehind: {
+        name: "Sneaking (Behind with Ball)",
+        description: "Player in front of Behind running-with-ball is Sneaking.",
+        sequence: [
+          {
+            step: 1,
+            caption: "Short Behind receives ball and starts running forward.",
+            ball: { x: 35, y: 45 },
+            attacking: {
+              short: { x: 35, y: 45, role: 'Short', number: 9, highlight: true },
+              fly: { x: 40, y: 40, role: 'Fly', number: 8 },
+              post: { x: 45, y: 38, role: 'Post', number: 1 }
+            },
+            defending: {
+              short: { x: 70, y: 42, role: 'Short', number: 9 },
+              fly: { x: 60, y: 40, role: 'Fly', number: 8 }
+            },
+            annotations: [{ x: 35, y: 52, text: "Behind making ground running-with-ball" }]
+          },
+          {
+            step: 2,
+            caption: "Fly moves ahead of ball carrier — now SNEAKING!",
+            ball: { x: 40, y: 45 },
+            attacking: {
+              short: { x: 40, y: 45, role: 'Short', number: 9, highlight: true },
+              fly: { x: 50, y: 40, role: 'Fly', number: 8, sneaking: true },
+              post: { x: 48, y: 38, role: 'Post', number: 1 }
+            },
+            defending: {
+              short: { x: 65, y: 43, role: 'Short', number: 9 },
+              fly: { x: 58, y: 40, role: 'Fly', number: 8 }
+            },
+            zones: [{ type: 'sneaking', x: 41, y: 0, width: 69, height: 75 }],
+            annotations: [{ x: 50, y: 33, text: "FLY IS SNEAKING!", type: 'warning' }],
+            arrows: [{ from: { x: 35, y: 45 }, to: { x: 40, y: 45 }, color: '#3498db' }]
+          },
+          {
+            step: 3,
+            caption: "Penalty: FREE KICK if Fly touches ball or interferes.",
+            ball: { x: 40, y: 45 },
+            attacking: {
+              short: { x: 40, y: 45, role: 'Short', number: 9 },
+              fly: { x: 50, y: 40, role: 'Fly', number: 8, sneaking: true },
+              post: { x: 48, y: 38, role: 'Post', number: 1 }
+            },
+            defending: {
+              short: { x: 65, y: 43, role: 'Short', number: 9 },
+              fly: { x: 58, y: 40, role: 'Fly', number: 8 }
+            },
+            zones: [{ type: 'sneaking', x: 41, y: 0, width: 69, height: 75 }],
+            annotations: [
+              { x: 50, y: 33, text: "Penalty: FREE KICK", type: 'warning' },
+              { x: 50, y: 48, text: "Fly must retreat behind ball carrier" }
+            ]
+          }
+        ]
+      },
+      onTheLine: {
+        name: "On-the-Line Play",
+        description: "Ball between goal-line and 3-yard line under attacker control.",
+        sequence: [
+          {
+            step: 1,
+            caption: "Attacker controls ball within 3-yard zone. Must keep ball moving!",
+            ball: { x: 2, y: 40 },
+            attacking: {
+              short: { x: 2, y: 40, role: 'Short', number: 9, highlight: true },
+              fly: { x: 10, y: 38, role: 'Fly', number: 8 }
+            },
+            defending: {
+              short: { x: 3, y: 42, role: 'Short', number: 9 },
+              fly: { x: 6, y: 36, role: 'Fly', number: 8 },
+              goals: { x: 0.5, y: 37.5, role: 'Goals', number: 10 }
+            },
+            zones: [{ type: 'onTheLine', x: 0, y: 0, width: 3, height: 75 }],
+            annotations: [
+              { x: 2, y: 50, text: "Attacker must keep ball moving" },
+              { x: 2, y: 55, text: "Defender must constantly engage" }
+            ]
+          },
+          {
+            step: 2,
+            caption: "Defender failing to engage = PENALTY POINT + Free Kick on 3-yard line.",
+            ball: { x: 2, y: 40 },
+            attacking: {
+              short: { x: 2, y: 40, role: 'Short', number: 9, highlight: true },
+              fly: { x: 10, y: 38, role: 'Fly', number: 8 }
+            },
+            defending: {
+              short: { x: 8, y: 42, role: 'Short (not engaging!)', number: 9, cornering: true },
+              fly: { x: 12, y: 36, role: 'Fly', number: 8 },
+              goals: { x: 0.5, y: 37.5, role: 'Goals', number: 10 }
+            },
+            zones: [{ type: 'onTheLine', x: 0, y: 0, width: 3, height: 75 }],
+            annotations: [{ x: 8, y: 48, text: "NOT ENGAGING = 1 Point + Free Kick!", type: 'warning' }]
+          }
+        ]
+      },
+      rougeableBall: {
+        name: "Rougeable Ball",
+        description: "Ball crosses goal-line after defender touch. First hand touch determines outcome.",
+        sequence: [
+          {
+            step: 1,
+            caption: "Ball crosses goal-line (extended infinitely) off defender.",
+            ball: { x: -2, y: 45 },
+            attacking: {
+              short: { x: 2, y: 43, role: 'Short', number: 9, highlight: true }
+            },
+            defending: {
+              short: { x: 1, y: 47, role: 'Short', number: 9 },
+              goals: { x: 0.5, y: 37.5, role: 'Goals', number: 10 }
+            },
+            zones: [{ type: 'rougeable', x: -15, y: 0, width: 15, height: 75 }],
+            arrows: [{ from: { x: 5, y: 45 }, to: { x: -2, y: 45 }, color: '#e74c3c', dashed: true }],
+            annotations: [{ x: -5, y: 38, text: "ROUGEABLE - Ball behind goal-line!", type: 'scoring' }]
+          },
+          {
+            step: 2,
+            caption: "If attacker touches first = ROUGE (5 points + Conversion). If defender = choice.",
+            ball: { x: -2, y: 45 },
+            attacking: {
+              short: { x: -1, y: 44, role: 'Short (reaching)', number: 9, highlight: true }
+            },
+            defending: {
+              short: { x: 0, y: 46, role: 'Short', number: 9 },
+              goals: { x: 0.5, y: 37.5, role: 'Goals', number: 10 }
+            },
+            zones: [{ type: 'rougeable', x: -15, y: 0, width: 15, height: 75 }],
+            annotations: [
+              { x: -5, y: 38, text: "Attacker touch = ROUGE (5pts)", type: 'scoring' },
+              { x: -5, y: 52, text: "Defender touch = 3pts OR Free Kick" }
+            ]
+          }
+        ]
+      },
+      conversion: {
+        name: "Conversion Attempt",
+        description: "After Rouge, attacker goes along 3-yard line to score Conversion.",
+        sequence: [{
+          step: 1,
+          caption: "Ball placed at tramline/3-yard intersection. Defenders 3 yards back.",
+          ball: { x: 3, y: 18.75 },
+          attacking: {
+            short: { x: 3, y: 18.75, role: 'Short', number: 9, highlight: true },
+            fly: { x: 10, y: 20, role: 'Fly', number: 8 }
+          },
+          defending: {
+            short: { x: 6, y: 20, role: 'Short (3yds)', number: 9 },
+            fly: { x: 8, y: 25, role: 'Fly', number: 8 },
+            goals: { x: 0.5, y: 37.5, role: 'Goals', number: 10 }
+          },
+          zones: [{ type: 'onTheLine', x: 0, y: 0, width: 3, height: 75 }],
+          arrows: [{ from: { x: 3, y: 18.75 }, to: { x: 3, y: 56.25 }, color: '#27ae60', label: 'Conversion path' }],
+          annotations: [
+            { x: 3, y: 12, text: "Start at tramline/3-yard line" },
+            { x: 6, y: 28, text: "Defenders start 3 yards away" }
+          ]
+        }]
+      },
+      cornering: {
+        name: "Cornering",
+        description: "Player fails to track lateral ball movement.",
+        sequence: [
+          {
+            step: 1,
+            caption: "Ball is central. All players in line.",
+            ball: { x: 55, y: 37.5 },
+            attacking: {
+              fly: { x: 50, y: 37.5, role: 'Fly', number: 8 },
+              post: { x: 52, y: 37.5, role: 'Post', number: 1 }
+            },
+            defending: {
+              fly: { x: 60, y: 37.5, role: 'Fly', number: 8 },
+              post: { x: 58, y: 37.5, role: 'Post', number: 1 }
+            }
+          },
+          {
+            step: 2,
+            caption: "Ball moves laterally. Fly fails to track — CORNERING!",
+            ball: { x: 60, y: 55 },
+            attacking: {
+              fly: { x: 55, y: 25, role: 'Fly', number: 8, cornering: true },
+              post: { x: 57, y: 50, role: 'Post', number: 1 }
+            },
+            defending: {
+              fly: { x: 62, y: 52, role: 'Fly', number: 8 },
+              post: { x: 60, y: 50, role: 'Post', number: 1 }
+            },
+            arrows: [
+              { from: { x: 55, y: 37.5 }, to: { x: 60, y: 55 }, color: '#3498db', dashed: true, label: 'Ball movement' },
+              { from: { x: 50, y: 37.5 }, to: { x: 55, y: 25 }, color: '#e74c3c', label: 'Fly stayed wide' }
             ],
-            annotations: [],
-            zones: [],
-            sequence: []
-        };
+            annotations: [{ x: 55, y: 18, text: "FLY CORNERING - failed to track ball!", type: 'warning' }]
+          }
+        ]
+      },
+      freeKick: {
+        name: "Free Kick",
+        description: "After infringement. Opposition 10 yards away.",
+        sequence: [{
+          step: 1,
+          caption: "Free kick awarded. All opposition players must be 10 yards away.",
+          ball: { x: 40, y: 37.5 },
+          attacking: {
+            short: { x: 40, y: 37.5, role: 'Kicker', number: 9, highlight: true },
+            fly: { x: 45, y: 40, role: 'Fly', number: 8 }
+          },
+          defending: {
+            short: { x: 50, y: 37.5, role: 'Short', number: 9 },
+            fly: { x: 52, y: 40, role: 'Fly', number: 8 }
+          },
+          zones: [{ type: 'exclusion', x: 30, y: 27.5, width: 20, height: 20 }],
+          annotations: [
+            { x: 40, y: 28, text: "Ball must be stationary" },
+            { x: 50, y: 45, text: "Defenders 10 yards minimum" }
+          ]
+        }]
+      },
+      passingBack: {
+        name: "Passing Back",
+        description: "Ball goes backwards after deliberate forward attempt.",
+        sequence: [{
+          step: 1,
+          caption: "Ball accidentally goes backwards — PASSING BACK! Set-Piece Bully from kick point.",
+          ball: { x: 35, y: 40 },
+          attacking: {
+            short: { x: 45, y: 35, role: 'Original kicker', number: 9 },
+            longL: { x: 35, y: 40, role: 'Receiver', number: 10, highlight: true }
+          },
+          defending: {
+            short: { x: 70, y: 40, role: 'Short', number: 9 }
+          },
+          arrows: [
+            { from: { x: 45, y: 35 }, to: { x: 55, y: 35 }, color: '#3498db', dashed: true, label: 'Intended' },
+            { from: { x: 45, y: 35 }, to: { x: 35, y: 40 }, color: '#e74c3c', label: 'Actual' }
+          ],
+          annotations: [
+            { x: 45, y: 28, text: "Kick intended forward", type: 'info' },
+            { x: 35, y: 47, text: "PASSING BACK - Set-Piece Bully from kick point", type: 'warning' }
+          ]
+        }]
+      }
+    };
 
-        // Initialize
-        document.addEventListener('DOMContentLoaded', () => {
-            renderPitch(defaultDiagram);
+    // ==================== Initialization ====================
+    function init() {
+      buildScenarioSelector();
+      setupDragAndDrop();
+      autoResizeTextarea();
+    }
+
+    function buildScenarioSelector() {
+      const selector = document.getElementById('scenarioSelector');
+      selector.innerHTML = Object.entries(SCENARIOS).map(([key, scenario]) =>
+        `<button class="scenario-chip" data-scenario="${key}" onclick="loadScenario('${key}')">${scenario.name}</button>`
+      ).join('');
+    }
+
+    // ==================== View Management ====================
+    function setView(view) {
+      const chatPanel = document.getElementById('chatPanel');
+      const diagramPanel = document.getElementById('diagramPanel');
+      document.querySelectorAll('.view-toggle button').forEach(b => b.classList.remove('active'));
+      
+      if (view === 'chat') {
+        document.getElementById('chatOnlyBtn').classList.add('active');
+        chatPanel.classList.add('full-width');
+        diagramPanel.classList.add('hidden');
+      } else if (view === 'diagram') {
+        document.getElementById('diagramOnlyBtn').classList.add('active');
+        chatPanel.style.display = 'none';
+        diagramPanel.classList.remove('hidden');
+      } else {
+        document.getElementById('splitViewBtn').classList.add('active');
+        chatPanel.classList.remove('full-width');
+        chatPanel.style.display = '';
+        diagramPanel.classList.remove('hidden');
+      }
+    }
+
+    // ==================== Chat Functions ====================
+    function handleKeyDown(e) {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        sendMessage();
+      }
+    }
+
+    function autoResizeTextarea() {
+      const textarea = document.getElementById('chatInput');
+      textarea.addEventListener('input', function() {
+        this.style.height = 'auto';
+        this.style.height = Math.min(this.scrollHeight, 150) + 'px';
+      });
+    }
+
+    function askQuestion(question) {
+      document.getElementById('chatInput').value = question;
+      sendMessage();
+    }
+
+    function toggleDiagramMode() {
+      state.requestDiagram = !state.requestDiagram;
+      document.getElementById('diagramBtn').classList.toggle('active', state.requestDiagram);
+    }
+
+    async function sendMessage() {
+      const input = document.getElementById('chatInput');
+      const message = input.value.trim();
+      if (!message) return;
+
+      // Hide welcome message
+      const welcome = document.getElementById('welcomeMessage');
+      if (welcome) welcome.style.display = 'none';
+
+      // Add user message
+      addMessage(message, 'user');
+      input.value = '';
+      input.style.height = 'auto';
+
+      // Show loading
+      const loadingId = addLoadingMessage();
+
+      try {
+        const response = await fetch('/api/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            message,
+            threadId: state.threadId,
+            requestDiagram: state.requestDiagram
+          })
         });
 
-        // Chat functions
-        function handleKeydown(e) {
-            if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
+        const data = await response.json();
+        removeMessage(loadingId);
+
+        if (data.error) {
+          addMessage('Sorry, something went wrong. Please try again.', 'assistant');
+          return;
         }
 
-        function askQuestion(text) {
-            document.getElementById('input').value = text;
-            requestDiagram = true;
-            document.getElementById('diagramBtn').classList.add('active');
-            sendMessage();
+        state.threadId = data.threadId;
+        addMessage(data.response, 'assistant', data.diagram);
+
+        if (data.diagram) {
+          renderDiagramFromAI(data.diagram);
+          setView('split');
         }
+      } catch (error) {
+        removeMessage(loadingId);
+        addMessage('Sorry, I couldn\'t connect to the server. Please try again.', 'assistant');
+      }
 
-        function toggleDiagram() {
-            requestDiagram = !requestDiagram;
-            document.getElementById('diagramBtn').classList.toggle('active', requestDiagram);
+      state.requestDiagram = false;
+      document.getElementById('diagramBtn').classList.remove('active');
+    }
+
+    function addMessage(content, role, diagram = null) {
+      const container = document.getElementById('chatMessages');
+      const id = 'msg-' + Date.now();
+      
+      const avatar = role === 'user' ? 'U' : '<img src="ralph.png" alt="R" onerror="this.parentElement.innerHTML=\'R\'">';
+      
+      let html = `
+        <div class="message ${role}" id="${id}">
+          <div class="message-avatar">${avatar}</div>
+          <div class="message-content">
+            ${formatMessage(content)}
+            ${diagram ? '<div class="diagram-indicator" onclick="setView(\'split\')">📊 View Diagram</div>' : ''}
+          </div>
+        </div>
+      `;
+      
+      container.insertAdjacentHTML('beforeend', html);
+      container.scrollTop = container.scrollHeight;
+      return id;
+    }
+
+    function addLoadingMessage() {
+      const container = document.getElementById('chatMessages');
+      const id = 'loading-' + Date.now();
+      container.insertAdjacentHTML('beforeend', `
+        <div class="message assistant" id="${id}">
+          <div class="message-avatar"><img src="ralph.png" alt="R" onerror="this.parentElement.innerHTML='R'"></div>
+          <div class="message-content">
+            <div class="loading-dots"><span></span><span></span><span></span></div>
+          </div>
+        </div>
+      `);
+      container.scrollTop = container.scrollHeight;
+      return id;
+    }
+
+    function removeMessage(id) {
+      const msg = document.getElementById(id);
+      if (msg) msg.remove();
+    }
+
+    function formatMessage(text) {
+      return text.split('\n\n').map(p => `<p>${p.replace(/\n/g, '<br>')}</p>`).join('');
+    }
+
+    // ==================== Scenario & Diagram ====================
+    function loadScenario(key) {
+      const scenario = SCENARIOS[key];
+      if (!scenario) return;
+
+      state.currentScenario = key;
+      state.currentSequence = scenario.sequence;
+      state.currentStep = 0;
+
+      // Update UI
+      document.querySelectorAll('.scenario-chip').forEach(c => c.classList.remove('active'));
+      document.querySelector(`[data-scenario="${key}"]`)?.classList.add('active');
+      document.getElementById('diagramTitle').textContent = scenario.name;
+      document.getElementById('diagramDescription').textContent = scenario.description;
+
+      renderStep(0);
+      updatePlaybackControls();
+      setView('split');
+    }
+
+    function renderDiagramFromAI(diagram) {
+      state.currentScenario = 'ai';
+      state.currentSequence = diagram.sequence || [diagram];
+      state.currentStep = 0;
+
+      document.getElementById('diagramTitle').textContent = diagram.title || 'Visual Explanation';
+      document.getElementById('diagramDescription').textContent = diagram.description || '';
+      
+      document.querySelectorAll('.scenario-chip').forEach(c => c.classList.remove('active'));
+
+      renderStep(0);
+      updatePlaybackControls();
+    }
+
+    function renderStep(stepIndex) {
+      if (!state.currentSequence || !state.currentSequence[stepIndex]) return;
+      
+      const step = state.currentSequence[stepIndex];
+      state.currentStep = stepIndex;
+
+      // Clear layers
+      ['zonesLayer', 'arrowsLayer', 'playersLayer', 'ballLayer', 'annotationsLayer'].forEach(id => {
+        document.getElementById(id).innerHTML = '';
+      });
+
+      // Render zones
+      if (step.zones) {
+        const zonesLayer = document.getElementById('zonesLayer');
+        step.zones.forEach(zone => {
+          zonesLayer.innerHTML += `<rect class="zone ${zone.type}" x="${zone.x}" y="${zone.y}" width="${zone.width}" height="${zone.height}"/>`;
+        });
+      }
+
+      // Render arrows
+      if (step.arrows) {
+        const arrowsLayer = document.getElementById('arrowsLayer');
+        step.arrows.forEach(arrow => {
+          const dashClass = arrow.dashed ? 'dashed' : '';
+          arrowsLayer.innerHTML += `
+            <line class="arrow-line ${dashClass}" 
+              x1="${arrow.from.x}" y1="${arrow.from.y}" 
+              x2="${arrow.to.x}" y2="${arrow.to.y}" 
+              stroke="${arrow.color || '#3498db'}"/>
+          `;
+          if (arrow.label) {
+            const midX = (arrow.from.x + arrow.to.x) / 2;
+            const midY = (arrow.from.y + arrow.to.y) / 2 - 2;
+            arrowsLayer.innerHTML += `<text class="arrow-label" x="${midX}" y="${midY}">${arrow.label}</text>`;
+          }
+        });
+      }
+
+      // Render players
+      const playersLayer = document.getElementById('playersLayer');
+      if (step.attacking) {
+        Object.entries(step.attacking).forEach(([key, player]) => {
+          playersLayer.innerHTML += createPlayerSVG(player, 'attacking');
+        });
+      }
+      if (step.defending) {
+        Object.entries(step.defending).forEach(([key, player]) => {
+          playersLayer.innerHTML += createPlayerSVG(player, 'defending');
+        });
+      }
+
+      // Render ball
+      if (step.ball) {
+        const ballLayer = document.getElementById('ballLayer');
+        ballLayer.innerHTML = `
+          <g class="ball" transform="translate(${step.ball.x}, ${step.ball.y})">
+            <circle class="ball-circle" r="2"/>
+          </g>
+        `;
+      }
+
+      // Render annotations
+      if (step.annotations) {
+        const annotationsLayer = document.getElementById('annotationsLayer');
+        step.annotations.forEach(ann => {
+          const typeClass = ann.type || '';
+          annotationsLayer.innerHTML += `
+            <g class="annotation ${typeClass}" transform="translate(${ann.x}, ${ann.y})">
+              <rect class="annotation-bg" x="-20" y="-3" width="40" height="6"/>
+              <text class="annotation-text" text-anchor="middle" dominant-baseline="middle">${ann.text}</text>
+            </g>
+          `;
+        });
+      }
+
+      // Update caption
+      document.getElementById('stepCaption').textContent = step.caption || '';
+      updatePlaybackControls();
+    }
+
+    function createPlayerSVG(player, team) {
+      const classes = [
+        'player',
+        team,
+        player.highlight ? 'highlight' : '',
+        player.sneaking ? 'sneaking' : '',
+        player.cornering ? 'cornering' : ''
+      ].filter(Boolean).join(' ');
+
+      return `
+        <g class="${classes}" transform="translate(${player.x}, ${player.y})" data-team="${team}" data-role="${player.role}">
+          <circle class="player-circle" r="3"/>
+          <text class="player-number">${player.number || ''}</text>
+          <text class="player-label" y="6">${player.role || ''}</text>
+        </g>
+      `;
+    }
+
+    // ==================== Playback Controls ====================
+    function updatePlaybackControls() {
+      const total = state.currentSequence?.length || 0;
+      const current = state.currentStep + 1;
+      
+      document.getElementById('stepCounter').textContent = total > 0 ? `${current}/${total}` : '-/-';
+      document.getElementById('progressFill').style.width = total > 0 ? `${(current / total) * 100}%` : '0%';
+      document.getElementById('prevStepBtn').disabled = state.currentStep <= 0;
+      document.getElementById('nextStepBtn').disabled = state.currentStep >= total - 1;
+      document.getElementById('playPauseBtn').disabled = total <= 1;
+    }
+
+    function prevStep() {
+      if (state.currentStep > 0) renderStep(state.currentStep - 1);
+    }
+
+    function nextStep() {
+      if (state.currentStep < state.currentSequence.length - 1) renderStep(state.currentStep + 1);
+    }
+
+    function togglePlayback() {
+      state.isPlaying = !state.isPlaying;
+      document.getElementById('playIcon').style.display = state.isPlaying ? 'none' : 'block';
+      document.getElementById('pauseIcon').style.display = state.isPlaying ? 'block' : 'none';
+
+      if (state.isPlaying) {
+        state.playbackInterval = setInterval(() => {
+          if (state.currentStep < state.currentSequence.length - 1) {
+            nextStep();
+          } else {
+            togglePlayback();
+          }
+        }, 2000);
+      } else {
+        clearInterval(state.playbackInterval);
+      }
+    }
+
+    function seekProgress(e) {
+      const rect = e.target.getBoundingClientRect();
+      const pct = (e.clientX - rect.left) / rect.width;
+      const step = Math.floor(pct * state.currentSequence.length);
+      renderStep(Math.max(0, Math.min(step, state.currentSequence.length - 1)));
+    }
+
+    // ==================== Toolbar ====================
+    function toggleLabels() {
+      state.showLabels = !state.showLabels;
+      document.getElementById('pitchSvg').classList.toggle('show-labels', state.showLabels);
+      document.getElementById('toggleLabelsBtn').classList.toggle('active', state.showLabels);
+    }
+
+    function toggleEditMode() {
+      state.editMode = !state.editMode;
+      document.getElementById('pitchSvg').classList.toggle('edit-mode', state.editMode);
+      document.getElementById('editModeBtn').classList.toggle('active', state.editMode);
+    }
+
+    function resetDiagram() {
+      if (state.currentScenario && SCENARIOS[state.currentScenario]) {
+        loadScenario(state.currentScenario);
+      }
+    }
+
+    // ==================== Drag and Drop ====================
+    function setupDragAndDrop() {
+      const svg = document.getElementById('pitchSvg');
+      
+      svg.addEventListener('mousedown', (e) => {
+        if (!state.editMode) return;
+        const player = e.target.closest('.player');
+        const ball = e.target.closest('.ball');
+        
+        if (player || ball) {
+          state.draggedElement = player || ball;
+          state.draggedElement.classList.add('dragging');
         }
+      });
 
-        function setStatus(text, type = '') {
-            const s = document.getElementById('status');
-            s.className = 'status-bar ' + type;
-            s.querySelector('.status-text').textContent = text;
+      svg.addEventListener('mousemove', (e) => {
+        if (!state.draggedElement) return;
+        
+        const pt = svg.createSVGPoint();
+        pt.x = e.clientX;
+        pt.y = e.clientY;
+        const svgP = pt.matrixTransform(svg.getScreenCTM().inverse());
+        
+        state.draggedElement.setAttribute('transform', `translate(${svgP.x}, ${svgP.y})`);
+      });
+
+      svg.addEventListener('mouseup', () => {
+        if (state.draggedElement) {
+          state.draggedElement.classList.remove('dragging');
+          state.draggedElement = null;
         }
+      });
 
-        function addMessage(content, isUser, typewriter = false) {
-            const w = document.getElementById('welcome');
-            if (w) w.remove();
-
-            const m = document.getElementById('messages');
-            const d = document.createElement('div');
-            d.className = `message ${isUser ? 'user' : 'assistant'}`;
-
-            const av = isUser ? 'You' : '<img src="/ralph.png" alt="R" onerror="this.parentElement.textContent=\'R\'">';
-
-            if (typewriter && !isUser) {
-                d.innerHTML = `<div class="avatar">${av}</div><div class="bubble"><span class="tw"></span><span class="cursor">|</span></div>`;
-                m.appendChild(d);
-                m.scrollTop = m.scrollHeight;
-
-                const ts = d.querySelector('.tw'), cu = d.querySelector('.cursor');
-                const fc = formatContent(content, true);
-                let i = 0;
-                function type() {
-                    if (i < content.length) {
-                        ts.textContent += content.charAt(i);
-                        i++;
-                        m.scrollTop = m.scrollHeight;
-                        setTimeout(type, 5);
-                    } else {
-                        ts.innerHTML = fc;
-                        cu.remove();
-                        m.scrollTop = m.scrollHeight;
-                    }
-                }
-                type();
-            } else {
-                d.innerHTML = `<div class="avatar">${av}</div><div class="bubble">${formatContent(content, !isUser)}</div>`;
-                m.appendChild(d);
-                m.scrollTop = m.scrollHeight;
-            }
+      svg.addEventListener('mouseleave', () => {
+        if (state.draggedElement) {
+          state.draggedElement.classList.remove('dragging');
+          state.draggedElement = null;
         }
+      });
+    }
 
-        function formatContent(c, sig = false) {
-            let f = c.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-                     .replace(/\*(.*?)\*/g, '<em>$1</em>')
-                     .replace(/\n\n/g, '</p><p>')
-                     .replace(/\n/g, '<br>');
-            f = '<p>' + f + '</p>';
-            f = f.replace(/<p><\/p>/g, '');
-            if (sig && !c.includes('RDO-C') && !c.includes('Best wishes')) {
-                f += '<span class="signature">— RDO-C</span>';
-            }
-            return f;
-        }
-
-        function showTyping() {
-            const m = document.getElementById('messages');
-            const d = document.createElement('div');
-            d.className = 'message assistant';
-            d.id = 'typing';
-            d.innerHTML = `<div class="avatar"><img src="/ralph.png" alt="R" onerror="this.parentElement.textContent='R'"></div>
-                           <div class="bubble"><div class="typing-dots"><span></span><span></span><span></span></div></div>`;
-            m.appendChild(d);
-            m.scrollTop = m.scrollHeight;
-        }
-
-        function removeTyping() {
-            const t = document.getElementById('typing');
-            if (t) t.remove();
-        }
-
-        async function sendMessage() {
-            const input = document.getElementById('input');
-            const message = input.value.trim();
-            if (!message || isLoading) return;
-
-            isLoading = true;
-            document.getElementById('sendBtn').disabled = true;
-            input.value = '';
-
-            addMessage(message, true);
-            showTyping();
-            setStatus('Consulting the Laws...', 'connecting');
-
-            try {
-                const res = await fetch('/api/chat', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ message, threadId, requestDiagram })
-                });
-                const data = await res.json();
-                if (data.error) throw new Error(data.error);
-
-                threadId = data.threadId;
-                removeTyping();
-                addMessage(data.response, false, true);
-                setStatus('Ready');
-
-                if (data.diagram) {
-                    currentDiagram = data.diagram;
-                    currentStep = 0;
-                    renderPitch(data.diagram);
-                    updatePitchInfo(data.diagram);
-                    
-                    if (data.diagram.sequence && data.diagram.sequence.length > 0) {
-                        document.getElementById('seqControls').style.display = 'flex';
-                        updateSequenceUI();
-                    } else {
-                        document.getElementById('seqControls').style.display = 'none';
-                    }
-                }
-
-            } catch (e) {
-                removeTyping();
-                addMessage(`I do apologise — technical difficulty: ${e.message}`, false);
-                setStatus('Error', 'error');
-            }
-
-            isLoading = false;
-            document.getElementById('sendBtn').disabled = false;
-            input.focus();
-        }
-
-        // Pitch rendering
-        function renderPitch(diagram) {
-            const svg = document.getElementById('pitch');
-            const d = diagram || defaultDiagram;
-
-            let html = `
-                <!-- Pitch background -->
-                <defs>
-                    <linearGradient id="pitchGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-                        <stop offset="0%" style="stop-color:#4a7c59"/>
-                        <stop offset="100%" style="stop-color:#3d6b4a"/>
-                    </linearGradient>
-                    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
-                        <feDropShadow dx="0" dy="1" stdDeviation="1.5" flood-opacity="0.3"/>
-                    </filter>
-                    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-                        <polygon points="0 0, 10 3.5, 0 7" fill="#fff"/>
-                    </marker>
-                </defs>
-                
-                <!-- Field -->
-                <rect x="2" y="2" width="96" height="136" rx="3" fill="url(#pitchGrad)" stroke="#3d6b4a" stroke-width="1"/>
-                
-                <!-- Field lines -->
-                <rect x="8" y="8" width="84" height="124" fill="none" stroke="rgba(255,255,255,0.7)" stroke-width="0.5"/>
-                
-                <!-- Goal line (attacking) -->
-                <line x1="8" y1="12" x2="92" y2="12" stroke="rgba(255,255,255,0.9)" stroke-width="0.8"/>
-                <text x="50" y="10" text-anchor="middle" fill="rgba(255,255,255,0.6)" font-size="3" font-family="Inter, sans-serif">GOAL LINE</text>
-                
-                <!-- 3-yard line -->
-                <line x1="8" y1="20" x2="92" y2="20" stroke="rgba(255,255,255,0.5)" stroke-width="0.5" stroke-dasharray="2,2"/>
-                <text x="94" y="20" fill="rgba(255,255,255,0.5)" font-size="2.5" font-family="Inter, sans-serif">3yd</text>
-                
-                <!-- Goal posts -->
-                <rect x="38" y="8" width="24" height="4" fill="none" stroke="rgba(255,255,255,0.9)" stroke-width="0.8"/>
-                
-                <!-- Center line -->
-                <line x1="8" y1="70" x2="92" y2="70" stroke="rgba(255,255,255,0.3)" stroke-width="0.5" stroke-dasharray="2,2"/>
-            `;
-
-            // Zones
-            if (d.zones) {
-                d.zones.forEach(z => {
-                    const x = z.x * 0.84 + 8;
-                    const y = z.y * 1.24 + 8;
-                    const w = z.width * 0.84;
-                    const h = z.height * 1.24;
-                    html += `<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="rgba(150,200,162,0.3)" stroke="rgba(150,200,162,0.6)" stroke-width="0.5" rx="2"/>`;
-                    if (z.label) {
-                        html += `<text x="${x + w/2}" y="${y + h/2}" text-anchor="middle" dominant-baseline="middle" fill="rgba(255,255,255,0.8)" font-size="3" font-family="Inter, sans-serif">${z.label}</text>`;
-                    }
-                });
-            }
-
-            // Players
-            if (d.players) {
-                d.players.forEach(p => {
-                    const x = p.x * 0.84 + 8;
-                    const y = p.y * 1.24 + 8;
-                    const color = p.team === 'attack' ? '#3b82f6' : '#ef4444';
-                    const id = `player-${p.id}`;
-                    
-                    html += `
-                        <g id="${id}" class="player" data-id="${p.id}" style="cursor: ${editMode ? 'grab' : 'default'}">
-                            <circle cx="${x}" cy="${y}" r="5" fill="${color}" filter="url(#shadow)"/>
-                            <circle cx="${x}" cy="${y}" r="5" fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="0.5"/>
-                            <text x="${x}" y="${y + 1}" text-anchor="middle" dominant-baseline="middle" fill="white" font-size="3" font-weight="600" font-family="Inter, sans-serif">${p.role.charAt(0)}</text>
-                            <text x="${x}" y="${y + 9}" text-anchor="middle" fill="rgba(255,255,255,0.7)" font-size="2.5" font-family="Inter, sans-serif">${p.role}</text>
-                        </g>
-                    `;
-
-                    // Trajectory
-                    if (p.trajectory && p.trajectory.length > 0) {
-                        let path = `M ${x} ${y}`;
-                        p.trajectory.forEach(t => {
-                            const tx = t.x * 0.84 + 8;
-                            const ty = t.y * 1.24 + 8;
-                            path += ` L ${tx} ${ty}`;
-                        });
-                        html += `<path d="${path}" fill="none" stroke="${color}" stroke-width="1" stroke-dasharray="2,2" opacity="0.6" marker-end="url(#arrowhead)"/>`;
-                    }
-                });
-            }
-
-            // Ball
-            if (d.ball) {
-                const bx = d.ball.x * 0.84 + 8;
-                const by = d.ball.y * 1.24 + 8;
-                html += `
-                    <g id="ball" class="ball" style="cursor: ${editMode ? 'grab' : 'default'}">
-                        <circle cx="${bx}" cy="${by}" r="3" fill="#fbbf24" filter="url(#shadow)"/>
-                        <circle cx="${bx}" cy="${by}" r="3" fill="none" stroke="rgba(255,255,255,0.6)" stroke-width="0.5"/>
-                        <circle cx="${bx - 0.8}" cy="${by - 0.8}" r="0.8" fill="rgba(255,255,255,0.4)"/>
-                    </g>
-                `;
-
-                // Ball trajectory
-                if (d.ball.trajectory && d.ball.trajectory.length > 0) {
-                    let path = `M ${bx} ${by}`;
-                    d.ball.trajectory.forEach(t => {
-                        const tx = t.x * 0.84 + 8;
-                        const ty = t.y * 1.24 + 8;
-                        path += ` L ${tx} ${ty}`;
-                    });
-                    html += `<path d="${path}" fill="none" stroke="#fbbf24" stroke-width="1.5" stroke-dasharray="3,2" opacity="0.8" marker-end="url(#arrowhead)"/>`;
-                }
-            }
-
-            // Annotations
-            if (d.annotations) {
-                d.annotations.forEach(a => {
-                    const x = a.x * 0.84 + 8;
-                    const y = a.y * 1.24 + 8;
-                    
-                    if (a.arrow) {
-                        const fx = a.arrow.from[0] * 0.84 + 8;
-                        const fy = a.arrow.from[1] * 1.24 + 8;
-                        const tx = a.arrow.to[0] * 0.84 + 8;
-                        const ty = a.arrow.to[1] * 1.24 + 8;
-                        html += `<line x1="${fx}" y1="${fy}" x2="${tx}" y2="${ty}" stroke="rgba(255,255,255,0.8)" stroke-width="1" marker-end="url(#arrowhead)"/>`;
-                    }
-                    
-                    html += `
-                        <rect x="${x - 15}" y="${y - 4}" width="30" height="8" rx="2" fill="rgba(0,0,0,0.5)"/>
-                        <text x="${x}" y="${y}" text-anchor="middle" dominant-baseline="middle" fill="white" font-size="2.8" font-family="Inter, sans-serif">${a.text}</text>
-                    `;
-                });
-            }
-
-            svg.innerHTML = html;
-
-            // Add drag handlers if in edit mode
-            if (editMode) {
-                setupDragHandlers();
-            }
-        }
-
-        function updatePitchInfo(diagram) {
-            document.getElementById('pitchTitle').textContent = diagram.title || 'Scenario View';
-            if (diagram.sequence && diagram.sequence.length > 0) {
-                document.getElementById('pitchDesc').textContent = diagram.sequence[currentStep]?.description || '';
-            } else {
-                document.getElementById('pitchDesc').textContent = 'Interactive diagram showing the scenario.';
-            }
-        }
-
-        function updateSequenceUI() {
-            const seq = currentDiagram?.sequence || [];
-            const total = seq.length || 1;
-            const progress = ((currentStep + 1) / total) * 100;
-            
-            document.getElementById('seqProgress').style.width = progress + '%';
-            document.getElementById('seqLabel').textContent = `Step ${currentStep + 1}/${total}`;
-            document.getElementById('pitchDesc').textContent = seq[currentStep]?.description || '';
-        }
-
-        // Sequence controls
-        function togglePlay() {
-            isPlaying = !isPlaying;
-            const btn = document.getElementById('playBtn');
-            
-            if (isPlaying) {
-                btn.innerHTML = '<svg viewBox="0 0 24 24"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>';
-                playInterval = setInterval(() => {
-                    if (currentStep < (currentDiagram?.sequence?.length || 1) - 1) {
-                        nextStep();
-                    } else {
-                        togglePlay();
-                    }
-                }, 1500);
-            } else {
-                btn.innerHTML = '<svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg>';
-                clearInterval(playInterval);
-            }
-        }
-
-        function nextStep() {
-            const seq = currentDiagram?.sequence || [];
-            if (currentStep < seq.length - 1) {
-                currentStep++;
-                updateSequenceUI();
-                // Could animate to new positions here
-            }
-        }
-
-        function prevStep() {
-            if (currentStep > 0) {
-                currentStep--;
-                updateSequenceUI();
-            }
-        }
-
-        // Edit mode
-        function toggleEdit() {
-            editMode = !editMode;
-            document.getElementById('editBtn').classList.toggle('active', editMode);
-            renderPitch(currentDiagram || defaultDiagram);
-        }
-
-        function setupDragHandlers() {
-            const svg = document.getElementById('pitch');
-            const players = svg.querySelectorAll('.player');
-            const ball = svg.querySelector('.ball');
-
-            [...players, ball].forEach(el => {
-                if (!el) return;
-                el.style.cursor = 'grab';
-                
-                el.addEventListener('mousedown', startDrag);
-                el.addEventListener('touchstart', startDrag, { passive: false });
-            });
-
-            svg.addEventListener('mousemove', drag);
-            svg.addEventListener('touchmove', drag, { passive: false });
-            svg.addEventListener('mouseup', endDrag);
-            svg.addEventListener('touchend', endDrag);
-            svg.addEventListener('mouseleave', endDrag);
-        }
-
-        function startDrag(e) {
-            if (!editMode) return;
-            e.preventDefault();
-            draggedElement = e.currentTarget;
-            draggedElement.style.cursor = 'grabbing';
-        }
-
-        function drag(e) {
-            if (!draggedElement || !editMode) return;
-            e.preventDefault();
-
-            const svg = document.getElementById('pitch');
-            const rect = svg.getBoundingClientRect();
-            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-            const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-
-            const x = ((clientX - rect.left) / rect.width) * 100;
-            const y = ((clientY - rect.top) / rect.height) * 140;
-
-            const circle = draggedElement.querySelector('circle');
-            if (circle) {
-                circle.setAttribute('cx', x);
-                circle.setAttribute('cy', y);
-            }
-
-            const texts = draggedElement.querySelectorAll('text');
-            texts.forEach((t, i) => {
-                t.setAttribute('x', x);
-                t.setAttribute('y', y + (i === 0 ? 1 : 9));
-            });
-        }
-
-        function endDrag() {
-            if (draggedElement) {
-                draggedElement.style.cursor = 'grab';
-                draggedElement = null;
-            }
-        }
-
-        function resetPitch() {
-            currentDiagram = null;
-            currentStep = 0;
-            document.getElementById('seqControls').style.display = 'none';
-            document.getElementById('pitchTitle').textContent = 'Scenario View';
-            document.getElementById('pitchDesc').textContent = 'Ask a question with the Diagram button enabled to see an illustrated explanation.';
-            renderPitch(defaultDiagram);
-        }
-    </script>
+    // Initialize
+    init();
+  </script>
 </body>
 </html>

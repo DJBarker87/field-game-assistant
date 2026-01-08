@@ -1,5 +1,5 @@
 // Vercel Serverless Function (Node.js runtime)
-// Uses raw fetch to OpenAI API for maximum compatibility
+// Uses raw fetch to OpenAI Assistants API v2
 
 export default async function handler(req, res) {
   // CORS headers
@@ -18,11 +18,15 @@ export default async function handler(req, res) {
   const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
   const ASSISTANT_ID = process.env.ASSISTANT_ID;
 
-  // Debug logging
-  console.log('API called');
-  console.log('ASSISTANT_ID exists:', !!ASSISTANT_ID);
-  console.log('OPENAI_API_KEY exists:', !!OPENAI_API_KEY);
-  console.log('ASSISTANT_ID value:', ASSISTANT_ID ? ASSISTANT_ID.substring(0, 10) + '...' : 'NOT SET');
+  // Debug logging - check Vercel function logs
+  console.log('=== Field Game Assistant API ===');
+  console.log('OPENAI_API_KEY set:', !!OPENAI_API_KEY);
+  console.log('ASSISTANT_ID:', ASSISTANT_ID || 'NOT SET');
+  
+  // Validate Assistant ID format
+  if (ASSISTANT_ID && !ASSISTANT_ID.startsWith('asst_')) {
+    console.error('WARNING: ASSISTANT_ID does not start with asst_');
+  }
 
   if (!OPENAI_API_KEY) {
     return res.status(500).json({ error: 'OpenAI API key not configured' });

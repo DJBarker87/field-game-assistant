@@ -1,0 +1,960 @@
+{
+  "kickoff": {
+    "name": "Kick-off",
+    "desc": "Set-Piece Bully formation at centre",
+    "seq": [
+      {
+        "caption": "Teams line up for kick-off. The side that lost the toss has 'Heads'.",
+        "dur": 2500,
+        "vb": { "x": 20, "y": 5, "w": 70, "h": 65 },
+        "ball": { "x": 55, "y": 37.5 },
+        "atk": {
+          "post": { "x": 54, "y": 37.5, "l": "B", "r": "Post" },
+          "sp1": { "x": 52, "y": 34, "l": "B", "r": "Side Post" },
+          "sp2": { "x": 52, "y": 41, "l": "B", "r": "Side Post" },
+          "c1": { "x": 50, "y": 31, "l": "B", "r": "Corner" },
+          "c2": { "x": 50, "y": 44, "l": "B", "r": "Corner" },
+          "bup": { "x": 51, "y": 37.5, "l": "B", "r": "Bup" },
+          "fly": { "x": 44, "y": 37.5, "l": "F", "r": "Fly" },
+          "short": { "x": 30, "y": 37.5, "l": "S", "r": "Short" },
+          "long1": { "x": 20, "y": 22, "l": "L", "r": "Long" },
+          "long2": { "x": 20, "y": 53, "l": "L", "r": "Long" }
+        },
+        "def": {
+          "post": { "x": 56, "y": 37.5, "l": "B", "r": "Post" },
+          "sp1": { "x": 58, "y": 34, "l": "B" },
+          "sp2": { "x": 58, "y": 41, "l": "B" },
+          "c1": { "x": 60, "y": 31, "l": "B" },
+          "c2": { "x": 60, "y": 44, "l": "B" },
+          "bup": { "x": 59, "y": 37.5, "l": "B" },
+          "fly": { "x": 66, "y": 37.5, "l": "F" },
+          "short": { "x": 80, "y": 37.5, "l": "S" },
+          "long1": { "x": 90, "y": 22, "l": "L" },
+          "long2": { "x": 90, "y": 53, "l": "L" }
+        },
+        "ann": [{ "x": 55, "y": 10, "txt": "Set-Piece Bully at centre", "t": "info" }]
+      },
+      {
+        "caption": "Zooming in: 7 Bully-players form the scrum structure.",
+        "dur": 2500,
+        "vb": { "x": 44, "y": 28, "w": 22, "h": 20 },
+        "ball": { "x": 55, "y": 37.5 },
+        "atk": {
+          "post": { "x": 54, "y": 37.5, "l": "B", "r": "Post", "hl": true },
+          "sp1": { "x": 52.5, "y": 35, "l": "B", "r": "SP" },
+          "sp2": { "x": 52.5, "y": 40, "l": "B", "r": "SP" },
+          "c1": { "x": 51, "y": 33, "l": "B", "r": "C" },
+          "c2": { "x": 51, "y": 42, "l": "B", "r": "C" },
+          "bup": { "x": 52, "y": 37.5, "l": "B", "r": "Bup" }
+        },
+        "def": {
+          "post": { "x": 56, "y": 37.5, "l": "B" },
+          "sp1": { "x": 57.5, "y": 35, "l": "B" },
+          "sp2": { "x": 57.5, "y": 40, "l": "B" },
+          "c1": { "x": 59, "y": 33, "l": "B" },
+          "c2": { "x": 59, "y": 42, "l": "B" },
+          "bup": { "x": 58, "y": 37.5, "l": "B" }
+        },
+        "zones": [{ "t": "bully", "x": 50, "y": 32, "w": 10, "h": 11 }],
+        "ann": [{ "x": 55, "y": 45, "txt": "The Bully formation", "t": "info" }]
+      },
+      {
+        "caption": "Umpire calls: CROUCH... Front rows prepare to engage.",
+        "dur": 2000,
+        "vb": { "x": 46, "y": 30, "w": 18, "h": 16 },
+        "ball": { "x": 55, "y": 37.5 },
+        "atk": {
+          "post": { "x": 54.3, "y": 37.5, "l": "B" },
+          "sp1": { "x": 52.8, "y": 35.3, "l": "B" },
+          "sp2": { "x": 52.8, "y": 39.7, "l": "B" },
+          "c1": { "x": 51.5, "y": 33.5, "l": "B" },
+          "c2": { "x": 51.5, "y": 41.5, "l": "B" },
+          "bup": { "x": 52.5, "y": 37.5, "l": "B" }
+        },
+        "def": {
+          "post": { "x": 55.7, "y": 37.5, "l": "B" },
+          "sp1": { "x": 57.2, "y": 35.3, "l": "B" },
+          "sp2": { "x": 57.2, "y": 39.7, "l": "B" },
+          "c1": { "x": 58.5, "y": 33.5, "l": "B" },
+          "c2": { "x": 58.5, "y": 41.5, "l": "B" },
+          "bup": { "x": 57.5, "y": 37.5, "l": "B" }
+        },
+        "zones": [{ "t": "bully", "x": 50, "y": 32, "w": 10, "h": 11 }],
+        "ann": [{ "x": 55, "y": 44, "txt": "CROUCH...", "t": "warning" }]
+      },
+      {
+        "caption": "BIND... Players lock together safely.",
+        "dur": 1800,
+        "vb": { "x": 46, "y": 30, "w": 18, "h": 16 },
+        "ball": { "x": 55, "y": 37.5 },
+        "atk": {
+          "post": { "x": 54.5, "y": 37.5, "l": "B" },
+          "sp1": { "x": 53, "y": 35.5, "l": "B" },
+          "sp2": { "x": 53, "y": 39.5, "l": "B" },
+          "c1": { "x": 51.8, "y": 34, "l": "B" },
+          "c2": { "x": 51.8, "y": 41, "l": "B" },
+          "bup": { "x": 52.8, "y": 37.5, "l": "B" }
+        },
+        "def": {
+          "post": { "x": 55.5, "y": 37.5, "l": "B" },
+          "sp1": { "x": 57, "y": 35.5, "l": "B" },
+          "sp2": { "x": 57, "y": 39.5, "l": "B" },
+          "c1": { "x": 58.2, "y": 34, "l": "B" },
+          "c2": { "x": 58.2, "y": 41, "l": "B" },
+          "bup": { "x": 57.2, "y": 37.5, "l": "B" }
+        },
+        "zones": [{ "t": "bully", "x": 50, "y": 32, "w": 10, "h": 11 }],
+        "ann": [{ "x": 55, "y": 44, "txt": "BIND...", "t": "warning" }]
+      },
+      {
+        "caption": "SET! Front rows engage. Ball ready to be inserted.",
+        "dur": 2000,
+        "vb": { "x": 46, "y": 30, "w": 18, "h": 16 },
+        "ball": { "x": 55, "y": 37.5 },
+        "atk": {
+          "post": { "x": 54.8, "y": 37.5, "l": "B" },
+          "sp1": { "x": 53.3, "y": 35.8, "l": "B" },
+          "sp2": { "x": 53.3, "y": 39.2, "l": "B" },
+          "c1": { "x": 52, "y": 34.2, "l": "B", "hl": true },
+          "c2": { "x": 52, "y": 40.8, "l": "B" },
+          "bup": { "x": 53, "y": 37.5, "l": "B" }
+        },
+        "def": {
+          "post": { "x": 55.2, "y": 37.5, "l": "B" },
+          "sp1": { "x": 56.7, "y": 35.8, "l": "B" },
+          "sp2": { "x": 56.7, "y": 39.2, "l": "B" },
+          "c1": { "x": 58, "y": 34.2, "l": "B" },
+          "c2": { "x": 58, "y": 40.8, "l": "B" },
+          "bup": { "x": 57, "y": 37.5, "l": "B" }
+        },
+        "zones": [{ "t": "bully", "x": 50, "y": 32, "w": 10, "h": 11 }],
+        "ann": [{ "x": 55, "y": 44, "txt": "SET!", "t": "warning" }]
+      },
+      {
+        "caption": "Corner without Heads inserts ball along the tunnel.",
+        "dur": 2500,
+        "vb": { "x": 46, "y": 30, "w": 18, "h": 16 },
+        "ball": { "x": 55, "y": 37.5 },
+        "atk": {
+          "post": { "x": 54.8, "y": 37.5, "l": "B" },
+          "sp1": { "x": 53.3, "y": 35.8, "l": "B" },
+          "sp2": { "x": 53.3, "y": 39.2, "l": "B" },
+          "c1": { "x": 52, "y": 34.2, "l": "B", "hl": true },
+          "c2": { "x": 52, "y": 40.8, "l": "B" },
+          "bup": { "x": 53, "y": 37.5, "l": "B" }
+        },
+        "def": {
+          "post": { "x": 55.2, "y": 37.5, "l": "B" },
+          "sp1": { "x": 56.7, "y": 35.8, "l": "B" },
+          "sp2": { "x": 56.7, "y": 39.2, "l": "B" },
+          "c1": { "x": 58, "y": 34.2, "l": "B" },
+          "c2": { "x": 58, "y": 40.8, "l": "B" },
+          "bup": { "x": 57, "y": 37.5, "l": "B" }
+        },
+        "zones": [{ "t": "bully", "x": 50, "y": 32, "w": 10, "h": 11 }],
+        "arrs": [{ "from": { "x": 52, "y": 34.2 }, "to": { "x": 55, "y": 37.5 }, "c": "#f1c40f", "anim": true }],
+        "ann": [{ "x": 52, "y": 32, "txt": "Corner inserts ball", "t": "info" }]
+      },
+      {
+        "caption": "Teams contest for the ball. Feet only - no hands in Bully!",
+        "dur": 2500,
+        "vb": { "x": 46, "y": 30, "w": 18, "h": 16 },
+        "ball": { "x": 54.5, "y": 37.8 },
+        "atk": {
+          "post": { "x": 54.2, "y": 37.5, "l": "B", "hl": true },
+          "sp1": { "x": 53, "y": 36, "l": "B" },
+          "sp2": { "x": 53, "y": 39, "l": "B" },
+          "c1": { "x": 51.5, "y": 34.5, "l": "B" },
+          "c2": { "x": 51.5, "y": 40.5, "l": "B" },
+          "bup": { "x": 52.5, "y": 37.5, "l": "B" }
+        },
+        "def": {
+          "post": { "x": 55.8, "y": 37.5, "l": "B" },
+          "sp1": { "x": 57, "y": 36, "l": "B" },
+          "sp2": { "x": 57, "y": 39, "l": "B" },
+          "c1": { "x": 58.5, "y": 34.5, "l": "B" },
+          "c2": { "x": 58.5, "y": 40.5, "l": "B" },
+          "bup": { "x": 57.5, "y": 37.5, "l": "B" }
+        },
+        "zones": [{ "t": "bully", "x": 50, "y": 32, "w": 10, "h": 11 }],
+        "ann": [{ "x": 55, "y": 44, "txt": "Contest for possession!", "t": "warning" }]
+      },
+      {
+        "caption": "Ball emerges to the Fly. Open play begins!",
+        "dur": 2500,
+        "vb": { "x": 30, "y": 18, "w": 45, "h": 40 },
+        "ball": { "x": 44, "y": 37.5 },
+        "atk": {
+          "post": { "x": 53, "y": 37.5, "l": "B" },
+          "fly": { "x": 44, "y": 37.5, "l": "F", "r": "Fly", "hl": true },
+          "short": { "x": 30, "y": 37.5, "l": "S" }
+        },
+        "def": {
+          "post": { "x": 57, "y": 37.5, "l": "B" },
+          "fly": { "x": 64, "y": 37.5, "l": "F" },
+          "short": { "x": 78, "y": 37.5, "l": "S" }
+        },
+        "arrs": [{ "from": { "x": 54, "y": 37.8 }, "to": { "x": 44, "y": 37.5 }, "c": "#27ae60", "anim": true }],
+        "ann": [{ "x": 44, "y": 30, "txt": "Ball to Fly - play on!", "t": "scoring" }]
+      }
+    ]
+  },
+
+  "sneaking": {
+    "name": "Sneaking",
+    "desc": "Being ahead of teammate with ball (Law O)",
+    "seq": [
+      {
+        "caption": "Short Behind has the ball and is making ground (running with it).",
+        "dur": 2500,
+        "vb": { "x": 22, "y": 18, "w": 50, "h": 42 },
+        "ball": { "x": 36, "y": 40 },
+        "atk": {
+          "short": { "x": 36, "y": 40, "l": "S", "r": "Short", "hl": true },
+          "fly": { "x": 32, "y": 36, "l": "F", "r": "Fly" },
+          "post": { "x": 48, "y": 40, "l": "B" },
+          "long1": { "x": 22, "y": 28, "l": "L" }
+        },
+        "def": {
+          "short": { "x": 60, "y": 38, "l": "S" },
+          "fly": { "x": 55, "y": 42, "l": "F" },
+          "post": { "x": 52, "y": 38, "l": "B" }
+        },
+        "ann": [{ "x": 36, "y": 48, "txt": "Short making ground with ball", "t": "info" }]
+      },
+      {
+        "caption": "Fly is currently BEHIND the ball carrier. This is perfectly LEGAL.",
+        "dur": 2500,
+        "vb": { "x": 26, "y": 22, "w": 42, "h": 34 },
+        "ball": { "x": 40, "y": 40 },
+        "atk": {
+          "short": { "x": 40, "y": 40, "l": "S", "r": "Short", "hl": true },
+          "fly": { "x": 36, "y": 36, "l": "F", "r": "Fly" },
+          "post": { "x": 50, "y": 40, "l": "B" }
+        },
+        "def": {
+          "short": { "x": 58, "y": 38, "l": "S" },
+          "fly": { "x": 52, "y": 42, "l": "F" }
+        },
+        "arrs": [{ "from": { "x": 36, "y": 40 }, "to": { "x": 40, "y": 40 }, "c": "#3498db", "anim": true }],
+        "ann": [{ "x": 36, "y": 30, "txt": "Fly BEHIND ball = LEGAL", "t": "scoring" }]
+      },
+      {
+        "caption": "Short continues advancing. Fly starts moving up the pitch too.",
+        "dur": 2000,
+        "vb": { "x": 30, "y": 24, "w": 38, "h": 30 },
+        "ball": { "x": 44, "y": 40 },
+        "atk": {
+          "short": { "x": 44, "y": 40, "l": "S", "r": "Short", "hl": true },
+          "fly": { "x": 42, "y": 36, "l": "F", "r": "Fly" },
+          "post": { "x": 52, "y": 40, "l": "B" }
+        },
+        "def": {
+          "short": { "x": 56, "y": 38, "l": "S" },
+          "fly": { "x": 50, "y": 42, "l": "F" }
+        },
+        "arrs": [{ "from": { "x": 40, "y": 40 }, "to": { "x": 44, "y": 40 }, "c": "#3498db", "anim": true }],
+        "ann": [{ "x": 44, "y": 48, "txt": "Fly level with ball", "t": "info" }]
+      },
+      {
+        "caption": "Fly moves AHEAD of the ball carrier...",
+        "dur": 2000,
+        "vb": { "x": 34, "y": 26, "w": 34, "h": 26 },
+        "ball": { "x": 46, "y": 40 },
+        "atk": {
+          "short": { "x": 46, "y": 40, "l": "S", "r": "Short", "hl": true },
+          "fly": { "x": 50, "y": 36, "l": "F", "r": "Fly" },
+          "post": { "x": 54, "y": 42, "l": "B" }
+        },
+        "def": {
+          "short": { "x": 58, "y": 38, "l": "S" },
+          "fly": { "x": 56, "y": 44, "l": "F" }
+        },
+        "arrs": [{ "from": { "x": 42, "y": 36 }, "to": { "x": 50, "y": 36 }, "c": "#e67e22", "anim": true }],
+        "ann": [{ "x": 50, "y": 30, "txt": "Fly moving ahead...", "t": "warning" }]
+      },
+      {
+        "caption": "Both feet ahead of the ball = SNEAKING! This is an offence.",
+        "dur": 2500,
+        "vb": { "x": 36, "y": 28, "w": 30, "h": 22 },
+        "ball": { "x": 46, "y": 40 },
+        "atk": {
+          "short": { "x": 46, "y": 40, "l": "S", "r": "Short", "hl": true },
+          "fly": { "x": 54, "y": 36, "l": "F", "r": "Fly", "sn": true }
+        },
+        "def": {
+          "short": { "x": 60, "y": 38, "l": "S" },
+          "fly": { "x": 58, "y": 44, "l": "F" }
+        },
+        "zones": [{ "t": "sneaking", "x": 47, "y": 0, "w": 63, "h": 75 }],
+        "ann": [{ "x": 54, "y": 30, "txt": "SNEAKING!", "t": "warning" }, { "x": 46, "y": 46, "txt": "Ball position", "t": "info" }]
+      },
+      {
+        "caption": "The Fly cannot touch the ball or interfere with play from here.",
+        "dur": 2500,
+        "vb": { "x": 36, "y": 28, "w": 30, "h": 22 },
+        "ball": { "x": 46, "y": 40 },
+        "atk": {
+          "short": { "x": 46, "y": 40, "l": "S", "r": "Short", "hl": true },
+          "fly": { "x": 54, "y": 36, "l": "F", "r": "Fly", "sn": true }
+        },
+        "def": {
+          "short": { "x": 60, "y": 38, "l": "S" },
+          "fly": { "x": 58, "y": 44, "l": "F" }
+        },
+        "zones": [{ "t": "sneaking", "x": 47, "y": 0, "w": 63, "h": 75 }],
+        "ann": [{ "x": 54, "y": 30, "txt": "Cannot interfere!", "t": "warning" }]
+      },
+      {
+        "caption": "PENALTY: Free Kick awarded to the defending team.",
+        "dur": 2500,
+        "vb": { "x": 32, "y": 24, "w": 40, "h": 30 },
+        "ball": { "x": 46, "y": 40 },
+        "atk": {
+          "short": { "x": 46, "y": 40, "l": "S" },
+          "fly": { "x": 54, "y": 36, "l": "F", "sn": true },
+          "post": { "x": 56, "y": 42, "l": "B" }
+        },
+        "def": {
+          "short": { "x": 60, "y": 38, "l": "S", "hl": true },
+          "fly": { "x": 58, "y": 44, "l": "F" }
+        },
+        "ann": [{ "x": 46, "y": 32, "txt": "FREE KICK to defenders", "t": "warning" }]
+      }
+    ]
+  },
+
+  "onTheLine": {
+    "name": "On-the-Line",
+    "desc": "Ball in 3-yard zone under attacker control (Law J)",
+    "seq": [
+      {
+        "caption": "Attacker advances towards the goal with the ball.",
+        "dur": 2500,
+        "vb": { "x": -2, "y": 18, "w": 30, "h": 40 },
+        "ball": { "x": 10, "y": 38 },
+        "atk": {
+          "short": { "x": 10, "y": 38, "l": "S", "r": "Short", "hl": true },
+          "fly": { "x": 16, "y": 35, "l": "F" },
+          "post": { "x": 20, "y": 40, "l": "B" }
+        },
+        "def": {
+          "short": { "x": 8, "y": 42, "l": "S" },
+          "fly": { "x": 12, "y": 34, "l": "F" },
+          "goals": { "x": 1, "y": 37.5, "l": "G", "r": "Goals" }
+        },
+        "zones": [{ "t": "onTheLine", "x": 0, "y": 0, "w": 3, "h": 75 }],
+        "ann": [{ "x": 18, "y": 28, "txt": "Approaching 3-yard zone", "t": "info" }]
+      },
+      {
+        "caption": "Ball enters the 3-yard zone. ON-THE-LINE rules now apply!",
+        "dur": 2500,
+        "vb": { "x": -6, "y": 22, "w": 24, "h": 32 },
+        "ball": { "x": 2, "y": 38 },
+        "atk": {
+          "short": { "x": 2, "y": 38, "l": "S", "r": "Short", "hl": true },
+          "fly": { "x": 10, "y": 36, "l": "F" },
+          "post": { "x": 14, "y": 40, "l": "B" }
+        },
+        "def": {
+          "short": { "x": 4, "y": 42, "l": "S" },
+          "fly": { "x": 8, "y": 34, "l": "F" },
+          "goals": { "x": 1, "y": 37.5, "l": "G" }
+        },
+        "zones": [{ "t": "onTheLine", "x": 0, "y": 0, "w": 3, "h": 75 }],
+        "arrs": [{ "from": { "x": 10, "y": 38 }, "to": { "x": 2, "y": 38 }, "c": "#27ae60", "anim": true }],
+        "ann": [{ "x": 10, "y": 28, "txt": "ON-THE-LINE!", "t": "warning" }]
+      },
+      {
+        "caption": "ATTACKER RULE: Must keep the ball moving at all times.",
+        "dur": 2500,
+        "vb": { "x": -6, "y": 26, "w": 22, "h": 26 },
+        "ball": { "x": 2, "y": 40 },
+        "atk": {
+          "short": { "x": 2, "y": 40, "l": "S", "r": "Short", "hl": true },
+          "fly": { "x": 10, "y": 38, "l": "F" }
+        },
+        "def": {
+          "short": { "x": 3.5, "y": 43, "l": "S" },
+          "fly": { "x": 7, "y": 36, "l": "F" },
+          "goals": { "x": 1, "y": 37.5, "l": "G" }
+        },
+        "zones": [{ "t": "onTheLine", "x": 0, "y": 0, "w": 3, "h": 75 }],
+        "arrs": [{ "from": { "x": 2, "y": 38 }, "to": { "x": 2, "y": 40 }, "c": "#27ae60", "anim": true }],
+        "ann": [{ "x": 10, "y": 32, "txt": "Keep ball MOVING!", "t": "info" }]
+      },
+      {
+        "caption": "DEFENDER RULE: Must constantly engage - stay in playing distance!",
+        "dur": 2500,
+        "vb": { "x": -6, "y": 28, "w": 20, "h": 22 },
+        "ball": { "x": 2, "y": 42 },
+        "atk": {
+          "short": { "x": 2, "y": 42, "l": "S", "hl": true }
+        },
+        "def": {
+          "short": { "x": 3, "y": 44, "l": "S", "hl": true },
+          "goals": { "x": 1, "y": 37.5, "l": "G" }
+        },
+        "zones": [{ "t": "onTheLine", "x": 0, "y": 0, "w": 3, "h": 75 }],
+        "ann": [{ "x": 8, "y": 38, "txt": "Defender MUST engage!", "t": "warning" }]
+      },
+      {
+        "caption": "Defender backs off - fails to engage continuously.",
+        "dur": 2500,
+        "vb": { "x": -6, "y": 30, "w": 20, "h": 20 },
+        "ball": { "x": 2, "y": 44 },
+        "atk": {
+          "short": { "x": 2, "y": 44, "l": "S", "hl": true }
+        },
+        "def": {
+          "short": { "x": 7, "y": 44, "l": "S", "sn": true },
+          "goals": { "x": 1, "y": 37.5, "l": "G" }
+        },
+        "zones": [{ "t": "onTheLine", "x": 0, "y": 0, "w": 3, "h": 75 }],
+        "arrs": [{ "from": { "x": 3, "y": 44 }, "to": { "x": 7, "y": 44 }, "c": "#e74c3c", "anim": true }],
+        "ann": [{ "x": 7, "y": 38, "txt": "NOT ENGAGING!", "t": "warning" }]
+      },
+      {
+        "caption": "This is an offence by the defender on-the-line.",
+        "dur": 2500,
+        "vb": { "x": -6, "y": 30, "w": 20, "h": 20 },
+        "ball": { "x": 2, "y": 44 },
+        "atk": {
+          "short": { "x": 2, "y": 44, "l": "S", "hl": true }
+        },
+        "def": {
+          "short": { "x": 7, "y": 44, "l": "S", "sn": true },
+          "goals": { "x": 1, "y": 37.5, "l": "G" }
+        },
+        "zones": [{ "t": "onTheLine", "x": 0, "y": 0, "w": 3, "h": 75 }],
+        "ann": [{ "x": 7, "y": 38, "txt": "DEFENDER OFFENCE!", "t": "warning" }]
+      },
+      {
+        "caption": "PENALTY: 1 Point + Free Kick on the 3-yard line!",
+        "dur": 2500,
+        "vb": { "x": -4, "y": 28, "w": 22, "h": 24 },
+        "ball": { "x": 3, "y": 44 },
+        "atk": {
+          "short": { "x": 3, "y": 44, "l": "S", "hl": true },
+          "fly": { "x": 10, "y": 42, "l": "F" }
+        },
+        "def": {
+          "short": { "x": 8, "y": 44, "l": "S", "sn": true },
+          "goals": { "x": 1, "y": 37.5, "l": "G" }
+        },
+        "zones": [{ "t": "onTheLine", "x": 0, "y": 0, "w": 3, "h": 75 }],
+        "ann": [{ "x": 10, "y": 36, "txt": "1 POINT + FREE KICK!", "t": "scoring" }]
+      }
+    ]
+  },
+
+  "rouge": {
+    "name": "Rouge",
+    "desc": "Ball crosses goal-line off defender (Law K)",
+    "seq": [
+      {
+        "caption": "Play develops near the goal. Defender is under pressure.",
+        "dur": 2500,
+        "vb": { "x": -2, "y": 22, "w": 28, "h": 34 },
+        "ball": { "x": 10, "y": 40 },
+        "atk": {
+          "short": { "x": 8, "y": 38, "l": "S" },
+          "fly": { "x": 14, "y": 36, "l": "F" }
+        },
+        "def": {
+          "short": { "x": 10, "y": 42, "l": "S", "hl": true },
+          "fly": { "x": 12, "y": 34, "l": "F" },
+          "goals": { "x": 1, "y": 37.5, "l": "G", "r": "Goals" }
+        },
+        "ann": [{ "x": 16, "y": 28, "txt": "Pressure on defender", "t": "info" }]
+      },
+      {
+        "caption": "Defender plays the ball but it deflects.",
+        "dur": 2500,
+        "vb": { "x": -4, "y": 26, "w": 24, "h": 28 },
+        "ball": { "x": 6, "y": 40 },
+        "atk": {
+          "short": { "x": 6, "y": 38, "l": "S" },
+          "fly": { "x": 12, "y": 36, "l": "F" }
+        },
+        "def": {
+          "short": { "x": 8, "y": 42, "l": "S", "hl": true },
+          "goals": { "x": 1, "y": 37.5, "l": "G" }
+        },
+        "arrs": [{ "from": { "x": 10, "y": 42 }, "to": { "x": 6, "y": 40 }, "c": "#e74c3c", "anim": true }],
+        "ann": [{ "x": 12, "y": 30, "txt": "Touched by defender", "t": "info" }]
+      },
+      {
+        "caption": "Ball travels towards goal-line. Last touch was DEFENDER.",
+        "dur": 2500,
+        "vb": { "x": -8, "y": 28, "w": 22, "h": 24 },
+        "ball": { "x": 2, "y": 40 },
+        "atk": {
+          "short": { "x": 4, "y": 38, "l": "S" },
+          "fly": { "x": 8, "y": 36, "l": "F" }
+        },
+        "def": {
+          "short": { "x": 5, "y": 42, "l": "S" },
+          "goals": { "x": 1, "y": 37.5, "l": "G" }
+        },
+        "arrs": [{ "from": { "x": 6, "y": 40 }, "to": { "x": 2, "y": 40 }, "c": "#e74c3c", "anim": true }],
+        "ann": [{ "x": 10, "y": 32, "txt": "Ball towards line...", "t": "info" }]
+      },
+      {
+        "caption": "Ball crosses the goal-line (not through goal) = ROUGEABLE!",
+        "dur": 2500,
+        "vb": { "x": -10, "y": 30, "w": 20, "h": 20 },
+        "ball": { "x": -2, "y": 40 },
+        "atk": {
+          "short": { "x": 2, "y": 38, "l": "S" },
+          "fly": { "x": 6, "y": 36, "l": "F" }
+        },
+        "def": {
+          "short": { "x": 3, "y": 42, "l": "S" },
+          "goals": { "x": 1, "y": 37.5, "l": "G" }
+        },
+        "zones": [{ "t": "rougeable", "x": -15, "y": 0, "w": 15, "h": 75 }],
+        "arrs": [{ "from": { "x": 2, "y": 40 }, "to": { "x": -2, "y": 40 }, "c": "#e74c3c", "anim": true }],
+        "ann": [{ "x": -2, "y": 34, "txt": "ROUGEABLE!", "t": "scoring" }]
+      },
+      {
+        "caption": "Goal-line extends INFINITELY for Rougeable balls - even wide!",
+        "dur": 2500,
+        "vb": { "x": -10, "y": 30, "w": 20, "h": 20 },
+        "ball": { "x": -2, "y": 40 },
+        "atk": {
+          "short": { "x": 1, "y": 39, "l": "S", "hl": true },
+          "fly": { "x": 5, "y": 36, "l": "F" }
+        },
+        "def": {
+          "short": { "x": 2, "y": 42, "l": "S" },
+          "goals": { "x": 1, "y": 37.5, "l": "G" }
+        },
+        "zones": [{ "t": "rougeable", "x": -15, "y": 0, "w": 15, "h": 75 }],
+        "ann": [{ "x": -2, "y": 34, "txt": "Infinite goal-line!", "t": "info" }]
+      },
+      {
+        "caption": "Attacker touches ball with HAND first = ROUGE! (5 points)",
+        "dur": 2500,
+        "vb": { "x": -10, "y": 32, "w": 18, "h": 16 },
+        "ball": { "x": -2, "y": 40 },
+        "atk": {
+          "short": { "x": -1, "y": 40, "l": "S", "hl": true }
+        },
+        "def": {
+          "short": { "x": 1, "y": 43, "l": "S" },
+          "goals": { "x": 1, "y": 37.5, "l": "G" }
+        },
+        "zones": [{ "t": "rougeable", "x": -15, "y": 0, "w": 15, "h": 75 }],
+        "ann": [{ "x": -2, "y": 34, "txt": "ROUGE! 5 POINTS!", "t": "scoring" }]
+      },
+      {
+        "caption": "Alternative: If Defender touches first = Attackers choose: 3pts OR Free Kick.",
+        "dur": 3000,
+        "vb": { "x": -8, "y": 30, "w": 20, "h": 20 },
+        "ball": { "x": -2, "y": 40 },
+        "atk": {
+          "short": { "x": 2, "y": 38, "l": "S" },
+          "fly": { "x": 6, "y": 36, "l": "F" }
+        },
+        "def": {
+          "short": { "x": 0, "y": 41, "l": "S", "hl": true },
+          "goals": { "x": 1, "y": 37.5, "l": "G" }
+        },
+        "zones": [{ "t": "rougeable", "x": -15, "y": 0, "w": 15, "h": 75 }],
+        "ann": [{ "x": 6, "y": 32, "txt": "Def touch = 3pts OR FK", "t": "warning" }]
+      }
+    ]
+  },
+
+  "furking": {
+    "name": "Furking",
+    "desc": "Hooking ball backwards in Bully (Law N)",
+    "seq": [
+      {
+        "caption": "Ball is in a Tightly-Formed-Bully. Attacking team has possession.",
+        "dur": 2500,
+        "vb": { "x": 36, "y": 30, "w": 18, "h": 16 },
+        "ball": { "x": 45, "y": 38 },
+        "atk": {
+          "post": { "x": 44, "y": 38, "l": "B", "r": "Post", "hl": true },
+          "sp1": { "x": 42.5, "y": 36, "l": "B" },
+          "sp2": { "x": 42.5, "y": 40, "l": "B" },
+          "bup": { "x": 41, "y": 38, "l": "B", "r": "Bup" },
+          "fly": { "x": 38, "y": 38, "l": "F" }
+        },
+        "def": {
+          "post": { "x": 46, "y": 38, "l": "B" },
+          "sp1": { "x": 47.5, "y": 36, "l": "B" },
+          "sp2": { "x": 47.5, "y": 40, "l": "B" }
+        },
+        "zones": [{ "t": "bully", "x": 40, "y": 35, "w": 8, "h": 6 }],
+        "ann": [{ "x": 45, "y": 44, "txt": "Ball in Bully", "t": "info" }]
+      },
+      {
+        "caption": "What is FURKING? Hooking or heeling the ball backwards with foot.",
+        "dur": 2500,
+        "vb": { "x": 36, "y": 30, "w": 18, "h": 16 },
+        "ball": { "x": 45, "y": 38 },
+        "atk": {
+          "post": { "x": 44, "y": 38, "l": "B", "r": "Post", "hl": true },
+          "sp1": { "x": 42.5, "y": 36, "l": "B" },
+          "sp2": { "x": 42.5, "y": 40, "l": "B" },
+          "bup": { "x": 41, "y": 38, "l": "B" },
+          "fly": { "x": 38, "y": 38, "l": "F" }
+        },
+        "def": {
+          "post": { "x": 46, "y": 38, "l": "B" },
+          "sp1": { "x": 47.5, "y": 36, "l": "B" },
+          "sp2": { "x": 47.5, "y": 40, "l": "B" }
+        },
+        "zones": [{ "t": "bully", "x": 40, "y": 35, "w": 8, "h": 6 }],
+        "ann": [{ "x": 45, "y": 44, "txt": "FURKING = hook/heel back", "t": "info" }]
+      },
+      {
+        "caption": "Post hooks ball backwards with their foot...",
+        "dur": 2000,
+        "vb": { "x": 36, "y": 30, "w": 18, "h": 16 },
+        "ball": { "x": 43, "y": 38 },
+        "atk": {
+          "post": { "x": 44, "y": 38, "l": "B", "r": "Post", "hl": true },
+          "sp1": { "x": 42.5, "y": 36, "l": "B" },
+          "sp2": { "x": 42.5, "y": 40, "l": "B" },
+          "bup": { "x": 41, "y": 38, "l": "B" },
+          "fly": { "x": 38, "y": 38, "l": "F" }
+        },
+        "def": {
+          "post": { "x": 46, "y": 38, "l": "B" },
+          "sp1": { "x": 47.5, "y": 36, "l": "B" },
+          "sp2": { "x": 47.5, "y": 40, "l": "B" }
+        },
+        "zones": [{ "t": "bully", "x": 40, "y": 35, "w": 8, "h": 6 }],
+        "arrs": [{ "from": { "x": 45, "y": 38 }, "to": { "x": 43, "y": 38 }, "c": "#27ae60", "anim": true }],
+        "ann": [{ "x": 43, "y": 44, "txt": "Furking...", "t": "info" }]
+      },
+      {
+        "caption": "LEGAL: Ball moves back but stays INSIDE the Bully.",
+        "dur": 2500,
+        "vb": { "x": 36, "y": 30, "w": 18, "h": 16 },
+        "ball": { "x": 41.5, "y": 38 },
+        "atk": {
+          "post": { "x": 44, "y": 38, "l": "B", "r": "Post" },
+          "sp1": { "x": 42.5, "y": 36, "l": "B" },
+          "sp2": { "x": 42.5, "y": 40, "l": "B" },
+          "bup": { "x": 41.5, "y": 38, "l": "B", "hl": true },
+          "fly": { "x": 38, "y": 38, "l": "F" }
+        },
+        "def": {
+          "post": { "x": 46, "y": 38, "l": "B" },
+          "sp1": { "x": 47.5, "y": 36, "l": "B" },
+          "sp2": { "x": 47.5, "y": 40, "l": "B" }
+        },
+        "zones": [{ "t": "bully", "x": 40, "y": 35, "w": 8, "h": 6 }],
+        "arrs": [{ "from": { "x": 43, "y": 38 }, "to": { "x": 41.5, "y": 38 }, "c": "#27ae60", "anim": true }],
+        "ann": [{ "x": 41.5, "y": 44, "txt": "LEGAL - in Bully", "t": "scoring" }]
+      },
+      {
+        "caption": "Bup receives. Play can continue within the Bully.",
+        "dur": 2500,
+        "vb": { "x": 34, "y": 29, "w": 20, "h": 18 },
+        "ball": { "x": 41, "y": 38 },
+        "atk": {
+          "post": { "x": 44, "y": 38, "l": "B" },
+          "sp1": { "x": 42.5, "y": 36, "l": "B" },
+          "sp2": { "x": 42.5, "y": 40, "l": "B" },
+          "bup": { "x": 41, "y": 38, "l": "B", "hl": true },
+          "fly": { "x": 38, "y": 38, "l": "F" }
+        },
+        "def": {
+          "post": { "x": 46, "y": 38, "l": "B" },
+          "sp1": { "x": 47.5, "y": 36, "l": "B" },
+          "sp2": { "x": 47.5, "y": 40, "l": "B" }
+        },
+        "zones": [{ "t": "bully", "x": 40, "y": 35, "w": 8, "h": 6 }],
+        "ann": [{ "x": 41, "y": 44, "txt": "Bup has ball", "t": "info" }]
+      },
+      {
+        "caption": "BUT! Ball played OUT backwards from the Bully = ILLEGAL!",
+        "dur": 2500,
+        "vb": { "x": 30, "y": 28, "w": 24, "h": 20 },
+        "ball": { "x": 36, "y": 38 },
+        "atk": {
+          "post": { "x": 44, "y": 38, "l": "B", "sn": true },
+          "bup": { "x": 41, "y": 38, "l": "B" },
+          "fly": { "x": 36, "y": 38, "l": "F", "hl": true }
+        },
+        "def": {
+          "post": { "x": 46, "y": 38, "l": "B" },
+          "sp1": { "x": 47.5, "y": 36, "l": "B" },
+          "sp2": { "x": 47.5, "y": 40, "l": "B" }
+        },
+        "zones": [{ "t": "bully", "x": 40, "y": 35, "w": 8, "h": 6 }],
+        "arrs": [{ "from": { "x": 41, "y": 38 }, "to": { "x": 36, "y": 38 }, "c": "#e74c3c", "anim": true, "lbl": "OUT!" }],
+        "ann": [{ "x": 36, "y": 32, "txt": "LEFT Bully backwards!", "t": "warning" }]
+      },
+      {
+        "caption": "PENALTY: Free Kick to the defending team.",
+        "dur": 2500,
+        "vb": { "x": 30, "y": 28, "w": 24, "h": 20 },
+        "ball": { "x": 36, "y": 38 },
+        "atk": {
+          "post": { "x": 44, "y": 38, "l": "B" },
+          "bup": { "x": 41, "y": 38, "l": "B" },
+          "fly": { "x": 36, "y": 38, "l": "F" }
+        },
+        "def": {
+          "post": { "x": 46, "y": 38, "l": "B", "hl": true },
+          "sp1": { "x": 47.5, "y": 36, "l": "B" },
+          "sp2": { "x": 47.5, "y": 40, "l": "B" }
+        },
+        "ann": [{ "x": 40, "y": 32, "txt": "FREE KICK to defenders", "t": "warning" }]
+      }
+    ]
+  },
+
+  "cornering": {
+    "name": "Cornering",
+    "desc": "Failing to track ball laterally (Law Q)",
+    "seq": [
+      {
+        "caption": "Ball in open play. All players should track its lateral position.",
+        "dur": 2500,
+        "vb": { "x": 24, "y": 14, "w": 52, "h": 48 },
+        "ball": { "x": 45, "y": 30 },
+        "atk": {
+          "short": { "x": 45, "y": 30, "l": "S", "r": "Short", "hl": true },
+          "fly": { "x": 50, "y": 34, "l": "F" },
+          "post": { "x": 55, "y": 38, "l": "B" }
+        },
+        "def": {
+          "short": { "x": 60, "y": 32, "l": "S" },
+          "fly": { "x": 56, "y": 50, "l": "F", "r": "Fly" },
+          "post": { "x": 58, "y": 40, "l": "B" }
+        },
+        "ann": [{ "x": 45, "y": 22, "txt": "Ball position", "t": "info" }]
+      },
+      {
+        "caption": "Ball moves RIGHT across the pitch. Players must follow.",
+        "dur": 2500,
+        "vb": { "x": 30, "y": 14, "w": 50, "h": 48 },
+        "ball": { "x": 55, "y": 30 },
+        "atk": {
+          "short": { "x": 55, "y": 30, "l": "S", "hl": true },
+          "fly": { "x": 58, "y": 34, "l": "F" },
+          "post": { "x": 62, "y": 38, "l": "B" }
+        },
+        "def": {
+          "short": { "x": 68, "y": 32, "l": "S" },
+          "fly": { "x": 56, "y": 50, "l": "F" },
+          "post": { "x": 64, "y": 40, "l": "B" }
+        },
+        "arrs": [{ "from": { "x": 45, "y": 30 }, "to": { "x": 55, "y": 30 }, "c": "#3498db", "anim": true }],
+        "ann": [{ "x": 55, "y": 22, "txt": "Ball moved right", "t": "info" }]
+      },
+      {
+        "caption": "Defending Fly has NOT tracked - still wide left of the ball.",
+        "dur": 2500,
+        "vb": { "x": 38, "y": 18, "w": 42, "h": 42 },
+        "ball": { "x": 58, "y": 32 },
+        "atk": {
+          "short": { "x": 58, "y": 32, "l": "S", "hl": true },
+          "fly": { "x": 62, "y": 36, "l": "F" }
+        },
+        "def": {
+          "short": { "x": 72, "y": 34, "l": "S" },
+          "fly": { "x": 56, "y": 52, "l": "F", "cn": true }
+        },
+        "ann": [{ "x": 56, "y": 58, "txt": "CORNERING!", "t": "warning" }]
+      },
+      {
+        "caption": "Cornering = out of line with ball. Cannot touch it from here!",
+        "dur": 2500,
+        "vb": { "x": 42, "y": 22, "w": 36, "h": 38 },
+        "ball": { "x": 60, "y": 34 },
+        "atk": {
+          "short": { "x": 60, "y": 34, "l": "S", "hl": true },
+          "fly": { "x": 64, "y": 38, "l": "F" }
+        },
+        "def": {
+          "short": { "x": 74, "y": 36, "l": "S" },
+          "fly": { "x": 58, "y": 54, "l": "F", "cn": true }
+        },
+        "ann": [{ "x": 58, "y": 48, "txt": "Cannot play ball!", "t": "warning" }]
+      },
+      {
+        "caption": "Must track laterally - diagonal running to get back in line.",
+        "dur": 2500,
+        "vb": { "x": 42, "y": 22, "w": 36, "h": 38 },
+        "ball": { "x": 62, "y": 36 },
+        "atk": {
+          "short": { "x": 62, "y": 36, "l": "S", "hl": true },
+          "fly": { "x": 66, "y": 40, "l": "F" }
+        },
+        "def": {
+          "short": { "x": 76, "y": 38, "l": "S" },
+          "fly": { "x": 62, "y": 48, "l": "F" }
+        },
+        "arrs": [{ "from": { "x": 58, "y": 54 }, "to": { "x": 62, "y": 48 }, "c": "#27ae60", "anim": true }],
+        "ann": [{ "x": 62, "y": 54, "txt": "Getting in line!", "t": "scoring" }]
+      },
+      {
+        "caption": "If Cornering player touches ball = PENALTY.",
+        "dur": 2500,
+        "vb": { "x": 40, "y": 24, "w": 38, "h": 36 },
+        "ball": { "x": 60, "y": 52 },
+        "atk": {
+          "short": { "x": 64, "y": 38, "l": "S" },
+          "fly": { "x": 68, "y": 42, "l": "F" }
+        },
+        "def": {
+          "short": { "x": 78, "y": 40, "l": "S" },
+          "fly": { "x": 60, "y": 52, "l": "F", "cn": true }
+        },
+        "ann": [{ "x": 60, "y": 46, "txt": "Touched while Cornering!", "t": "warning" }]
+      },
+      {
+        "caption": "PENALTY: Set-Piece-Bully to the non-offending team.",
+        "dur": 2500,
+        "vb": { "x": 40, "y": 28, "w": 36, "h": 32 },
+        "ball": { "x": 60, "y": 52 },
+        "atk": {
+          "short": { "x": 64, "y": 40, "l": "S", "hl": true },
+          "fly": { "x": 68, "y": 44, "l": "F" }
+        },
+        "def": {
+          "short": { "x": 78, "y": 42, "l": "S" },
+          "fly": { "x": 60, "y": 52, "l": "F", "cn": true }
+        },
+        "zones": [{ "t": "bully", "x": 57, "y": 49, "w": 6, "h": 6 }],
+        "ann": [{ "x": 60, "y": 44, "txt": "SET-PIECE-BULLY", "t": "warning" }]
+      }
+    ]
+  },
+
+  "conversion": {
+    "name": "Conversion",
+    "desc": "Going along line after Rouge (2 pts)",
+    "seq": [
+      {
+        "caption": "After a Rouge, Conversion attempt begins. Ball at tramline/3-yard intersection.",
+        "dur": 2500,
+        "vb": { "x": -4, "y": 8, "w": 26, "h": 34 },
+        "ball": { "x": 3, "y": 18.75 },
+        "atk": {
+          "short": { "x": 3, "y": 18.75, "l": "S", "r": "Short", "hl": true },
+          "fly": { "x": 10, "y": 22, "l": "F" }
+        },
+        "def": {
+          "short": { "x": 6, "y": 20, "l": "S" },
+          "fly": { "x": 8, "y": 26, "l": "F" },
+          "goals": { "x": 1, "y": 37.5, "l": "G", "r": "Goals" }
+        },
+        "zones": [{ "t": "onTheLine", "x": 0, "y": 0, "w": 3, "h": 75 }],
+        "ann": [{ "x": 12, "y": 14, "txt": "Start at tramline", "t": "info" }]
+      },
+      {
+        "caption": "Defenders must start at least 3 YARDS from the ball.",
+        "dur": 2500,
+        "vb": { "x": -4, "y": 8, "w": 26, "h": 34 },
+        "ball": { "x": 3, "y": 18.75 },
+        "atk": {
+          "short": { "x": 3, "y": 18.75, "l": "S", "hl": true },
+          "fly": { "x": 10, "y": 22, "l": "F" }
+        },
+        "def": {
+          "short": { "x": 6, "y": 20, "l": "S" },
+          "fly": { "x": 8, "y": 26, "l": "F" },
+          "goals": { "x": 1, "y": 37.5, "l": "G" }
+        },
+        "zones": [{ "t": "onTheLine", "x": 0, "y": 0, "w": 3, "h": 75 }],
+        "ann": [{ "x": 6, "y": 14, "txt": "3 yards away!", "t": "warning" }]
+      },
+      {
+        "caption": "Attacker begins going ALONG THE LINE towards goal.",
+        "dur": 2500,
+        "vb": { "x": -4, "y": 14, "w": 24, "h": 32 },
+        "ball": { "x": 2.5, "y": 26 },
+        "atk": {
+          "short": { "x": 2.5, "y": 26, "l": "S", "hl": true },
+          "fly": { "x": 10, "y": 28, "l": "F" }
+        },
+        "def": {
+          "short": { "x": 5, "y": 28, "l": "S" },
+          "fly": { "x": 7, "y": 32, "l": "F" },
+          "goals": { "x": 1, "y": 37.5, "l": "G" }
+        },
+        "zones": [{ "t": "onTheLine", "x": 0, "y": 0, "w": 3, "h": 75 }],
+        "arrs": [{ "from": { "x": 3, "y": 18.75 }, "to": { "x": 2.5, "y": 26 }, "c": "#27ae60", "anim": true }],
+        "ann": [{ "x": 10, "y": 22, "txt": "Going along line", "t": "info" }]
+      },
+      {
+        "caption": "Ball must keep moving! Normal on-the-line rules apply.",
+        "dur": 2500,
+        "vb": { "x": -4, "y": 20, "w": 22, "h": 28 },
+        "ball": { "x": 2, "y": 32 },
+        "atk": {
+          "short": { "x": 2, "y": 32, "l": "S", "hl": true },
+          "fly": { "x": 9, "y": 34, "l": "F" }
+        },
+        "def": {
+          "short": { "x": 4, "y": 34, "l": "S" },
+          "fly": { "x": 6, "y": 30, "l": "F" },
+          "goals": { "x": 1, "y": 37.5, "l": "G" }
+        },
+        "zones": [{ "t": "onTheLine", "x": 0, "y": 0, "w": 3, "h": 75 }],
+        "arrs": [{ "from": { "x": 2.5, "y": 26 }, "to": { "x": 2, "y": 32 }, "c": "#27ae60", "anim": true }],
+        "ann": [{ "x": 10, "y": 28, "txt": "Keep moving!", "t": "info" }]
+      },
+      {
+        "caption": "Attacker forces ball towards goal-line...",
+        "dur": 2500,
+        "vb": { "x": -6, "y": 28, "w": 20, "h": 22 },
+        "ball": { "x": 1.5, "y": 38 },
+        "atk": {
+          "short": { "x": 1.5, "y": 38, "l": "S", "hl": true },
+          "fly": { "x": 8, "y": 38, "l": "F" }
+        },
+        "def": {
+          "short": { "x": 3, "y": 40, "l": "S" },
+          "fly": { "x": 5, "y": 36, "l": "F" },
+          "goals": { "x": 1, "y": 37.5, "l": "G" }
+        },
+        "zones": [{ "t": "onTheLine", "x": 0, "y": 0, "w": 3, "h": 75 }],
+        "arrs": [{ "from": { "x": 2, "y": 32 }, "to": { "x": 1.5, "y": 38 }, "c": "#27ae60", "anim": true }],
+        "ann": [{ "x": 8, "y": 32, "txt": "Nearly there...", "t": "info" }]
+      },
+      {
+        "caption": "Ball crosses goal-line = ROUGEABLE!",
+        "dur": 2500,
+        "vb": { "x": -8, "y": 30, "w": 18, "h": 18 },
+        "ball": { "x": -1, "y": 40 },
+        "atk": {
+          "short": { "x": 0.5, "y": 40, "l": "S", "hl": true },
+          "fly": { "x": 6, "y": 38, "l": "F" }
+        },
+        "def": {
+          "short": { "x": 2, "y": 42, "l": "S" },
+          "goals": { "x": 1, "y": 37.5, "l": "G" }
+        },
+        "zones": [{ "t": "rougeable", "x": -15, "y": 0, "w": 15, "h": 75 }],
+        "arrs": [{ "from": { "x": 1.5, "y": 38 }, "to": { "x": -1, "y": 40 }, "c": "#27ae60", "anim": true }],
+        "ann": [{ "x": -1, "y": 34, "txt": "ROUGEABLE!", "t": "scoring" }]
+      },
+      {
+        "caption": "Attacker touches = CONVERSION! (2 points)",
+        "dur": 2500,
+        "vb": { "x": -8, "y": 32, "w": 16, "h": 14 },
+        "ball": { "x": -1, "y": 40 },
+        "atk": {
+          "short": { "x": -0.5, "y": 40, "l": "S", "hl": true }
+        },
+        "def": {
+          "short": { "x": 2, "y": 42, "l": "S" },
+          "goals": { "x": 1, "y": 37.5, "l": "G" }
+        },
+        "zones": [{ "t": "rougeable", "x": -15, "y": 0, "w": 15, "h": 75 }],
+        "ann": [{ "x": -1, "y": 34, "txt": "CONVERSION! 2 PTS!", "t": "scoring" }]
+      }
+    ]
+  }
+}

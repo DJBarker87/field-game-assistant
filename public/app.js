@@ -181,6 +181,7 @@ This rule was introduced for player safety following research on heading risks.`
 
 // Initialize
 document.addEventListener('DOMContentLoaded', async () => {
+  initTheme();
   await loadScenarios();
   setupInput();
   setupPanZoom();
@@ -664,4 +665,38 @@ function toggleLabels() {
   S.labels = !S.labels;
   document.getElementById('pitch').classList.toggle('show-labels', S.labels);
   document.getElementById('labelsBtn').classList.toggle('active', S.labels);
+}
+
+function toggleDarkMode() {
+  const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+  const newTheme = isDark ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', newTheme);
+  localStorage.setItem('theme', newTheme);
+
+  const moonIcon = document.getElementById('moonIcon');
+  const sunIcon = document.getElementById('sunIcon');
+  const toggle = document.getElementById('darkToggle');
+
+  if (newTheme === 'dark') {
+    moonIcon.style.display = 'none';
+    sunIcon.style.display = 'block';
+    toggle.classList.add('active');
+  } else {
+    moonIcon.style.display = 'block';
+    sunIcon.style.display = 'none';
+    toggle.classList.remove('active');
+  }
+}
+
+function initTheme() {
+  const savedTheme = localStorage.getItem('theme') || 'light';
+  if (savedTheme === 'dark') {
+    document.documentElement.setAttribute('data-theme', 'dark');
+    const moonIcon = document.getElementById('moonIcon');
+    const sunIcon = document.getElementById('sunIcon');
+    const toggle = document.getElementById('darkToggle');
+    if (moonIcon) moonIcon.style.display = 'none';
+    if (sunIcon) sunIcon.style.display = 'block';
+    if (toggle) toggle.classList.add('active');
+  }
 }

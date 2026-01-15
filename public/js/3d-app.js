@@ -55,10 +55,12 @@ const State = {
 // ============================================
 async function init() {
   console.log('Initializing Field Game 3D...');
-  
-  // Create scene - clean dark background
+  initTheme();
+
+  // Create scene - check theme for background color
   State.scene = new THREE.Scene();
-  State.scene.background = new THREE.Color(0x050a08);
+  const isLightMode = document.documentElement.getAttribute('data-theme') === 'light';
+  State.scene.background = new THREE.Color(isLightMode ? 0xd8e8dc : 0x050a08);
   
   // Create camera
   State.camera = new THREE.PerspectiveCamera(
@@ -673,6 +675,57 @@ function onResize() {
   State.camera.aspect = window.innerWidth / window.innerHeight;
   State.camera.updateProjectionMatrix();
   State.renderer.setSize(window.innerWidth, window.innerHeight);
+}
+
+// ============================================
+// DARK MODE
+// ============================================
+function toggleDarkMode() {
+  const currentTheme = document.documentElement.getAttribute('data-theme');
+  const newTheme = currentTheme === 'light' ? null : 'light';
+
+  if (newTheme === 'light') {
+    document.documentElement.setAttribute('data-theme', 'light');
+    localStorage.setItem('theme', 'light');
+  } else {
+    document.documentElement.removeAttribute('data-theme');
+    localStorage.setItem('theme', 'dark');
+  }
+
+  const moonIcon = document.getElementById('moonIcon');
+  const sunIcon = document.getElementById('sunIcon');
+  const toggle = document.getElementById('darkToggle');
+
+  if (newTheme === 'light') {
+    moonIcon.style.display = 'block';
+    sunIcon.style.display = 'none';
+    toggle.classList.remove('active');
+    // Update 3D scene background for light mode
+    if (State.scene) {
+      State.scene.background = new THREE.Color(0xd8e8dc);
+    }
+  } else {
+    moonIcon.style.display = 'none';
+    sunIcon.style.display = 'block';
+    toggle.classList.add('active');
+    // Restore dark background
+    if (State.scene) {
+      State.scene.background = new THREE.Color(0x050a08);
+    }
+  }
+}
+
+function initTheme() {
+  const savedTheme = localStorage.getItem('theme');
+  if (savedTheme === 'light') {
+    document.documentElement.setAttribute('data-theme', 'light');
+    const moonIcon = document.getElementById('moonIcon');
+    const sunIcon = document.getElementById('sunIcon');
+    const toggle = document.getElementById('darkToggle');
+    if (moonIcon) moonIcon.style.display = 'block';
+    if (sunIcon) sunIcon.style.display = 'none';
+    if (toggle) toggle.classList.remove('active');
+  }
 }
 
 // ============================================

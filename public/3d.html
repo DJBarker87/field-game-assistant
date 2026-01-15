@@ -14,6 +14,14 @@
       --pitch-mid: #2d5a27;
       --bg-deep: #0a1a0e;
       --text-inv: #f8faf8;
+      --panel-bg: rgba(10,26,14,0.85);
+      --panel-border: rgba(150,200,162,0.2);
+    }
+    html[data-theme="light"] {
+      --bg-deep: #e8f4eb;
+      --text-inv: #0f1f13;
+      --panel-bg: rgba(255,255,255,0.9);
+      --panel-border: rgba(150,200,162,0.3);
     }
     
     body {
@@ -116,9 +124,9 @@
       left: 1.5rem;
       top: 50%;
       transform: translateY(-50%);
-      background: rgba(10,26,14,0.85);
+      background: var(--panel-bg);
       backdrop-filter: blur(12px);
-      border: 1px solid rgba(150,200,162,0.2);
+      border: 1px solid var(--panel-border);
       border-radius: 12px;
       padding: 1rem;
       width: 220px;
@@ -167,9 +175,9 @@
       right: 1.5rem;
       top: 50%;
       transform: translateY(-50%);
-      background: rgba(10,26,14,0.85);
+      background: var(--panel-bg);
       backdrop-filter: blur(12px);
-      border: 1px solid rgba(150,200,162,0.2);
+      border: 1px solid var(--panel-border);
       border-radius: 12px;
       padding: 1.25rem;
       width: 280px;
@@ -207,9 +215,9 @@
       display: flex;
       align-items: center;
       gap: 1rem;
-      background: rgba(10,26,14,0.85);
+      background: var(--panel-bg);
       backdrop-filter: blur(12px);
-      border: 1px solid rgba(150,200,162,0.2);
+      border: 1px solid var(--panel-border);
       border-radius: 50px;
       padding: 0.75rem 1.5rem;
     }
@@ -300,11 +308,11 @@
       align-items: center;
       gap: 0.5rem;
       padding: 0.6rem 1rem;
-      background: rgba(10,26,14,0.85);
+      background: var(--panel-bg);
       backdrop-filter: blur(12px);
-      border: 1px solid rgba(150,200,162,0.3);
+      border: 1px solid var(--panel-border);
       border-radius: 8px;
-      color: rgba(255,255,255,0.8);
+      color: var(--text-inv);
       font-size: 0.85rem;
       cursor: pointer;
       transition: all 0.2s;
@@ -331,9 +339,9 @@
       display: flex;
       flex-direction: column;
       gap: 0.4rem;
-      background: rgba(10,26,14,0.85);
+      background: var(--panel-bg);
       backdrop-filter: blur(12px);
-      border: 1px solid rgba(150,200,162,0.2);
+      border: 1px solid var(--panel-border);
       border-radius: 10px;
       padding: 0.5rem;
     }
@@ -386,6 +394,74 @@
     @keyframes spin {
       to { transform: rotate(360deg); }
     }
+
+    /* Dark Mode Toggle */
+    .dark-toggle {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.5rem 0.85rem;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 8px;
+      color: rgba(255,255,255,0.7);
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .dark-toggle:hover {
+      background: rgba(255,255,255,0.15);
+      color: #fff;
+    }
+    .dark-toggle.active {
+      background: var(--eton);
+      border-color: var(--eton);
+      color: var(--pitch-dark);
+    }
+    .dark-toggle svg {
+      width: 16px;
+      height: 16px;
+    }
+    html[data-theme="light"] .header {
+      background: linear-gradient(180deg, rgba(232,244,235,0.95) 0%, transparent 100%);
+    }
+    html[data-theme="light"] .header h1,
+    html[data-theme="light"] .camera-hint {
+      color: var(--text-inv);
+    }
+    html[data-theme="light"] .view-switch a {
+      background: rgba(0,0,0,0.05);
+      border-color: rgba(0,0,0,0.1);
+      color: rgba(0,0,0,0.6);
+    }
+    html[data-theme="light"] .view-switch a:hover {
+      background: rgba(0,0,0,0.1);
+      color: #000;
+    }
+    html[data-theme="light"] .dark-toggle {
+      background: rgba(0,0,0,0.05);
+      border-color: rgba(0,0,0,0.1);
+      color: rgba(0,0,0,0.6);
+    }
+    html[data-theme="light"] .dark-toggle:hover {
+      background: rgba(0,0,0,0.1);
+      color: #000;
+    }
+    html[data-theme="light"] .scenario-btn,
+    html[data-theme="light"] .playback-btn,
+    html[data-theme="light"] .preset-btn {
+      background: rgba(0,0,0,0.05);
+      border-color: rgba(0,0,0,0.1);
+      color: rgba(0,0,0,0.7);
+    }
+    html[data-theme="light"] .info-panel h2,
+    html[data-theme="light"] .scenario-panel h3 {
+      color: var(--pitch-dark);
+    }
+    html[data-theme="light"] .info-panel p,
+    html[data-theme="light"] .step-indicator {
+      color: rgba(0,0,0,0.6);
+    }
   </style>
 </head>
 <body>
@@ -396,9 +472,15 @@
       <!-- Header -->
       <header class="header">
         <h1>Field Game <span>3D</span></h1>
-        <div class="view-switch">
-          <a href="index.html">2D View</a>
-          <a href="3d.html" class="active">3D View</a>
+        <div style="display:flex;gap:0.5rem;align-items:center">
+          <button class="dark-toggle active" id="darkToggle" onclick="toggleDarkMode()" title="Toggle dark mode">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" id="moonIcon" style="display:none"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" id="sunIcon"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+          </button>
+          <div class="view-switch">
+            <a href="index.html">2D View</a>
+            <a href="3d.html" class="active">3D View</a>
+          </div>
         </div>
       </header>
       
